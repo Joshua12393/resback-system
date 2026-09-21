@@ -10,7 +10,7 @@
             <div>
                 <h2>User accounts</h2>
                 <p style="font-size:.8rem;color:var(--gray-500);margin-top:.25rem;">
-                    New registrations start as students. Only administrators can change roles or account status.
+                    New registrations start as students. Only super administrators can assign or manage the protected Super Admin role.
                 </p>
             </div>
             <span style="font-size:.8rem;color:var(--gray-500);">{{ number_format($users->total()) }} accounts</span>
@@ -32,15 +32,15 @@
                             <div style="font-size:.78rem;color:var(--gray-500);margin-top:.2rem;">{{ $user->email }}</div>
                         </td>
                         <td>
-                            @if(auth()->user()->is($user))
-                                <span class="badge badge-pending">{{ ucfirst($user->role) }}</span>
+                            @if(auth()->user()->is($user) || ($user->isSuperAdmin() && ! auth()->user()->isSuperAdmin()))
+                                <span class="badge badge-pending">{{ \Illuminate\Support\Str::headline($user->role) }}</span>
                             @else
                                 <form action="{{ route('accounts.role', $user) }}" method="POST" style="display:flex;gap:.5rem;align-items:center;">
                                     @csrf
                                     @method('PATCH')
                                     <select name="role" class="form-control" style="min-width:110px;padding:.45rem .65rem;" aria-label="Role for {{ $user->name }}">
-                                        @foreach(['student', 'faculty', 'admin'] as $role)
-                                            <option value="{{ $role }}" @selected($user->role === $role)>{{ ucfirst($role) }}</option>
+                                        @foreach(auth()->user()->isSuperAdmin() ? ['student', 'faculty', 'admin', 'super_admin'] : ['student', 'faculty', 'admin'] as $role)
+                                            <option value="{{ $role }}" @selected($user->role === $role)>{{ \Illuminate\Support\Str::headline($role) }}</option>
                                         @endforeach
                                     </select>
                                     <button class="btn btn-primary btn-sm" type="submit">Save</button>
@@ -54,7 +54,7 @@
                         </td>
                         <td style="white-space:nowrap;">{{ $user->created_at->format('M d, Y') }}</td>
                         <td>
-                            @unless(auth()->user()->is($user))
+                            @if(! auth()->user()->is($user) && (! $user->isSuperAdmin() || auth()->user()->isSuperAdmin()))
                                 <div style="display:flex;gap:.5rem;align-items:center;">
                                     <form action="{{ route('accounts.status', $user) }}" method="POST">
                                         @csrf
@@ -71,8 +71,10 @@
                                     </form>
                                 </div>
                             @else
-                                <span style="font-size:.78rem;color:var(--gray-500);">Protected current account</span>
-                            @endunless
+                                <span style="font-size:.78rem;color:var(--gray-500);">
+                                    {{ auth()->user()->is($user) ? 'Protected current account' : 'Protected Super Admin account' }}
+                                </span>
+                            @endif
                         </td>
                     </tr>
                 @endforeach

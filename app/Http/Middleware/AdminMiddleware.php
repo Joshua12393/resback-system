@@ -10,7 +10,7 @@ class AdminMiddleware
 {
     /**
      * Handle an incoming request.
-     * Restrict access to admin and faculty users only.
+     * Restrict access to administrative and faculty users only.
      */
     public function handle(Request $request, Closure $next): Response
     {
@@ -18,8 +18,8 @@ class AdminMiddleware
             return redirect()->route('login');
         }
 
-        if (! in_array($request->user()->role, ['admin', 'faculty'])) {
-            abort(403, 'Access denied. This area is restricted to admin and faculty only.');
+        if (! in_array($request->user()->role, ['super_admin', 'admin', 'faculty'], true)) {
+            abort(403, 'Access denied. This area is restricted to administrators and faculty only.');
         }
 
         return $next($request);
