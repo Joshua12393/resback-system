@@ -84,7 +84,7 @@ class SentimentService
         }
 
         try {
-            $result = $this->parseResult($response->json());
+            $result = $this->parseResult($response->json(), $feedback->content);
         } catch (\UnexpectedValueException|JsonException $exception) {
             Log::warning('Gemini returned an unusable sentiment response.', [
                 'feedback_id' => $feedback->id,
@@ -121,7 +121,7 @@ class SentimentService
      *
      * @throws JsonException
      */
-    private function parseResult(array $response): array
+    private function parseResult(array $response, string $content = ''): array
     {
         $text = collect(data_get($response, 'candidates.0.content.parts', []))
             ->reject(fn (mixed $part): bool => data_get($part, 'thought') === true)
@@ -173,7 +173,8 @@ class SentimentService
         $languageResult = $this->languageCategoryService->normalize($decoded['languages']);
         $concernTopics = $this->concernTopicService->normalize(
             is_array($decoded['topics'] ?? null) ? $decoded['topics'] : [],
-            $keywords
+            $keywords,
+            $content
         );
 
         return [

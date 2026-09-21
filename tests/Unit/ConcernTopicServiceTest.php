@@ -29,4 +29,27 @@ class ConcernTopicServiceTest extends TestCase
             (new ConcernTopicService())->normalize([], ['student experience'], 'A unique concern.')
         );
     }
+
+    public function test_restroom_location_reference_is_not_classified_as_teaching(): void
+    {
+        $topics = (new ConcernTopicService())->normalize(
+            ['Teaching'],
+            ['teacher', 'cr'],
+            "Mabaho ang cr dito sa teacher's CR."
+        );
+
+        $this->assertSame(['Facilities', 'Cleanliness'], $topics);
+    }
+
+    public function test_restroom_feedback_can_still_include_teaching_when_instruction_is_discussed(): void
+    {
+        $topics = (new ConcernTopicService())->normalize(
+            ['Teaching'],
+            ['teacher', 'cr', 'lesson'],
+            'The teacher discusses the lesson inside the CR.'
+        );
+
+        $this->assertContains('Teaching', $topics);
+        $this->assertContains('Facilities', $topics);
+    }
 }

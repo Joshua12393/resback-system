@@ -24,8 +24,8 @@ class ConcernTopicService
     private const ALIASES = [
         'Wi-Fi / Internet' => ['wifi', 'wi-fi', 'internet', 'connection', 'connectivity', 'network', 'signal', 'router', 'bandwidth'],
         'Classroom / Room' => ['classroom', 'class room', 'room', 'silid', 'kuwarto', 'kwarto', 'lecture room'],
-        'Facilities' => ['facility', 'facilities', 'building', 'restroom', 'comfort room', 'cr', 'canteen', 'covered court', 'oval'],
-        'Cleanliness' => ['clean', 'cleanliness', 'dirty', 'garbage', 'trash', 'basura', 'dumi', 'marumi', 'nadalus', 'narugit'],
+        'Facilities' => ['facility', 'facilities', 'building', 'restroom', 'comfort room', 'cr', 'toilet', 'bathroom', 'washroom', 'lavatory', 'kasilyas', 'canteen', 'covered court', 'oval'],
+        'Cleanliness' => ['clean', 'cleanliness', 'dirty', 'garbage', 'trash', 'basura', 'dumi', 'marumi', 'nadalus', 'narugit', 'mabaho', 'smell', 'smelly', 'stink', 'stinks', 'stinky', 'odor', 'odour', 'bangsit', 'nabangsit'],
         'Teaching' => ['teaching', 'teacher', 'instructor', 'professor', 'lesson', 'lecture', 'guro', 'maestro', 'faculty'],
         'Schedule' => ['schedule', 'timetable', 'deadline', 'oras', 'iskedyul', 'sched'],
         'Enrollment' => ['enrollment', 'enrolment', 'registration', 'register', 'admission'],
@@ -33,6 +33,14 @@ class ConcernTopicService
         'Safety' => ['safety', 'unsafe', 'danger', 'security', 'hazard', 'accident', 'ligtas', 'delikado'],
         'Equipment' => ['equipment', 'computer', 'projector', 'laboratory', 'lab', 'printer', 'device', 'machine'],
         'Administration' => ['administration', 'admin', 'office', 'policy', 'process', 'staff', 'service'],
+    ];
+
+    private const RESTROOM_ALIASES = [
+        'restroom', 'comfort room', 'cr', 'toilet', 'bathroom', 'washroom', 'lavatory', 'kasilyas',
+    ];
+
+    private const STRONG_TEACHING_ALIASES = [
+        'teaching', 'lesson', 'lecture', 'instruction', 'curriculum', 'grading', 'grade', 'exam', 'discussion',
     ];
 
     /**
@@ -58,6 +66,11 @@ class ConcernTopicService
             if ($this->containsAlias($haystack, $aliases)) {
                 $normalized->push($topic);
             }
+        }
+
+        if ($this->containsAlias($haystack, self::RESTROOM_ALIASES)
+            && ! $this->containsAlias($haystack, self::STRONG_TEACHING_ALIASES)) {
+            $normalized = $normalized->reject(fn (string $topic): bool => $topic === 'Teaching');
         }
 
         $normalized = $normalized
