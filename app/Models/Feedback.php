@@ -75,4 +75,12 @@ class Feedback extends Model
     {
         return $query->where('status', 'analyzed');
     }
+
+    /**
+     * Scope to feedback that may appear in faculty-facing reports and analytics.
+     */
+    public function scopeReportable($query)
+    {
+        return $query->where('status', '!=', 'rejected');
+    }
 }

@@ -3,9 +3,18 @@
 
 @section('content')
 <div class="thankyou-card">
-    <div class="thankyou-icon">✓</div>
-    <h1>Feedback Submitted</h1>
-    <p>Thank you. Your feedback has been received.</p>
+    @if($feedback->status === 'rejected')
+        <div class="thankyou-icon thankyou-icon-rejected">!</div>
+        <h1>Feedback Rejected</h1>
+        <p>The submission matched the automatic rejection list and was not included in faculty analytics.</p>
+
+        <div class="alert alert-error" style="margin-top:1.5rem;">
+            Please submit genuine, respectful, and constructive feedback.
+        </div>
+    @else
+        <div class="thankyou-icon">✓</div>
+        <h1>Feedback Submitted</h1>
+        <p>Thank you. Your feedback has been received.</p>
 
     @if($feedback->sentimentResult)
         @php
@@ -34,6 +43,7 @@
         <div class="alert alert-error" style="margin-top:1.5rem;">
             Sentiment analysis could not be completed, but your feedback was still saved.
         </div>
+    @endif
     @endif
 
     <a href="{{ route('feedback.create') }}" class="btn btn-primary">

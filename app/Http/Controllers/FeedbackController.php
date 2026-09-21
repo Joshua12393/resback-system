@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreFeedbackRequest;
 use App\Models\Category;
 use App\Models\Feedback;
+use App\Services\FeedbackAutoRejectService;
 use App\Services\FeedbackSubmissionGuard;
 use App\Services\SentimentService;
 use Illuminate\Http\Request;
@@ -16,6 +17,7 @@ class FeedbackController extends Controller
     public function __construct(
         protected SentimentService $sentimentService,
         protected FeedbackSubmissionGuard $submissionGuard,
+        protected FeedbackAutoRejectService $autoRejectService,
     ) {}
 
     /**
@@ -52,15 +54,21 @@ class FeedbackController extends Controller
         // Hash IP for rate limiting — never stored as plain text
         $ipHash = hash('sha256', $request->ip().config('app.key'));
 
+        $shouldReject = $this->autoRejectService->shouldReject($request->string('content')->toString());
+
         $feedback = Feedback::create([
             'user_id' => $user->id,
             'category_id' => $request->category_id,
             'content' => $request->content,
             'ip_hash' => $ipHash,
-            'status' => 'pending',
+            'status' => $shouldReject ? 'rejected' : 'pending',
         ]);
 
         $this->submissionGuard->recordSubmission($user);
+
+        if ($shouldReject) {
+            return view('feedback.result', ['feedback' => $feedback]);
+        }
 
         // Trigger sentiment analysis (runs synchronously; swap for a queued job later)
         $this->sentimentService->analyze($feedback);

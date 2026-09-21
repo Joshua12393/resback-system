@@ -34,6 +34,7 @@ class DashboardController extends Controller
         $hasFilters = $selectedCategory !== null || $selectedLanguage !== null || $dateRange->isActive();
 
         $feedbackScope = $dateRange->apply(Feedback::query()
+            ->reportable()
             ->when($selectedCategory, fn ($query) => $query->where('category_id', $selectedCategory->id))
             ->when($selectedLanguage, fn ($query) => $query->whereHas(
                 'sentimentResult',
@@ -98,6 +99,7 @@ class DashboardController extends Controller
 
         // The mixed overview is capped at 10. A category view is paginated.
         $recentFeedbackQuery = $dateRange->apply(Feedback::with(['category', 'sentimentResult'])
+            ->reportable()
             ->when($selectedCategory, fn ($query) => $query->where('category_id', $selectedCategory->id))
             ->when($selectedLanguage, fn ($query) => $query->whereHas(
                 'sentimentResult',

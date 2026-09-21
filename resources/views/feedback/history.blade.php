@@ -52,20 +52,22 @@
                                 <td class="history-feedback-table-cell">{{ $feedback->content }}</td>
                                 <td>{{ $feedback->category?->name ?? 'Uncategorized' }}</td>
                                 <td>
-                                    @if($analysis)
+                                    @if($feedback->status === 'rejected')
+                                        <span class="badge badge-negative">Rejected</span>
+                                    @elseif($analysis)
                                         <span class="badge badge-{{ $analysis->sentiment }}">{{ ucfirst($analysis->sentiment) }}</span>
                                         <span class="history-confidence">{{ number_format($analysis->confidence * 100, 0) }}% confidence</span>
                                     @else
                                         <span class="badge badge-pending">Pending</span>
                                     @endif
                                 </td>
-                                <td>{{ $analysis?->language_category ?? 'Unclassified' }}</td>
+                                <td>{{ $feedback->status === 'rejected' ? 'Not analyzed' : ($analysis?->language_category ?? 'Unclassified') }}</td>
                                 <td class="history-keywords-table-cell">
                                     <div class="keyword-list">
                                         @forelse($analysis?->keywords ?? [] as $keyword)
                                             <span class="keyword-chip">#{{ $keyword }}</span>
                                         @empty
-                                            <span class="history-cell-muted">No keywords</span>
+                                            <span class="history-cell-muted">{{ $feedback->status === 'rejected' ? 'Not analyzed' : 'No keywords' }}</span>
                                         @endforelse
                                     </div>
                                 </td>

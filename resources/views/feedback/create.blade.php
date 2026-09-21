@@ -72,10 +72,28 @@
                 to help identify campus concerns.
             </div>
 
+            <div class="submission-warning" role="note">
+                <strong>Submission reminder:</strong>
+                If malicious words are detected, the system will automatically reject the feedback. Please submit
+                genuine, respectful, and constructive feedback only.
+            </div>
+
             <button type="submit" class="btn btn-primary btn-block btn-lg" id="submitBtn">
                 Submit Feedback
             </button>
         </form>
+
+        <dialog class="feedback-confirmation" id="feedbackConfirmation" aria-labelledby="confirmationTitle">
+            <form method="dialog">
+                <h2 id="confirmationTitle">Confirm feedback submission</h2>
+                <p>Please confirm that your feedback is genuine, respectful, and ready to submit.</p>
+                <p class="feedback-confirmation-warning">If malicious words are detected, the system will reject it.</p>
+                <div class="feedback-confirmation-actions">
+                    <button type="submit" value="cancel" class="btn btn-secondary">Review Feedback</button>
+                    <button type="button" class="btn btn-primary" id="confirmSubmitBtn">Confirm &amp; Submit</button>
+                </div>
+            </form>
+        </dialog>
 
     </div>
 </div>
@@ -98,11 +116,34 @@
     const contentField = document.getElementById('content');
     if (contentField.value) updateCounter(contentField);
 
-    // Prevent double-submit
-    document.getElementById('feedbackForm').addEventListener('submit', function () {
+    const feedbackForm = document.getElementById('feedbackForm');
+    const confirmationDialog = document.getElementById('feedbackConfirmation');
+    const confirmSubmitBtn = document.getElementById('confirmSubmitBtn');
+    let submissionConfirmed = false;
+
+    feedbackForm.addEventListener('submit', function (event) {
+        if (!submissionConfirmed) {
+            event.preventDefault();
+
+            if (typeof confirmationDialog.showModal === 'function') {
+                confirmationDialog.showModal();
+            } else if (window.confirm('Confirm this feedback submission? If malicious words are detected, the system will reject it.')) {
+                submissionConfirmed = true;
+                feedbackForm.requestSubmit();
+            }
+
+            return;
+        }
+
         const btn = document.getElementById('submitBtn');
         btn.disabled = true;
         btn.textContent = 'Submitting...';
+    });
+
+    confirmSubmitBtn.addEventListener('click', function () {
+        submissionConfirmed = true;
+        confirmationDialog.close();
+        feedbackForm.requestSubmit();
     });
 </script>
 @endpush

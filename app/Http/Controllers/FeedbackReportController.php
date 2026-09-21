@@ -29,6 +29,7 @@ class FeedbackReportController extends Controller
         $category = Category::ccis();
         $feedbacks = $dateRange->apply(Feedback::query()
             ->with(['category', 'sentimentResult'])
+            ->reportable()
             ->where('category_id', $category->id)
             ->when($selectedLanguage, fn ($query) => $query->whereHas(
                 'sentimentResult',

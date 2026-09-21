@@ -57,6 +57,7 @@ class FeedbackExportController extends Controller
         $row = 2;
         $dateRange->apply(Feedback::query()
             ->with(['category', 'sentimentResult'])
+            ->reportable()
             ->whereHas('category', fn ($query) => $query->where('name', 'CCIS'))
             ->when($selectedLanguage, fn ($query) => $query->whereHas(
                 'sentimentResult',
