@@ -36,27 +36,11 @@
         <form action="{{ route('feedback.store') }}" method="POST" id="feedbackForm">
             @csrf
 
-            {{-- Category Selection --}}
+            {{-- Fixed department scope --}}
             <div class="form-group">
-                <label for="category_id" class="form-label">Department or Campus Area</label>
-                <select
-                    id="category_id"
-                    name="category_id"
-                    class="form-control {{ $errors->has('category_id') ? 'is-invalid' : '' }}"
-                    required
-                    onchange="handleFeedbackCategorySelection(this)"
-                >
-                    @foreach($categories as $category)
-                        <option
-                            value="{{ $category->id }}"
-                            data-available="{{ $category->isAvailableForFeedback() ? 'true' : 'false' }}"
-                            aria-disabled="{{ $category->isAvailableForFeedback() ? 'false' : 'true' }}"
-                            @selected($defaultCategory?->is($category))
-                        >
-                            {{ $category->name }}{{ $category->isAvailableForFeedback() ? '' : ' — Coming soon' }}
-                        </option>
-                    @endforeach
-                </select>
+                <label for="category_display" class="form-label">Department</label>
+                <input id="category_display" type="text" class="form-control" value="CCIS" readonly>
+                <input type="hidden" name="category_id" value="{{ $defaultCategory->id }}">
                 @error('category_id')
                     <div class="form-error">{{ $message }}</div>
                 @enderror
@@ -99,16 +83,6 @@
 
 @push('scripts')
 <script>
-    const availableFeedbackCategoryId = @json($defaultCategory?->id);
-
-    function handleFeedbackCategorySelection(select) {
-        const selectedOption = select.options[select.selectedIndex];
-        if (selectedOption.dataset.available !== 'true') {
-            alert('Coming soon');
-            select.value = String(availableFeedbackCategoryId);
-        }
-    }
-
     // Character counter
     function updateCounter(textarea) {
         const counter = document.getElementById('charCounter');

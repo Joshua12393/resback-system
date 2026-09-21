@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Feedback;
+use App\Services\LanguageCategoryService;
+use App\Support\FeedbackDateRange;
+use Illuminate\Http\Request;
 use PhpOffice\PhpSpreadsheet\Cell\DataType;
 use PhpOffice\PhpSpreadsheet\Shared\Date;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -13,9 +16,19 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class FeedbackExportController extends Controller
 {
-    public function __invoke(): StreamedResponse
+    public function __invoke(Request $request): StreamedResponse
     {
-        $spreadsheet = new Spreadsheet();
+        $dateRange = FeedbackDateRange::fromRequest($request);
+        $selectedLanguage = $request->filled('language_category')
+            ? $request->string('language_category')->toString()
+            : null;
+        abort_if(
+            $selectedLanguage && ! in_array($selectedLanguage, LanguageCategoryService::CATEGORY_LABELS, true),
+            404,
+            'The selected language is unavailable.'
+        );
+
+        $spreadsheet = new Spreadsheet;
         $spreadsheet->getProperties()
             ->setCreator('ResBack')
             ->setTitle('ResBack Feedback Export')
@@ -42,9 +55,13 @@ class FeedbackExportController extends Controller
         $sheet->fromArray($headers, null, 'A1');
 
         $row = 2;
-        Feedback::query()
+        $dateRange->apply(Feedback::query()
             ->with(['category', 'sentimentResult'])
             ->whereHas('category', fn ($query) => $query->where('name', 'CCIS'))
+            ->when($selectedLanguage, fn ($query) => $query->whereHas(
+                'sentimentResult',
+                fn ($resultQuery) => $resultQuery->where('language_category', $selectedLanguage)
+            )))
             ->orderBy('id')
             ->lazyById(500)
             ->each(function (Feedback $feedback) use ($sheet, &$row): void {
@@ -113,7 +130,10 @@ class FeedbackExportController extends Controller
             $sheet->getColumnDimension($column)->setWidth($width);
         }
 
-        $filename = 'resback-feedbacks-'.now()->format('Y-m-d-His').'.xlsx';
+        $dateSuffix = $dateRange->isActive()
+            ? $dateRange->start->format('Y-m-d').'-to-'.$dateRange->end->format('Y-m-d')
+            : now()->format('Y-m-d-His');
+        $filename = 'resback-feedbacks-'.$dateSuffix.'.xlsx';
 
         return response()->streamDownload(function () use ($spreadsheet): void {
             (new Xlsx($spreadsheet))->save('php://output');

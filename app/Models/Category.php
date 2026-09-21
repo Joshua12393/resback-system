@@ -12,22 +12,7 @@ class Category extends Model
 
     public const FEEDBACK_CATEGORIES = [
         'CCIS',
-        'COE',
-        'CAS',
-        'CBEA',
-        'CHS',
-        'CTE',
-        'CIT',
-        'CASAT',
-        'CAFSD',
-        'LIBRARY',
-        'ADMIN',
-        'TEATRO',
-        'COVER COURT',
-        'OVAL',
     ];
-
-    public const AVAILABLE_FEEDBACK_CATEGORIES = ['CCIS'];
 
     /**
      * The attributes that are mass assignable.
@@ -51,6 +36,25 @@ class Category extends Model
         'is_active' => 'boolean',
     ];
 
+    public static function ccis(): self
+    {
+        $category = self::query()->firstOrCreate(
+            ['slug' => 'ccis'],
+            [
+                'name' => 'CCIS',
+                'icon' => '🏫',
+                'description' => 'Feedback intended for CCIS',
+                'is_active' => true,
+            ]
+        );
+
+        if (! $category->is_active) {
+            $category->update(['is_active' => true]);
+        }
+
+        return $category;
+    }
+
     /**
      * Get all feedbacks under this category.
      */
@@ -73,10 +77,5 @@ class Category extends Model
     public function scopeActive($query)
     {
         return $query->where('is_active', true);
-    }
-
-    public function isAvailableForFeedback(): bool
-    {
-        return in_array($this->name, self::AVAILABLE_FEEDBACK_CATEGORIES, true);
     }
 }

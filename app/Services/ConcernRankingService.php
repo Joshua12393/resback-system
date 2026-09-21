@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Category;
 use App\Models\ConcernRanking;
 use App\Models\SentimentResult;
+use App\Support\FeedbackDateRange;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
@@ -13,12 +14,18 @@ class ConcernRankingService
     /**
      * @return Collection<int, array<string, mixed>>
      */
-    public function rank(?int $categoryId = null, ?string $languageCategory = null): Collection
-    {
+    public function rank(
+        ?int $categoryId = null,
+        ?string $languageCategory = null,
+        ?FeedbackDateRange $dateRange = null,
+    ): Collection {
+        $dateRange ??= new FeedbackDateRange(null, null);
+
         $results = SentimentResult::query()
             ->with('feedback')
-            ->whereHas('feedback', fn ($query) => $query
-                ->when($categoryId, fn ($feedbackQuery) => $feedbackQuery->where('category_id', $categoryId)))
+            ->whereHas('feedback', fn ($query) => $dateRange->apply(
+                $query->when($categoryId, fn ($feedbackQuery) => $feedbackQuery->where('category_id', $categoryId))
+            ))
             ->when($languageCategory, fn ($query) => $query->where('language_category', $languageCategory))
             ->get();
 

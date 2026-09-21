@@ -5,7 +5,10 @@
 @section('page-subtitle', 'Sentiment and language analysis for submitted feedback')
 
 @section('topbar-actions')
-    <a href="{{ route('feedback.export') }}" class="btn btn-primary btn-sm">
+    <a href="{{ route('feedback.report', $reportQuery) }}" class="btn btn-ghost btn-sm">
+        Download PDF Report
+    </a>
+    <a href="{{ route('feedback.export', $reportQuery) }}" class="btn btn-primary btn-sm">
         Export Feedbacks (.xlsx)
     </a>
 @endsection
@@ -13,22 +16,7 @@
 @section('content')
     <section class="card-dark" style="margin-bottom:1.5rem;">
         <div class="card-body">
-            <form action="{{ route('dashboard') }}" method="GET" style="display:flex;gap:.75rem;align-items:end;flex-wrap:wrap;">
-                <div style="flex:1;min-width:240px;">
-                    <label for="category_id" class="form-label">Filter dashboard by category</label>
-                    <select id="category_id" name="category_id" class="form-control" onchange="handleDashboardCategorySelection(this)">
-                        @foreach($filterCategories as $category)
-                            <option
-                                value="{{ $category->id }}"
-                                data-available="{{ $category->isAvailableForFeedback() ? 'true' : 'false' }}"
-                                aria-disabled="{{ $category->isAvailableForFeedback() ? 'false' : 'true' }}"
-                                @selected($selectedCategory?->is($category))
-                            >
-                                {{ $category->name }}{{ $category->isAvailableForFeedback() ? '' : ' — Coming soon' }}
-                            </option>
-                        @endforeach
-                    </select>
-                </div>
+            <form action="{{ route('dashboard') }}" method="GET" class="dashboard-filter-form">
                 <div style="flex:1;min-width:240px;">
                     <label for="language_category" class="form-label">Filter dashboard by language</label>
                     <select id="language_category" name="language_category" class="form-control" onchange="this.form.submit()">
@@ -38,11 +26,38 @@
                         @endforeach
                     </select>
                 </div>
+                <div class="dashboard-date-field">
+                    <label for="start_date" class="form-label">Start date</label>
+                    <input
+                        id="start_date"
+                        name="start_date"
+                        type="date"
+                        class="form-control"
+                        value="{{ $dateRange->start?->format('Y-m-d') }}"
+                        max="{{ now()->format('Y-m-d') }}"
+                    >
+                </div>
+                <div class="dashboard-date-field">
+                    <label for="end_date" class="form-label">End date</label>
+                    <input
+                        id="end_date"
+                        name="end_date"
+                        type="date"
+                        class="form-control"
+                        value="{{ $dateRange->end?->format('Y-m-d') }}"
+                        max="{{ now()->format('Y-m-d') }}"
+                    >
+                </div>
                 <button type="submit" class="btn btn-primary btn-sm">Apply Filter</button>
-                @if($selectedLanguage)
-                    <a href="{{ route('dashboard') }}" class="btn btn-ghost btn-sm">Clear Language Filter</a>
+                @if($selectedLanguage || $dateRange->isActive())
+                    <a href="{{ route('dashboard') }}" class="btn btn-ghost btn-sm">Clear Filters</a>
                 @endif
             </form>
+            @if($errors->has('start_date') || $errors->has('end_date'))
+                <div class="dashboard-filter-error" role="alert">
+                    {{ $errors->first('start_date') ?: $errors->first('end_date') }}
+                </div>
+            @endif
             <div style="font-size:.8rem;color:var(--gray-400);margin-top:.75rem;">
                 Currently showing: <strong style="color:var(--gray-900);">{{ $hasFilters ? $filterLabel : 'All categories and languages (mixed)' }}</strong>
             </div>
@@ -82,7 +97,7 @@
         <section class="card-dark">
             <div class="card-header">
                 <h2>Positive vs. negative trend</h2>
-                <span class="chart-caption">Last 30 days</span>
+                <span class="chart-caption">{{ $trendLabel }}</span>
             </div>
             <div class="card-body chart-panel">
                 <canvas id="sentimentTrendChart" aria-label="Positive and negative feedback trend chart"></canvas>
@@ -170,67 +185,11 @@
 
     </div>
 
-    <section class="card-dark">
-        <div class="card-header">
-            <h2>{{ $hasFilters ? $filterLabel.' feedbacks' : 'Recent feedbacks' }}</h2>
-            <span style="font-size:.75rem;color:var(--gray-400);">
-                {{ $hasFilters ? 'Only '.$filterLabel.' · 10 per page' : 'Latest 10 mixed submissions' }}
-            </span>
-        </div>
-        @if($recentFeedbacks->isEmpty())
-            <div class="empty-state"><h3>No feedback yet</h3><p>Submitted feedback will appear here.</p></div>
-        @else
-            <div class="table-wrapper">
-                <table class="data-table">
-                    <thead><tr><th>Date</th><th>Feedback</th><th>Category</th><th>Sentiment</th><th>Language</th><th>Status</th></tr></thead>
-                    <tbody>
-                    @foreach($recentFeedbacks as $feedback)
-                        <tr>
-                            <td style="white-space:nowrap;">{{ $feedback->created_at->format('M d, Y h:i A') }}</td>
-                            <td class="feedback-message-cell">
-                                @if(\Illuminate\Support\Str::length($feedback->content) > 140)
-                                    <details class="feedback-details">
-                                        <summary>
-                                            <span class="feedback-preview">{{ \Illuminate\Support\Str::limit($feedback->content, 140) }}</span>
-                                            <span class="feedback-expand-label">Read full feedback</span>
-                                        </summary>
-                                        <div class="feedback-full-text">{{ $feedback->content }}</div>
-                                    </details>
-                                @else
-                                    <div class="feedback-full-text">{{ $feedback->content }}</div>
-                                @endif
-                            </td>
-                            <td>{{ $feedback->category?->name ?? 'Uncategorized' }}</td>
-                            <td><span class="badge badge-{{ $feedback->sentimentResult?->sentiment ?? 'pending' }}">{{ ucfirst($feedback->sentimentResult?->sentiment ?? 'pending') }}</span></td>
-                            <td>{{ $feedback->sentimentResult?->language_category ?? 'Unclassified' }}</td>
-                            <td>{{ ucfirst($feedback->status) }}</td>
-                        </tr>
-                    @endforeach
-                    </tbody>
-                </table>
-            </div>
-            @if($hasFilters && $recentFeedbacks->hasPages())
-                <div style="padding:1rem;">{{ $recentFeedbacks->links() }}</div>
-            @endif
-        @endif
-    </section>
+    @include('dashboard.partials.feedback-table')
 @endsection
 
 @push('scripts')
 <script>
-const availableDashboardCategoryId = @json($selectedCategory?->id);
-
-function handleDashboardCategorySelection(select) {
-    const selectedOption = select.options[select.selectedIndex];
-    if (selectedOption.dataset.available !== 'true') {
-        alert('Coming soon');
-        select.value = String(availableDashboardCategoryId);
-        return;
-    }
-
-    select.form.submit();
-}
-
 document.addEventListener('DOMContentLoaded', () => {
     const chartTextColor = '#607082';
     const chartGridColor = 'rgba(96, 112, 130, 0.13)';

@@ -5,28 +5,27 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreFeedbackRequest;
 use App\Models\Category;
 use App\Models\Feedback;
+use App\Services\FeedbackSubmissionGuard;
 use App\Services\SentimentService;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 
 class FeedbackController extends Controller
 {
-    public function __construct(protected SentimentService $sentimentService) {}
+    public function __construct(
+        protected SentimentService $sentimentService,
+        protected FeedbackSubmissionGuard $submissionGuard,
+    ) {}
 
     /**
      * Show the confidential feedback submission form.
      */
     public function create(): View
     {
-        $categoryOrder = array_flip(Category::FEEDBACK_CATEGORIES);
-        $categories = Category::active()
-            ->get()
-            ->sortBy(fn (Category $category) => $categoryOrder[$category->name] ?? PHP_INT_MAX)
-            ->values();
-        $defaultCategory = $categories->first(fn (Category $category) => $category->isAvailableForFeedback());
+        $defaultCategory = Category::ccis();
 
-        return view('feedback.create', compact('categories', 'defaultCategory'));
+        return view('feedback.create', compact('defaultCategory'));
     }
 
     /**
@@ -34,16 +33,34 @@ class FeedbackController extends Controller
      */
     public function store(StoreFeedbackRequest $request): View
     {
+        $user = $request->user();
+
+        if ($this->submissionGuard->isDuplicate($user, $request->integer('category_id'), $request->string('content')->toString())) {
+            throw ValidationException::withMessages([
+                'content' => 'You already submitted the same feedback within the last 24 hours.',
+            ]);
+        }
+
+        if ($this->submissionGuard->tooManyAttempts($user)) {
+            $minutes = max(1, (int) ceil($this->submissionGuard->availableIn($user) / 60));
+
+            throw ValidationException::withMessages([
+                'content' => "You have submitted several feedbacks recently. Please try again in {$minutes} minute(s).",
+            ]);
+        }
+
         // Hash IP for rate limiting — never stored as plain text
-        $ipHash = hash('sha256', $request->ip() . config('app.key'));
+        $ipHash = hash('sha256', $request->ip().config('app.key'));
 
         $feedback = Feedback::create([
-            'user_id'     => $request->user()->id,
+            'user_id' => $user->id,
             'category_id' => $request->category_id,
-            'content'     => $request->content,
-            'ip_hash'     => $ipHash,
-            'status'      => 'pending',
+            'content' => $request->content,
+            'ip_hash' => $ipHash,
+            'status' => 'pending',
         ]);
+
+        $this->submissionGuard->recordSubmission($user);
 
         // Trigger sentiment analysis (runs synchronously; swap for a queued job later)
         $this->sentimentService->analyze($feedback);
@@ -74,6 +91,7 @@ class FeedbackController extends Controller
         if (session()->has('last_feedback_id')) {
             $feedback = Feedback::with('sentimentResult')->find(session('last_feedback_id'));
         }
+
         return view('feedback.thankyou', compact('feedback'));
     }
 }

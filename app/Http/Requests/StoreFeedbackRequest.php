@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -18,7 +19,7 @@ class StoreFeedbackRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array<string, ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {
@@ -29,7 +30,7 @@ class StoreFeedbackRequest extends FormRequest
                     fn ($query) => $query->where('is_active', true)->where('name', 'CCIS')
                 ),
             ],
-            'content'     => ['required', 'string', 'min:10', 'max:2000'],
+            'content' => ['required', 'string', 'min:10', 'max:2000'],
         ];
     }
 
@@ -42,10 +43,10 @@ class StoreFeedbackRequest extends FormRequest
     {
         return [
             'content.required' => 'Please write your feedback before submitting.',
-            'content.min'      => 'Your feedback must be at least 10 characters long.',
-            'content.max'      => 'Your feedback must not exceed 2,000 characters.',
+            'content.min' => 'Your feedback must be at least 10 characters long.',
+            'content.max' => 'Your feedback must not exceed 2,000 characters.',
             'category_id.required' => 'Please select the department or campus area for your feedback.',
-            'category_id.exists' => 'Coming soon. Feedback submissions are currently available for CCIS only.',
+            'category_id.exists' => 'Feedback submissions are currently available for CCIS only.',
         ];
     }
 }

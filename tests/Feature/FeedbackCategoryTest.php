@@ -12,7 +12,7 @@ class FeedbackCategoryTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_feedback_form_shows_the_required_categories_in_the_requested_order(): void
+    public function test_feedback_form_is_fixed_to_ccis_only(): void
     {
         $this->seed(CategorySeeder::class);
         $student = User::factory()->create(['role' => 'student']);
@@ -20,19 +20,19 @@ class FeedbackCategoryTest extends TestCase
         $response = $this->actingAs($student)->get(route('feedback.create'));
 
         $response->assertOk()
-            ->assertSee('Department or Campus Area')
-            ->assertSeeInOrder(Category::FEEDBACK_CATEGORIES)
-            ->assertSee('COE — Coming soon')
-            ->assertSee('Coming soon');
+            ->assertSee('Department')
+            ->assertSee('value="CCIS"', false)
+            ->assertDontSee('COE')
+            ->assertDontSee('Coming soon');
 
-        $this->assertSame(count(Category::FEEDBACK_CATEGORIES), Category::active()->count());
+        $this->assertSame(['CCIS'], Category::active()->pluck('name')->all());
     }
 
-    public function test_only_ccis_can_be_submitted_while_other_categories_are_coming_soon(): void
+    public function test_only_ccis_can_be_submitted(): void
     {
         $this->seed(CategorySeeder::class);
         $student = User::factory()->create(['role' => 'student']);
-        $cas = Category::query()->where('name', 'CAS')->firstOrFail();
+        $cas = Category::create(['name' => 'CAS', 'slug' => 'cas', 'is_active' => true]);
 
         $this->actingAs($student)
             ->post(route('feedback.store'), [
@@ -40,7 +40,7 @@ class FeedbackCategoryTest extends TestCase
                 'content' => 'This CAS submission should be blocked for now.',
             ])
             ->assertSessionHasErrors([
-                'category_id' => 'Coming soon. Feedback submissions are currently available for CCIS only.',
+                'category_id' => 'Feedback submissions are currently available for CCIS only.',
             ]);
 
         $this->assertDatabaseCount('feedbacks', 0);
@@ -65,5 +65,15 @@ class FeedbackCategoryTest extends TestCase
                 'content' => 'This feedback uses an inactive department.',
             ])
             ->assertSessionHasErrors('category_id');
+    }
+
+    public function test_category_seeder_deactivates_existing_non_ccis_categories(): void
+    {
+        $cas = Category::create(['name' => 'CAS', 'slug' => 'cas', 'is_active' => true]);
+
+        $this->seed(CategorySeeder::class);
+
+        $this->assertFalse($cas->refresh()->is_active);
+        $this->assertSame(['CCIS'], Category::active()->pluck('name')->all());
     }
 }

@@ -74,4 +74,43 @@ class FeedbackExportTest extends TestCase
     {
         $this->get(route('feedback.export'))->assertRedirect(route('login'));
     }
+
+    public function test_excel_export_only_contains_feedback_in_the_selected_date_range(): void
+    {
+        $faculty = User::factory()->create(['role' => 'faculty']);
+        $category = Category::create(['name' => 'CCIS', 'slug' => 'ccis', 'is_active' => true]);
+
+        $includedFeedback = Feedback::create([
+            'category_id' => $category->id,
+            'content' => 'Included dated feedback',
+            'status' => 'pending',
+        ]);
+        $includedFeedback->forceFill(['created_at' => now()->subDay()])->saveQuietly();
+        $excludedFeedback = Feedback::create([
+            'category_id' => $category->id,
+            'content' => 'Excluded old feedback',
+            'status' => 'pending',
+        ]);
+        $excludedFeedback->forceFill(['created_at' => now()->subDays(30)])->saveQuietly();
+
+        $response = $this->actingAs($faculty)->get(route('feedback.export', [
+            'start_date' => now()->subDays(5)->format('Y-m-d'),
+            'end_date' => now()->format('Y-m-d'),
+        ]));
+
+        $temporaryFile = tempnam(sys_get_temp_dir(), 'resback-filtered-export-');
+        file_put_contents($temporaryFile, $response->streamedContent());
+
+        try {
+            $sheet = IOFactory::load($temporaryFile)->getSheetByName('Feedbacks');
+
+            $this->assertSame('Included dated feedback', $sheet->getCell('D2')->getValue());
+            $this->assertNull($sheet->getCell('D3')->getValue());
+            $response->assertDownload(
+                'resback-feedbacks-'.now()->subDays(5)->format('Y-m-d').'-to-'.now()->format('Y-m-d').'.xlsx'
+            );
+        } finally {
+            @unlink($temporaryFile);
+        }
+    }
 }

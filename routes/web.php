@@ -1,11 +1,13 @@
 <?php
 
+use App\Http\Controllers\AccountController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
-use App\Http\Controllers\AccountController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\FeedbackExportController;
+use App\Http\Controllers\FeedbackReportController;
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -34,6 +36,11 @@ Route::middleware(['auth', 'active', 'feedback.submitter'])->group(function () {
 
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout')->middleware('auth');
 
+Route::middleware(['auth', 'active'])->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+});
+
 /*
 |--------------------------------------------------------------------------
 | Authenticated Routes — Admin/Faculty Dashboard
@@ -42,6 +49,7 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout')->midd
 Route::middleware(['auth', 'active', 'admin'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/dashboard/feedback/export', FeedbackExportController::class)->name('feedback.export');
+    Route::get('/dashboard/feedback/report', FeedbackReportController::class)->name('feedback.report');
 });
 
 Route::middleware(['auth', 'active', 'admin.only'])->prefix('dashboard')->group(function () {

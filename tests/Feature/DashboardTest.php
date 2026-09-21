@@ -15,6 +15,7 @@ class DashboardTest extends TestCase
     public function test_faculty_can_view_dashboard_and_export_action(): void
     {
         $faculty = User::factory()->create(['role' => 'faculty']);
+        Category::create(['name' => 'CCIS', 'slug' => 'ccis', 'is_active' => true]);
 
         $this->actingAs($faculty)
             ->get(route('dashboard'))
@@ -27,6 +28,7 @@ class DashboardTest extends TestCase
     public function test_admin_dashboard_does_not_show_feedback_quick_actions(): void
     {
         $admin = User::factory()->create(['role' => 'admin']);
+        Category::create(['name' => 'CCIS', 'slug' => 'ccis', 'is_active' => true]);
 
         $this->actingAs($admin)
             ->get(route('dashboard'))
@@ -57,16 +59,15 @@ class DashboardTest extends TestCase
             ->get(route('dashboard'))
             ->assertOk()
             ->assertSee('CCIS')
-            ->assertSee('CAS — Coming soon')
+            ->assertDontSee('CAS — Coming soon')
             ->assertViewHas('totalFeedbacks', 6)
             ->assertViewHas('selectedCategory', fn ($category) => $category->is($ccis))
-            ->assertViewHas('recentFeedbacks', fn ($feedbacks) =>
-                $feedbacks->total() === 6
+            ->assertViewHas('recentFeedbacks', fn ($feedbacks) => $feedbacks->total() === 6
                 && collect($feedbacks->items())->every(fn ($feedback) => $feedback->category_id === $ccis->id)
             );
     }
 
-    public function test_unavailable_dashboard_category_redirects_with_coming_soon_message(): void
+    public function test_dashboard_rejects_a_non_ccis_category_filter(): void
     {
         $faculty = User::factory()->create(['role' => 'faculty']);
         Category::create(['name' => 'CCIS', 'slug' => 'ccis', 'is_active' => true]);
@@ -74,8 +75,7 @@ class DashboardTest extends TestCase
 
         $this->actingAs($faculty)
             ->get(route('dashboard', ['category_id' => $cas->id]))
-            ->assertRedirect(route('dashboard'))
-            ->assertSessionHas('error', 'Coming soon. Dashboard data is currently available for CCIS only.');
+            ->assertNotFound();
     }
 
     public function test_category_selection_filters_every_dashboard_result(): void
@@ -105,8 +105,7 @@ class DashboardTest extends TestCase
             ->assertDontSee('CAS feedback must not appear')
             ->assertViewHas('totalFeedbacks', 12)
             ->assertViewHas('selectedCategory', fn ($category) => $category->is($ccis))
-            ->assertViewHas('recentFeedbacks', fn ($feedbacks) =>
-                $feedbacks->total() === 12
+            ->assertViewHas('recentFeedbacks', fn ($feedbacks) => $feedbacks->total() === 12
                 && $feedbacks->count() === 10
                 && collect($feedbacks->items())->every(fn ($feedback) => $feedback->category_id === $ccis->id)
             );
@@ -168,8 +167,7 @@ class DashboardTest extends TestCase
                 'neutral' => 0,
                 'negative' => 0,
             ])
-            ->assertViewHas('recentFeedbacks', fn ($feedbacks) =>
-                $feedbacks->total() === 11 && $feedbacks->count() === 10
+            ->assertViewHas('recentFeedbacks', fn ($feedbacks) => $feedbacks->total() === 11 && $feedbacks->count() === 10
             );
     }
 
@@ -190,5 +188,94 @@ class DashboardTest extends TestCase
             ->assertOk()
             ->assertSee('Read full feedback')
             ->assertSee($longFeedback);
+    }
+
+    public function test_dashboard_date_range_filters_statistics_charts_rankings_and_feedbacks(): void
+    {
+        $faculty = User::factory()->create(['role' => 'faculty']);
+        $category = Category::create(['name' => 'CCIS', 'slug' => 'ccis', 'is_active' => true]);
+
+        $insideRange = Feedback::create([
+            'category_id' => $category->id,
+            'content' => 'Wi-Fi concern inside selected period',
+            'status' => 'analyzed',
+        ]);
+        $insideRange->forceFill(['created_at' => now()->subDays(2)])->saveQuietly();
+        $insideRange->sentimentResult()->create([
+            'sentiment' => 'negative',
+            'confidence' => .92,
+            'concern_topics' => ['Wi-Fi / Internet'],
+            'language_category' => 'English',
+        ]);
+
+        $outsideRange = Feedback::create([
+            'category_id' => $category->id,
+            'content' => 'Room concern outside selected period',
+            'status' => 'analyzed',
+        ]);
+        $outsideRange->forceFill(['created_at' => now()->subDays(20)])->saveQuietly();
+        $outsideRange->sentimentResult()->create([
+            'sentiment' => 'positive',
+            'confidence' => .88,
+            'concern_topics' => ['Classroom / Room'],
+            'language_category' => 'English',
+        ]);
+
+        $this->actingAs($faculty)
+            ->get(route('dashboard', [
+                'start_date' => now()->subDays(5)->format('Y-m-d'),
+                'end_date' => now()->format('Y-m-d'),
+            ]))
+            ->assertOk()
+            ->assertSee('Wi-Fi concern inside selected period')
+            ->assertDontSee('Room concern outside selected period')
+            ->assertSee('Download PDF Report')
+            ->assertViewHas('totalFeedbacks', 1)
+            ->assertViewHas('sentimentData', [
+                'positive' => 0,
+                'neutral' => 0,
+                'negative' => 1,
+            ])
+            ->assertViewHas('concernRankings', fn ($rankings) => $rankings->first()['topic'] === 'Wi-Fi / Internet');
+    }
+
+    public function test_dashboard_rejects_an_inverted_date_range(): void
+    {
+        $faculty = User::factory()->create(['role' => 'faculty']);
+
+        $this->actingAs($faculty)
+            ->from(route('dashboard'))
+            ->get(route('dashboard', [
+                'start_date' => now()->format('Y-m-d'),
+                'end_date' => now()->subDay()->format('Y-m-d'),
+            ]))
+            ->assertRedirect(route('dashboard'))
+            ->assertSessionHasErrors('end_date');
+    }
+
+    public function test_feedback_pagination_ajax_returns_only_the_feedback_panel(): void
+    {
+        $faculty = User::factory()->create(['role' => 'faculty']);
+        $category = Category::ccis();
+
+        foreach (range(1, 11) as $number) {
+            Feedback::create([
+                'category_id' => $category->id,
+                'content' => "Paginated feedback {$number}",
+                'status' => 'pending',
+            ]);
+        }
+
+        $this->actingAs($faculty)
+            ->withHeaders([
+                'X-Requested-With' => 'XMLHttpRequest',
+                'X-Feedback-Partial' => '1',
+            ])
+            ->get(route('dashboard', ['page' => 2]))
+            ->assertOk()
+            ->assertViewIs('dashboard.partials.feedback-table')
+            ->assertSee('id="ccisFeedbackPanel"', false)
+            ->assertSee('Paginated feedback 1')
+            ->assertDontSee('sentimentDistributionChart');
     }
 }
