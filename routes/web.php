@@ -53,6 +53,7 @@ Route::middleware(['auth', 'active', 'admin'])->group(function () {
 });
 
 Route::middleware(['auth', 'active', 'admin.only'])->prefix('dashboard')->group(function () {
+    Route::delete('/feedback/{feedback}', [FeedbackController::class, 'destroy'])->name('feedback.destroy');
     Route::get('/accounts', [AccountController::class, 'index'])->name('accounts.index');
     Route::patch('/accounts/{user}/role', [AccountController::class, 'updateRole'])->name('accounts.role');
     Route::patch('/accounts/{user}/status', [AccountController::class, 'toggleStatus'])->name('accounts.status');

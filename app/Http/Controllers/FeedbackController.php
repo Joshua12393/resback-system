@@ -8,6 +8,7 @@ use App\Models\Feedback;
 use App\Services\FeedbackAutoRejectService;
 use App\Services\FeedbackSubmissionGuard;
 use App\Services\SentimentService;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
@@ -88,6 +89,18 @@ class FeedbackController extends Controller
             ->simplePaginate(10);
 
         return view('feedback.history', compact('feedbacks'));
+    }
+
+    /**
+     * Permanently delete feedback from the administrative dashboard.
+     */
+    public function destroy(Request $request, Feedback $feedback): RedirectResponse
+    {
+        abort_unless($request->user()?->isAdmin(), 403, 'Only administrators can delete feedback.');
+
+        $feedback->delete();
+
+        return back()->with('success', 'The feedback and its analysis were permanently deleted.');
     }
 
     /**

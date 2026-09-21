@@ -10,7 +10,14 @@
     @else
         <div class="table-wrapper">
             <table class="data-table">
-                <thead><tr><th>Date</th><th>Feedback</th><th>Category</th><th>Sentiment</th><th>Language</th><th>Status</th></tr></thead>
+                <thead>
+                    <tr>
+                        <th>Date</th><th>Feedback</th><th>Category</th><th>Sentiment</th><th>Language</th><th>Status</th>
+                        @if(auth()->user()->isAdmin())
+                            <th>Actions</th>
+                        @endif
+                    </tr>
+                </thead>
                 <tbody>
                 @foreach($recentFeedbacks as $feedback)
                     <tr>
@@ -32,6 +39,16 @@
                         <td><span class="badge badge-{{ $feedback->sentimentResult?->sentiment ?? 'pending' }}">{{ ucfirst($feedback->sentimentResult?->sentiment ?? 'pending') }}</span></td>
                         <td>{{ $feedback->sentimentResult?->language_category ?? 'Unclassified' }}</td>
                         <td>{{ ucfirst($feedback->status) }}</td>
+                        @if(auth()->user()->isAdmin())
+                            <td>
+                                <form action="{{ route('feedback.destroy', $feedback) }}" method="POST"
+                                      onsubmit="return confirm('Permanently delete this feedback and its sentiment analysis? This cannot be undone.');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                </form>
+                            </td>
+                        @endif
                     </tr>
                 @endforeach
                 </tbody>
