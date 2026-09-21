@@ -24,7 +24,7 @@ class LoginController extends Controller
     public function login(Request $request): RedirectResponse
     {
         $credentials = $request->validate([
-            'email'    => ['required', 'email'],
+            'email' => ['required', 'email'],
             'password' => ['required'],
         ]);
 
@@ -33,7 +33,7 @@ class LoginController extends Controller
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
 
-            $destination = in_array($request->user()->role, ['admin', 'faculty'], true)
+            $destination = in_array($request->user()->role, ['super_admin', 'admin', 'faculty'], true)
                 ? route('dashboard')
                 : route('feedback.create');
 

@@ -14,8 +14,16 @@ class AuthenticationAccessTest extends TestCase
 
     public function test_login_and_registration_pages_are_available_to_guests(): void
     {
-        $this->get(route('login'))->assertOk()->assertSee('Sign In');
-        $this->get(route('register'))->assertOk()->assertSee('Create an account');
+        $this->get(route('login'))
+            ->assertOk()
+            ->assertSee('Sign In')
+            ->assertSee('data-theme-toggle', false)
+            ->assertSee('data-password-toggle="password"', false);
+        $this->get(route('register'))
+            ->assertOk()
+            ->assertSee('Create an account')
+            ->assertSee('data-password-toggle="password"', false)
+            ->assertSee('data-password-toggle="password_confirmation"', false);
     }
 
     public function test_public_registration_creates_only_a_student_account(): void
@@ -161,6 +169,7 @@ class AuthenticationAccessTest extends TestCase
     public static function authorizedRoles(): array
     {
         return [
+            'super admin' => ['super_admin'],
             'admin' => ['admin'],
             'faculty' => ['faculty'],
         ];

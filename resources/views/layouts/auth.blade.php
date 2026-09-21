@@ -8,9 +8,11 @@
     <title>@yield('title', 'Account') — ResBack</title>
     <meta name="description" content="Sign in or create a ResBack student account.">
 
+    @include('partials.theme-init')
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="auth-page">
+    <div class="auth-theme-toggle"><x-theme-toggle /></div>
     <div class="auth-shell">
         <section class="auth-intro" aria-label="About ResBack">
             <a href="{{ route('feedback.create') }}" class="institution-brand institution-brand-light">

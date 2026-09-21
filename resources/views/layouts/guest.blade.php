@@ -8,6 +8,7 @@
     <title>@yield('title', 'Submit Feedback') — ResBack</title>
     <meta name="description" content="Submit confidential campus feedback securely. Your voice matters.">
 
+    @include('partials.theme-init')
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @stack('head')
 </head>
@@ -23,13 +24,20 @@
         </a>
         <nav class="guest-nav" aria-label="Account navigation">
             @auth
-                @if(in_array(auth()->user()->role, ['admin', 'faculty'], true))
+                @if(auth()->user()->isAdmin() || auth()->user()->isFaculty())
                     <a href="{{ route('dashboard') }}" class="header-link">Dashboard</a>
                 @endif
                 @unless(auth()->user()->isAdmin())
                     <a href="{{ route('feedback.history') }}" class="header-link {{ request()->routeIs('feedback.history') ? 'header-link-active' : '' }}">My Feedback</a>
                 @endunless
                 <span class="guest-user">{{ auth()->user()->display_first_name }}</span>
+                <a href="{{ route('profile.edit') }}" class="header-profile-avatar" aria-label="Open profile settings" title="Profile settings">
+                    @if(auth()->user()->profile_photo_url)
+                        <img src="{{ auth()->user()->profile_photo_url }}" alt="">
+                    @else
+                        {{ strtoupper(substr(auth()->user()->display_first_name, 0, 1)) }}
+                    @endif
+                </a>
                 <form action="{{ route('logout') }}" method="POST">
                     @csrf
                     <button type="submit" class="header-link header-button">Logout</button>
@@ -37,6 +45,7 @@
             @else
                 <a href="{{ route('login') }}" class="header-link">Sign In</a>
             @endauth
+            <x-theme-toggle />
         </nav>
     </header>
 

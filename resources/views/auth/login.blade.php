@@ -42,15 +42,26 @@
 
             <div class="form-group">
                 <label for="password" class="form-label">Password</label>
-                <input
-                    id="password"
-                    type="password"
-                    name="password"
-                    class="form-control {{ $errors->has('password') ? 'is-invalid' : '' }}"
-                    placeholder="••••••••"
-                    required
-                    autocomplete="current-password"
-                >
+                <div class="password-input-wrap">
+                    <input
+                        id="password"
+                        type="password"
+                        name="password"
+                        class="form-control {{ $errors->has('password') ? 'is-invalid' : '' }}"
+                        placeholder="••••••••"
+                        required
+                        autocomplete="current-password"
+                    >
+                    <button type="button" class="password-toggle" data-password-toggle="password" data-password-label="password" aria-label="Show password" aria-pressed="false">
+                        <svg class="eye-open" viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z" />
+                            <circle cx="12" cy="12" r="2.5" />
+                        </svg>
+                        <svg class="eye-closed" viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="m3 3 18 18M10.6 6.2A9.9 9.9 0 0 1 12 6c6 0 9.5 6 9.5 6a15.5 15.5 0 0 1-2.2 2.9M6.6 6.7C4 8.4 2.5 12 2.5 12s3.5 6 9.5 6c1.4 0 2.7-.3 3.8-.8M9.9 9.9a3 3 0 0 0 4.2 4.2" />
+                        </svg>
+                    </button>
+                </div>
                 @error('password')
                     <div class="form-error">{{ $message }}</div>
                 @enderror

@@ -8,6 +8,7 @@
     <title>@yield('title', 'Dashboard') — ResBack Admin</title>
     <meta name="description" content="ResBack administration dashboard for managing student feedback and sentiment analytics.">
 
+    @include('partials.theme-init')
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @stack('head')
 </head>
@@ -41,6 +42,13 @@
                 </a>
             @endif
 
+            <div class="nav-section-label" style="margin-top:.75rem;">Account</div>
+            <a href="{{ route('profile.edit') }}"
+               class="nav-link {{ request()->routeIs('profile.*') ? 'active' : '' }}">
+                <span class="nav-icon" aria-hidden="true">◉</span>
+                Profile Settings
+            </a>
+
             @if(auth()->user()->isFaculty())
                 <div class="nav-section-label" style="margin-top:.75rem;">Quick Actions</div>
 
@@ -53,10 +61,16 @@
 
         <div class="sidebar-footer">
             <div class="user-card">
-                <div class="user-avatar">{{ strtoupper(substr(auth()->user()->display_first_name, 0, 1)) }}</div>
+                <a href="{{ route('profile.edit') }}" class="user-avatar" aria-label="Open profile settings">
+                    @if(auth()->user()->profile_photo_url)
+                        <img src="{{ auth()->user()->profile_photo_url }}" alt="">
+                    @else
+                        {{ strtoupper(substr(auth()->user()->display_first_name, 0, 1)) }}
+                    @endif
+                </a>
                 <div class="user-info" style="flex:1; min-width:0;">
                     <div class="user-name">{{ auth()->user()->display_first_name }}</div>
-                    <div class="user-role">{{ auth()->user()->role }}</div>
+                    <div class="user-role">{{ \Illuminate\Support\Str::headline(auth()->user()->role) }}</div>
                 </div>
                 <form action="{{ route('logout') }}" method="POST">
                     @csrf
@@ -80,6 +94,7 @@
             </div>
             <div class="topbar-actions">
                 @yield('topbar-actions')
+                <x-theme-toggle />
             </div>
         </header>
 
