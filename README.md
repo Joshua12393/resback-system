@@ -195,8 +195,8 @@ php artisan feedback:backfill-concerns --force
 
 ## Project team
 
-- **Team Lead / Full-Stack:** Julian Shaun Viloria
-- **Lead Developer:** Ckhiel Joshua Queypo
+- **Team Lead:** Julian Shaun Viloria
+- **Lead Developer / Full-Stack:** Ckhiel Joshua Queypo
 - **Documentation Lead:** Leah Joy Orenza
 - **UI/UX Developer:** Marvin Jess Quina
 - **QA Tester:** Adrian Ballesteros
