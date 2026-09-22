@@ -200,7 +200,3 @@ php artisan feedback:backfill-concerns --force
 - **Documentation Lead:** Leah Joy Orenza
 - **UI/UX Developer:** Marvin Jess Quina
 - **QA Tester:** Adrian Ballesteros
-
-## Additional documentation
-
-The original project description, proposed processing flow, and team information are available in [`documentation/PROJECT_INFO.md`](documentation/PROJECT_INFO.md).
