@@ -8,21 +8,37 @@ class FeedbackAutoRejectService
 {
     public function shouldReject(string $content): bool
     {
-        $normalizedContent = $this->normalize($content);
+        $contentForms = $this->normalizedForms($content);
+        $entryForms = [];
+        $minimumLength = max(1, (int) config('feedback.obfuscation.minimum_term_length', 3));
 
         foreach ($this->blockedEntries() as $blockedEntry) {
             if (! is_string($blockedEntry)) {
                 continue;
             }
 
-            $normalizedEntry = $this->normalize($blockedEntry);
-            if ($normalizedEntry === '') {
-                continue;
+            foreach ($this->normalizedForms($blockedEntry) as $entryForm) {
+                if (mb_strlen(str_replace(' ', '', $entryForm)) < $minimumLength) {
+                    continue;
+                }
+
+                $entryForms[$entryForm] = true;
             }
+        }
 
-            $pattern = '/(?<![\pL\pN])'.preg_quote($normalizedEntry, '/').'(?![\pL\pN])/u';
+        if ($entryForms === []) {
+            return false;
+        }
 
-            if (preg_match($pattern, $normalizedContent) === 1) {
+        $alternatives = array_keys($entryForms);
+        usort($alternatives, fn (string $left, string $right): int => mb_strlen($right) <=> mb_strlen($left));
+        $pattern = '/(?<![\pL\pN])(?:'.implode('|', array_map(
+            fn (string $entry): string => preg_quote($entry, '/'),
+            $alternatives
+        )).')(?![\pL\pN])/u';
+
+        foreach ($contentForms as $contentForm) {
+            if (preg_match($pattern, $contentForm) === 1) {
                 return true;
             }
         }
@@ -47,11 +63,43 @@ class FeedbackAutoRejectService
             }
         }
 
-        return $entries;
+        return array_values(array_unique($entries, SORT_REGULAR));
     }
 
     private function normalize(string $value): string
     {
         return Str::lower(Str::squish($value));
+    }
+
+    /** @return list<string> */
+    private function normalizedForms(string $value): array
+    {
+        $base = $this->normalize($value);
+        $forms = [$base];
+        $substitutions = config('feedback.obfuscation.symbol_substitutions', []);
+
+        if (is_array($substitutions)) {
+            $forms[] = strtr($base, $substitutions);
+        }
+
+        $symbolForms = $forms;
+        foreach ($symbolForms as $form) {
+            if (config('feedback.obfuscation.strip_inner_symbols', true)) {
+                $forms[] = preg_replace(
+                    '/(?<=[\pL\pN])[^\pL\pN\s]+(?=[\pL\pN])/u',
+                    '',
+                    $form
+                ) ?? $form;
+            }
+        }
+
+        if (config('feedback.obfuscation.collapse_repeated_characters', true)) {
+            $repeatForms = $forms;
+            foreach ($repeatForms as $form) {
+                $forms[] = preg_replace('/([\pL\pN])\1+/iu', '$1', $form) ?? $form;
+            }
+        }
+
+        return array_values(array_unique(array_filter($forms, fn (string $form): bool => $form !== '')));
     }
 }
