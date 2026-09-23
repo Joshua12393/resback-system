@@ -10,7 +10,15 @@ class FeedbackSubmitterMiddleware
 {
     public function handle(Request $request, Closure $next): Response
     {
-        abort_if($request->user()?->isAdmin(), 403, 'Administrators cannot submit feedback.');
+        if ($request->user()?->isAdmin()) {
+            if ($request->isMethod('GET')) {
+                return redirect()
+                    ->route('dashboard')
+                    ->with('error', 'Administrators cannot submit feedback.');
+            }
+
+            abort(403, 'Administrators cannot submit feedback.');
+        }
 
         return $next($request);
     }

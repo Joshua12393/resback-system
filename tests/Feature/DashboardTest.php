@@ -37,7 +37,10 @@ class DashboardTest extends TestCase
             ->assertDontSee('View Feedback Form')
             ->assertSee('Manage Accounts');
 
-        $this->actingAs($admin)->get(route('feedback.create'))->assertForbidden();
+        $this->actingAs($admin)
+            ->get(route('feedback.create'))
+            ->assertRedirect(route('dashboard'))
+            ->assertSessionHas('error', 'Administrators cannot submit feedback.');
         $this->actingAs($admin)->post(route('feedback.store'))->assertForbidden();
     }
 

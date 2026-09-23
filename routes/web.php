@@ -7,6 +7,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\FeedbackExportController;
 use App\Http\Controllers\FeedbackReportController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -22,13 +23,17 @@ Route::middleware('guest')->group(function () {
     Route::post('/register', [RegisterController::class, 'register']);
 });
 
+Route::get('/', HomeController::class)
+    ->middleware(['auth', 'active'])
+    ->name('home');
+
 /*
 |--------------------------------------------------------------------------
 | Authenticated Routes — Student Feedback
 |--------------------------------------------------------------------------
 */
 Route::middleware(['auth', 'active', 'feedback.submitter'])->group(function () {
-    Route::get('/', [FeedbackController::class, 'create'])->name('feedback.create');
+    Route::get('/feedback/create', [FeedbackController::class, 'create'])->name('feedback.create');
     Route::post('/feedback', [FeedbackController::class, 'store'])->name('feedback.store');
     Route::get('/feedback/history', [FeedbackController::class, 'history'])->name('feedback.history');
     Route::get('/feedback/thankyou', [FeedbackController::class, 'thankyou'])->name('feedback.thankyou');
