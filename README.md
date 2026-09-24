@@ -23,6 +23,35 @@ The project was created for a Software Engineering course and is currently limit
 6. Faculty and administrators view filtered analytics, feedback trends, language distributions, and leading concerns on the dashboard.
 7. Authorized users can generate date-filtered Excel exports and PDF reports.
 
+## Class diagrams
+
+The UML diagrams reflect the models, migrations, controllers, and services inspected on September 24, 2026.
+
+- **Core class diagram:** [PNG](diagrams/resback-class-diagram.png).
+- **Authentication, accounts, and profiles:** [PNG](diagrams/resback-account-features.png).
+
+The core diagram shows `User`, `Feedback`, `Category`, `SentimentResult`, and `ConcernRanking`, with their attributes, operations, and relationship multiplicities. Student, Faculty, Admin, and Super Admin are values of `User.role`, not separate classes. The service view focuses on submission validation, automatic rejection, sentiment analysis, language/topic normalization, and ranking; authentication, reporting, middleware, console commands, and framework base classes are outside that view.
+
+The account feature diagram covers registration, login/logout, role-based navigation, account role/status/deletion management, and name and photo editing. Boxes use actual implemented class names; feature stereotypes describe their responsibilities. Controller inheritance, middleware, vendor classes, and selected model dependencies are omitted for readability.
+
+Route access is enforced by `ActiveAccountMiddleware`, `AdminMiddleware`, `AdminOnlyMiddleware`, and `FeedbackSubmitterMiddleware`: inactive accounts are logged out; faculty/admin/super-admin can access dashboards and reports; admin/super-admin can manage accounts and delete feedback; students and faculty can submit feedback. Registration creates students. Profile editing covers names and photos. Theme switching, password visibility, chart rendering, and dashboard AJAX pagination are implemented in Blade/JavaScript, so they are not represented as invented PHP classes.
+
+Notation: `+` public, `#` protected, `-` private, `?` nullable, `0..1` optional one, and `0..*` zero or more. Underlined operations are static. Model attributes represent Eloquent dynamic properties; shared timestamps and authentication bookkeeping are omitted. The filled diamond marks the analysis result's ownership by feedback. `Feedback.sentimentResult()` defines a `hasOne` relationship, but the current migrations do not add a unique constraint on `sentiment_results.feedback_id`.
+
+Feedback statuses are `pending`, `analyzed`, `failed`, and `rejected`; sentiment values are `positive`, `neutral`, and `negative`. User and category links on feedback are nullable. `ConcernRanking` is unique by `(category_id, keyword)`, and rankings are derived by the ranking service rather than directly associated with individual feedback records.
+
+## Component diagram
+
+[View PNG](diagrams/resback-component-diagram.png)
+
+This UML 2 component view follows the component, port, and interface notation illustrated in the [draw.io component-diagram guide](https://www.drawio.com/docs/diagram-types/uml/component-diagrams/).
+
+Components use the component icon; square ports mark interaction points. Circles identify provided interfaces, sockets identify required interfaces, and solid ball-and-socket assemblies connect matching contracts. Dashed arrows show additional usage dependencies from consumer to provider. Interface labels describe logical contracts inferred from the implemented collaboration, not PHP `interface` declarations. The package groups application components without asserting separate deployments.
+
+The diagram hides class internals and groups submission protection, sentiment analysis, and normalization into **Feedback & Analysis**; dashboard, export endpoints, and concern ranking into **Analytics & Reporting**; and authentication, role navigation, profile editing, and account administration into **Identity & Accounts**. **Document Generation** represents Dompdf and PhpSpreadsheet. **Data Access** represents the Eloquent models. Browser, Gemini, database, photo-storage, and framework session/cache dependencies are also shown.
+
+Gemma analysis runs synchronously through the Gemini API for accepted feedback. Rejected feedback is stored without external analysis. Dashboard and PDF reporting compute current concern rankings; the analysis workflow also rebuilds persisted rankings. Dompdf generates PDF reports and PhpSpreadsheet generates Excel files. Session/cache backing stores and the database engine depend on configuration; the diagram does not assert which engine is currently running. Build tools, console maintenance, and lower-level framework details are omitted.
+
 ## Main features
 
 ### Student experience
