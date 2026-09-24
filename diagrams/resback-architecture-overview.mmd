@@ -1,0 +1,92 @@
+---
+title: ResBack - Component Diagram
+config:
+    flowchart:
+        wrappingWidth: 380
+        nodeSpacing: 45
+        rankSpacing: 60
+---
+flowchart TB
+    subgraph CLIENT["Client / web browser"]
+        UI["«component» Web UI<br/>HTML / CSS / JavaScript<br/>Chart.js, forms, AJAX pagination"]
+    end
+
+    subgraph APP["ResBack / Laravel application - single deployable"]
+        WEB["«component» Web interface<br/>Web routes, access middleware<br/>Blade page and partial rendering"]
+
+        ACCOUNTS["«component» Identity and accounts<br/>Login / registration / role navigation<br/>Account administration / profiles"]
+        FEEDBACK["«component» Feedback management<br/>Submission, history and deletion<br/>FeedbackController"]
+        REPORTS["«component» Dashboard and reporting<br/>Dashboard / PDF / Excel controllers<br/>Date and language filters"]
+
+        GUARD["«component» Submission protection<br/>StoreFeedbackRequest<br/>SubmissionGuard / AutoRejectService"]
+        ANALYSIS["«component» Sentiment and classification<br/>SentimentService<br/>LanguageCategoryService / ConcernTopicService"]
+        RANKING["«component» Concern ranking<br/>ConcernRankingService<br/>Current scores / persisted ranking rebuilds"]
+        EXPORT["«library» Document generation<br/>Dompdf - PDF<br/>PhpSpreadsheet - XLSX"]
+
+        DATA["«component» Data access<br/>Laravel Eloquent models<br/>User / Category / Feedback<br/>SentimentResult / ConcernRanking"]
+        STATE["«framework component» Session and cache support<br/>Laravel Auth sessions / RateLimiter<br/>Configurable storage drivers"]
+    end
+
+    DB[("«datastore» Relational database<br/>MySQL / MariaDB or SQLite<br/>Application records")]
+    FILES[("«datastore» Public file storage<br/>Uploaded profile photos<br/>Laravel public disk")]
+    GEMINI["«external service» Google Gemini API<br/>Gemma feedback analysis<br/>HTTPS / JSON"]
+
+    UI -. "HTTP forms and AJAX" .-> WEB
+    WEB -. "account and profile routes" .-> ACCOUNTS
+    WEB -. "feedback routes" .-> FEEDBACK
+    WEB -. "dashboard and export routes" .-> REPORTS
+    WEB -. "authenticated sessions" .-> STATE
+
+    ACCOUNTS -. "accounts and roles" .-> DATA
+    ACCOUNTS -. "login and logout" .-> STATE
+    ACCOUNTS -. "store or remove photo" .-> FILES
+
+    FEEDBACK -. "validate and check" .-> GUARD
+    FEEDBACK -. "accepted feedback only" .-> ANALYSIS
+    FEEDBACK -. "save, read or delete" .-> DATA
+    GUARD -. "duplicate checks" .-> DATA
+    GUARD -. "rate limits" .-> STATE
+
+    ANALYSIS -. "synchronous API request" .-> GEMINI
+    ANALYSIS -. "save result and status" .-> DATA
+    ANALYSIS -. "rebuild category rankings" .-> RANKING
+
+    REPORTS -. "query feedback and analysis" .-> DATA
+    REPORTS -. "calculate current rankings" .-> RANKING
+    REPORTS -. "generate downloads" .-> EXPORT
+    RANKING -. "read analysis; persist rebuilds" .-> DATA
+    DATA -. "SQL via configured connection" .-> DB
+
+    classDef component fill:#f8fafc,stroke:#64748b,color:#172b4d;
+    classDef external fill:#eef5fb,stroke:#52789b,color:#172b4d;
+    class UI,WEB,ACCOUNTS,FEEDBACK,REPORTS,GUARD,ANALYSIS,RANKING,EXPORT,DATA,STATE component;
+    class DB,FILES,GEMINI external;
+    style CLIENT fill:#ffffff,stroke:#94a3b8,color:#172b4d
+    style APP fill:#ffffff,stroke:#94a3b8,color:#172b4d
+
+%% UML-style logical component view, expressed with Mermaid flowchart syntax.
+%% Component boxes group collaborating implementation classes; they are not
+%% separate deployable services. Arrows point from consumer to dependency.
+%% Responses return along the same requests and are not separately drawn.
+%% Web interface groups routing, middleware and server-side Blade rendering;
+%% browser Web UI runs the resulting HTML/CSS/JS, not Blade itself.
+%% Identity/accounts maps to LoginController, RegisterController, HomeController,
+%% AccountController and ProfileController. Protection maps to StoreFeedbackRequest,
+%% FeedbackSubmissionGuard and FeedbackAutoRejectService (shortened inside box).
+%% Dashboard/reporting maps to DashboardController, FeedbackReportController,
+%% FeedbackExportController and FeedbackDateRange. Only dashboard/PDF use ranking;
+%% only PDF/Excel use document libraries. Normalization helpers live with analysis;
+%% reporting also reads LanguageCategoryService::CATEGORY_LABELS (detail omitted).
+%% Request validation precedes controller execution. Rejected feedback is stored,
+%% bypasses external analysis, and is excluded from faculty reports.
+%% Gemini analysis is synchronous; no queue worker or message broker is implied.
+%% Rankings are computed on demand for dashboard/PDF. rebuildCategory persists them.
+%% Session/cache backing stores vary by configuration; default configuration uses
+%% database drivers. A separate database arrow is omitted to avoid implying that
+%% every deployment uses the database for this state. Public disk is local by default.
+%% DB alternatives describe supported configuration, not a verified active engine.
+%% Return HTML/JSON/downloads, build tools, vendor internals, console maintenance,
+%% static-file serving, logging, and the /api/user route closure are omitted.
+%% Source: routes/web.php, bootstrap/app.php, app/Http, app/Services, app/Models,
+%% app/Support, resources/views, resources/js/app.js, config and composer.json.
+%% Inspected 2026-09-24.
