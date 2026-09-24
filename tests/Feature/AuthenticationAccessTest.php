@@ -116,8 +116,40 @@ class AuthenticationAccessTest extends TestCase
         $this->assertGuest();
     }
 
+    public function test_root_route_sends_students_to_feedback_and_staff_to_dashboard(): void
+    {
+        $student = User::factory()->create(['role' => 'student']);
+        $faculty = User::factory()->create(['role' => 'faculty']);
+        $admin = User::factory()->create(['role' => 'admin']);
+        $superAdmin = User::factory()->create(['role' => 'super_admin']);
+
+        $this->actingAs($student)->get(route('home'))->assertRedirect(route('feedback.create'));
+        $this->actingAs($faculty)->get(route('home'))->assertRedirect(route('dashboard'));
+        $this->actingAs($admin)->get(route('home'))->assertRedirect(route('dashboard'));
+        $this->actingAs($superAdmin)->get(route('home'))->assertRedirect(route('dashboard'));
+    }
+
+    public function test_staff_login_ignores_a_stale_student_page_intended_url(): void
+    {
+        $admin = User::factory()->create([
+            'role' => 'admin',
+            'password' => Hash::make('Password123!'),
+        ]);
+
+        $this->withSession(['url.intended' => route('feedback.create')])
+            ->post(route('login'), [
+                'email' => $admin->email,
+                'password' => 'Password123!',
+            ])
+            ->assertRedirect(route('dashboard'));
+
+        $this->assertAuthenticatedAs($admin);
+        $this->assertNull(session('url.intended'));
+    }
+
     public function test_feedback_routes_require_authentication_and_sessions_last_one_hour(): void
     {
+        $this->get(route('home'))->assertRedirect(route('login'));
         $this->get(route('feedback.create'))->assertRedirect(route('login'));
         $this->post(route('feedback.store'))->assertRedirect(route('login'));
         $this->assertSame(60, config('session.lifetime'));

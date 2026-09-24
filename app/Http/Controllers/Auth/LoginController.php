@@ -37,7 +37,10 @@ class LoginController extends Controller
                 ? route('dashboard')
                 : route('feedback.create');
 
-            return redirect()->intended($destination);
+            // Do not let a stale student-only intended URL override the role destination.
+            $request->session()->forget('url.intended');
+
+            return redirect()->to($destination);
         }
 
         return back()->withErrors([

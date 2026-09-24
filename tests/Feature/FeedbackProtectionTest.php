@@ -170,4 +170,57 @@ class FeedbackProtectionTest extends TestCase
         $this->assertTrue($detector->shouldReject('Laglag ka unay.'));
         $this->assertFalse($detector->shouldReject('Nalalaglag ang bahagi ng kisame sa room.'));
     }
+
+    public function test_common_symbol_substitutions_and_repeated_letters_are_detected(): void
+    {
+        config()->set('feedback.auto_reject_feedback', ['tanga', 'shit', 'bobo']);
+        config()->set('feedback.auto_reject_variants', []);
+        config()->set('feedback.obfuscation', [
+            'strip_inner_symbols' => true,
+            'collapse_repeated_characters' => true,
+            'symbol_substitutions' => [
+                '@' => 'a',
+                '0' => 'o',
+                '!' => 'i',
+            ],
+        ]);
+
+        $detector = app(FeedbackAutoRejectService::class);
+
+        $this->assertTrue($detector->shouldReject('T@nga ang gumawa nito.'));
+        $this->assertTrue($detector->shouldReject('This is sh!t.'));
+        $this->assertTrue($detector->shouldReject('Boooobooo kayo.'));
+    }
+
+    public function test_inner_punctuation_is_removed_without_enabling_partial_word_matches(): void
+    {
+        config()->set('feedback.auto_reject_feedback', ['gago', 'spam']);
+        config()->set('feedback.auto_reject_variants', []);
+
+        $detector = app(FeedbackAutoRejectService::class);
+
+        $this->assertTrue($detector->shouldReject('G.a.g.o ka.'));
+        $this->assertFalse($detector->shouldReject('The spammer sent another message.'));
+    }
+
+    public function test_default_dictionary_detects_configured_leetspeak_and_phonetic_forms(): void
+    {
+        $detector = app(FeedbackAutoRejectService::class);
+
+        $this->assertTrue($detector->shouldReject('T4nga ang gumawa nito.'));
+        $this->assertTrue($detector->shouldReject('A$$hole ang tawag niya.'));
+        $this->assertTrue($detector->shouldReject('P3kp3k ang isinulat niya.'));
+        $this->assertTrue($detector->shouldReject('Uulooll kayo.'));
+        $this->assertTrue($detector->shouldReject('Dafuq is this?'));
+    }
+
+    public function test_two_letter_dictionary_entries_are_ignored_to_protect_initials_and_course_codes(): void
+    {
+        config()->set('feedback.auto_reject_feedback', ['bs']);
+        config()->set('feedback.auto_reject_variants', []);
+
+        $detector = app(FeedbackAutoRejectService::class);
+
+        $this->assertFalse($detector->shouldReject('The BS Information Technology curriculum needs review.'));
+    }
 }
