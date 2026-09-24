@@ -32,9 +32,7 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
-        'first_name',
-        'middle_name',
-        'last_name',
+        'nickname',
         'profile_photo_path',
         'email',
         'password',
@@ -107,15 +105,23 @@ class User extends Authenticatable
     }
 
     /**
-     * Get the first name used in compact navigation areas.
+     * Get the privacy-safe account label used throughout the interface.
      */
-    public function getDisplayFirstNameAttribute(): string
+    public function getDisplayNameAttribute(): string
     {
-        if ($this->first_name) {
-            return $this->first_name;
+        if ($this->nickname) {
+            return $this->nickname;
         }
 
         return explode(' ', trim($this->name))[0] ?? $this->name;
+    }
+
+    /**
+     * Backward-compatible alias for older views and integrations.
+     */
+    public function getDisplayFirstNameAttribute(): string
+    {
+        return $this->display_name;
     }
 
     /**

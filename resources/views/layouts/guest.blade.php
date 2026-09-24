@@ -30,12 +30,12 @@
                 @unless(auth()->user()->isAdmin())
                     <a href="{{ route('feedback.history') }}" class="header-link {{ request()->routeIs('feedback.history') ? 'header-link-active' : '' }}">My Feedback</a>
                 @endunless
-                <span class="guest-user">{{ auth()->user()->display_first_name }}</span>
+                <span class="guest-user">{{ auth()->user()->display_name }}</span>
                 <a href="{{ route('profile.edit') }}" class="header-profile-avatar" aria-label="Open profile settings" title="Profile settings">
                     @if(auth()->user()->profile_photo_url)
                         <img src="{{ auth()->user()->profile_photo_url }}" alt="">
                     @else
-                        {{ strtoupper(substr(auth()->user()->display_first_name, 0, 1)) }}
+                        {{ strtoupper(substr(auth()->user()->display_name, 0, 1)) }}
                     @endif
                 </a>
                 <form action="{{ route('logout') }}" method="POST">

@@ -65,11 +65,11 @@
                     @if(auth()->user()->profile_photo_url)
                         <img src="{{ auth()->user()->profile_photo_url }}" alt="">
                     @else
-                        {{ strtoupper(substr(auth()->user()->display_first_name, 0, 1)) }}
+                        {{ strtoupper(substr(auth()->user()->display_name, 0, 1)) }}
                     @endif
                 </a>
                 <div class="user-info" style="flex:1; min-width:0;">
-                    <div class="user-name">{{ auth()->user()->display_first_name }}</div>
+                    <div class="user-name">{{ auth()->user()->display_name }}</div>
                     <div class="user-role">{{ \Illuminate\Support\Str::headline(auth()->user()->role) }}</div>
                 </div>
                 <form action="{{ route('logout') }}" method="POST">

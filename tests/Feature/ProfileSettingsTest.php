@@ -18,29 +18,25 @@ class ProfileSettingsTest extends TestCase
         $this->patch(route('profile.update'))->assertRedirect(route('login'));
     }
 
-    public function test_user_can_update_their_name_and_profile_photo(): void
+    public function test_user_can_update_their_nickname_and_profile_photo(): void
     {
         Storage::fake('public');
         $user = User::factory()->create([
-            'first_name' => 'Old',
-            'middle_name' => null,
-            'last_name' => 'Name',
-            'name' => 'Old Name',
+            'nickname' => 'OldNickname',
+            'name' => 'OldNickname',
         ]);
 
         $this->actingAs($user)
             ->patch(route('profile.update'), [
-                'first_name' => 'Juan',
-                'middle_name' => 'Luan',
-                'last_name' => 'Dela Cruz',
+                'nickname' => 'Juan_2026',
                 'profile_photo' => UploadedFile::fake()->image('avatar.jpg', 120, 120),
             ])
             ->assertRedirect()
             ->assertSessionHas('success');
 
         $user->refresh();
-        $this->assertSame('Juan Luan Dela Cruz', $user->name);
-        $this->assertSame('Juan', $user->first_name);
+        $this->assertSame('Juan_2026', $user->nickname);
+        $this->assertSame('Juan_2026', $user->name);
         $this->assertNotNull($user->profile_photo_path);
         Storage::disk('public')->assertExists($user->profile_photo_path);
     }
@@ -50,16 +46,13 @@ class ProfileSettingsTest extends TestCase
         Storage::fake('public');
         Storage::disk('public')->put('profile-photos/existing.jpg', 'image');
         $user = User::factory()->create([
-            'first_name' => 'Juan',
-            'last_name' => 'Cruz',
+            'nickname' => 'Juan_01',
             'profile_photo_path' => 'profile-photos/existing.jpg',
         ]);
 
         $this->actingAs($user)
             ->patch(route('profile.update'), [
-                'first_name' => 'Juan',
-                'middle_name' => '',
-                'last_name' => 'Cruz',
+                'nickname' => 'Juan_01',
                 'remove_profile_photo' => '1',
             ])
             ->assertRedirect()
@@ -69,18 +62,28 @@ class ProfileSettingsTest extends TestCase
         Storage::disk('public')->assertMissing('profile-photos/existing.jpg');
     }
 
-    public function test_profile_rejects_symbols_in_names_and_non_image_uploads(): void
+    public function test_profile_rejects_symbols_in_nickname_and_non_image_uploads(): void
     {
         Storage::fake('public');
         $user = User::factory()->create();
 
         $this->actingAs($user)
             ->patch(route('profile.update'), [
-                'first_name' => 'Juan1',
-                'middle_name' => '',
-                'last_name' => 'Cruz!',
+                'nickname' => 'Juan Cruz!',
                 'profile_photo' => UploadedFile::fake()->create('notes.txt', 10, 'text/plain'),
             ])
-            ->assertSessionHasErrors(['first_name', 'last_name', 'profile_photo']);
+            ->assertSessionHasErrors(['nickname', 'profile_photo']);
+    }
+
+    public function test_profile_rejects_a_case_insensitive_duplicate_nickname(): void
+    {
+        User::factory()->create(['nickname' => 'TakenNickname']);
+        $user = User::factory()->create(['nickname' => 'CurrentNickname']);
+
+        $this->actingAs($user)
+            ->patch(route('profile.update'), ['nickname' => 'takennickname'])
+            ->assertSessionHasErrors(['nickname']);
+
+        $this->assertSame('CurrentNickname', $user->refresh()->nickname);
     }
 }

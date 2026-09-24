@@ -10,13 +10,21 @@ use Illuminate\View\View;
 
 class AccountController extends Controller
 {
-    public function index(): View
+    public function index(Request $request): View
     {
-        $users = User::query()
-            ->orderByDesc('created_at')
-            ->paginate(15);
+        $validated = $request->validate([
+            'search' => ['nullable', 'string', 'max:50'],
+        ]);
+        $search = trim($validated['search'] ?? '');
 
-        return view('dashboard.accounts.index', compact('users'));
+        $users = User::query()
+            ->select(['id', 'nickname', 'role', 'is_active', 'created_at'])
+            ->when($search !== '', fn ($query) => $query->where('nickname', 'like', "%{$search}%"))
+            ->orderByDesc('created_at')
+            ->paginate(15)
+            ->withQueryString();
+
+        return view('dashboard.accounts.index', compact('users', 'search'));
     }
 
     public function updateRole(Request $request, User $user): RedirectResponse
@@ -27,17 +35,17 @@ class AccountController extends Controller
             return back()->with('error', 'You cannot change your own role while signed in.');
         }
 
-        if ($user->isSuperAdmin() && ! $actor->isSuperAdmin()) {
-            return back()->with('error', 'Only a super administrator can change a super administrator role.');
-        }
-
-        if ($request->string('role')->toString() === 'super_admin' && ! $actor->isSuperAdmin()) {
-            return back()->with('error', 'Only a super administrator can assign the super administrator role.');
+        if (! $actor->isSuperAdmin() && $user->isAdmin()) {
+            return back()->with('error', 'Only a super administrator can change an administrator role.');
         }
 
         $allowedRoles = $actor->isSuperAdmin()
             ? ['student', 'faculty', 'admin', 'super_admin']
-            : ['student', 'faculty', 'admin'];
+            : ['student', 'faculty'];
+
+        if (! in_array($request->string('role')->toString(), $allowedRoles, true)) {
+            return back()->with('error', 'Only a super administrator can assign administrator roles.');
+        }
 
         $validated = $request->validate([
             'role' => ['required', Rule::in($allowedRoles)],
@@ -45,7 +53,7 @@ class AccountController extends Controller
 
         $user->update(['role' => $validated['role']]);
 
-        return back()->with('success', "{$user->name}'s role was updated to {$validated['role']}.");
+        return back()->with('success', "{$user->display_name}'s role was updated to {$validated['role']}.");
     }
 
     public function toggleStatus(Request $request, User $user): RedirectResponse
@@ -56,14 +64,14 @@ class AccountController extends Controller
             return back()->with('error', 'You cannot deactivate your own account while signed in.');
         }
 
-        if ($user->isSuperAdmin() && ! $actor->isSuperAdmin()) {
-            return back()->with('error', 'Only a super administrator can change a super administrator account status.');
+        if (! $actor->isSuperAdmin() && $user->isAdmin()) {
+            return back()->with('error', 'Only a super administrator can change an administrator account status.');
         }
 
         $user->update(['is_active' => ! $user->is_active]);
         $status = $user->is_active ? 'reactivated' : 'deactivated';
 
-        return back()->with('success', "{$user->name}'s account was {$status}.");
+        return back()->with('success', "{$user->display_name}'s account was {$status}.");
     }
 
     public function destroy(Request $request, User $user): RedirectResponse
@@ -74,13 +82,13 @@ class AccountController extends Controller
             return back()->with('error', 'You cannot delete your own account while signed in.');
         }
 
-        if ($user->isSuperAdmin() && ! $actor->isSuperAdmin()) {
-            return back()->with('error', 'Only a super administrator can delete a super administrator account.');
+        if (! $actor->isSuperAdmin()) {
+            return back()->with('error', 'Only a super administrator can delete accounts.');
         }
 
-        $name = $user->name;
+        $nickname = $user->display_name;
         $user->delete();
 
-        return back()->with('success', "{$name}'s account was deleted.");
+        return back()->with('success', "{$nickname}'s account was deleted.");
     }
 }
