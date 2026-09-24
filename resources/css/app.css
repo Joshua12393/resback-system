@@ -1264,8 +1264,6 @@ button, input, select, textarea { font: inherit; }
 .auth-footer-link { color: var(--gray-500); border-top-color: var(--gray-200); }
 .auth-footer-link a { color: var(--primary); }
 .auth-copyright { margin-top: 1.5rem; color: var(--gray-500); font-size: .72rem; text-align: center; }
-.registration-name-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 1rem; }
-.registration-last-name { grid-column: 1 / -1; }
 .password-input-wrap { position: relative; }
 .password-input-wrap .form-control { padding-right: 3rem; }
 .password-toggle { position: absolute; top: 50%; right: .55rem; width: 34px; height: 34px; display: grid; place-items: center; padding: 0; transform: translateY(-50%); border: 0; border-radius: 6px; background: transparent; color: var(--gray-500); cursor: pointer; }
@@ -1358,7 +1356,6 @@ button, input, select, textarea { font: inherit; }
     .auth-assurance { align-items: flex-start; }
     .auth-main { padding: 1.25rem .8rem; }
     .auth-card { padding: 1.5rem 1.25rem; }
-    .registration-name-grid { grid-template-columns: 1fr; }
     .registration-last-name { grid-column: auto; }
     .app-topbar { min-height: 72px; padding: .75rem 1rem; flex-wrap: wrap; }
     .topbar-actions { width: 100%; }
@@ -1438,8 +1435,6 @@ button, input, select, textarea { font: inherit; }
 .profile-photo-input { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; }
 .profile-photo-controls p { margin-top: .55rem; color: var(--gray-500); font-size: .74rem; }
 .profile-remove-option { display: flex; align-items: center; gap: .45rem; margin-top: .7rem; color: var(--danger-dark); font-size: .76rem; cursor: pointer; }
-.profile-name-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 1rem; }
-.profile-last-name { grid-column: 1 / -1; }
 .profile-actions { display: flex; justify-content: flex-end; padding-top: .5rem; }
 
 /* Dark theme */
@@ -1481,7 +1476,6 @@ button, input, select, textarea { font: inherit; }
 
 @media (max-width: 620px) {
     .profile-photo-section { align-items: flex-start; flex-direction: column; }
-    .profile-name-grid { grid-template-columns: 1fr; }
     .profile-last-name { grid-column: auto; }
     .profile-actions .btn { width: 100%; }
     .auth-theme-toggle { top: .75rem; right: .75rem; }
@@ -1547,6 +1541,10 @@ button, input, select, textarea { font: inherit; }
 .dashboard-filter-form { display: flex; align-items: flex-end; gap: .75rem; flex-wrap: wrap; }
 .dashboard-date-field { min-width: 165px; }
 .dashboard-filter-error { margin-top: .75rem; color: var(--danger-dark); font-size: .8rem; font-weight: 600; }
+.account-search-bar { padding: 1rem 1.35rem; border-bottom: 1px solid var(--gray-200); }
+.account-search-form { display: flex; align-items: flex-end; gap: .75rem; flex-wrap: wrap; }
+.account-search-field { flex: 1 1 260px; max-width: 430px; }
+.account-search-field .form-label { margin-bottom: .35rem; }
 
 [data-theme="dark"] .pagination-link { border-color: #34475d; background: #111c2c; color: #d4deea; }
 [data-theme="dark"] .pagination-link:hover { border-color: #5c91bd; background: #18283b; color: #fff; }
@@ -1554,10 +1552,12 @@ button, input, select, textarea { font: inherit; }
 [data-theme="dark"] .pagination-link.is-disabled:hover { border-color: #34475d; background: #111c2c; color: #d4deea; }
 [data-theme="dark"] .feedback-pagination-panel.is-loading::after { background: rgba(9,17,29,.72); color: #d4deea; }
 [data-theme="dark"] .dashboard-filter-error { color: #f5b5ba; }
+[data-theme="dark"] .account-search-bar { border-color: #26364a; }
 
 @media (max-width: 620px) {
     .resback-pagination { align-items: flex-start; flex-direction: column; }
     .pagination-controls { align-self: center; }
     .dashboard-filter-form > div, .dashboard-date-field { width: 100%; min-width: 0 !important; }
     .dashboard-filter-form .btn { width: 100%; }
+    .account-search-field, .account-search-form .btn { width: 100%; max-width: none; }
 }
