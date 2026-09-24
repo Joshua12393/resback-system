@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -17,33 +18,38 @@ class ProfileController extends Controller
 
     public function update(Request $request): RedirectResponse
     {
-        $nameRule = ['required', 'string', 'max:100', 'regex:/^[\pL\pM]+(?: [\pL\pM]+)*$/u'];
+        $user = $request->user();
 
         $validated = $request->validate([
-            'first_name' => $nameRule,
-            'middle_name' => ['nullable', 'string', 'max:100', 'regex:/^[\pL\pM]+(?: [\pL\pM]+)*$/u'],
-            'last_name' => $nameRule,
+            'nickname' => [
+                'required',
+                'string',
+                'min:3',
+                'max:30',
+                'regex:/^[\pL\pM\pN_]+$/u',
+                function (string $attribute, mixed $value, \Closure $fail) use ($user): void {
+                    $nicknameExists = User::query()
+                        ->whereKeyNot($user->getKey())
+                        ->whereRaw('LOWER(nickname) = ?', [mb_strtolower(trim((string) $value), 'UTF-8')])
+                        ->exists();
+
+                    if ($nicknameExists) {
+                        $fail('That nickname is already in use.');
+                    }
+                },
+            ],
             'profile_photo' => ['nullable', File::image()->types(['jpg', 'jpeg', 'png', 'webp'])->max(2 * 1024)],
             'remove_profile_photo' => ['nullable', 'boolean'],
         ], [
-            'first_name.regex' => 'The first name may contain letters only. A single space is allowed between compound names.',
-            'middle_name.regex' => 'The middle name may contain letters only. A single space is allowed between compound names.',
-            'last_name.regex' => 'The last name may contain letters only. A single space is allowed between compound names.',
+            'nickname.regex' => 'The nickname may contain letters, numbers, and underscores only.',
             'profile_photo.max' => 'The profile photo must not be larger than 2 MB.',
         ]);
 
-        $user = $request->user();
-        $firstName = trim(preg_replace('/\s+/u', ' ', $validated['first_name']));
-        $middleName = isset($validated['middle_name'])
-            ? trim(preg_replace('/\s+/u', ' ', $validated['middle_name']))
-            : null;
-        $lastName = trim(preg_replace('/\s+/u', ' ', $validated['last_name']));
+        $nickname = trim($validated['nickname']);
 
         $attributes = [
-            'first_name' => $firstName,
-            'middle_name' => $middleName ?: null,
-            'last_name' => $lastName,
-            'name' => implode(' ', array_filter([$firstName, $middleName, $lastName])),
+            'nickname' => $nickname,
+            'name' => $nickname,
         ];
 
         if ($request->hasFile('profile_photo')) {

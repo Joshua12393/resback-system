@@ -2,7 +2,7 @@
 
 @section('title', 'Profile Settings')
 @section('page-title', 'Profile Settings')
-@section('page-subtitle', 'Manage your name and profile photo')
+@section('page-subtitle', 'Manage your nickname and profile photo')
 
 @section('content')
 <div class="profile-settings-shell">
@@ -11,7 +11,7 @@
             <div>
                 <span class="profile-eyebrow">Account preferences</span>
                 <h1>Profile Settings</h1>
-                <p>Update how your name and photo appear in ResBack.</p>
+                <p>Update the nickname and photo shown with your account.</p>
             </div>
         </div>
 
@@ -36,9 +36,9 @@
             <div class="profile-photo-section">
                 <div class="profile-photo-preview" id="profilePhotoPreview">
                     @if(auth()->user()->profile_photo_url)
-                        <img src="{{ auth()->user()->profile_photo_url }}" alt="{{ auth()->user()->display_first_name }}'s profile photo">
+                        <img src="{{ auth()->user()->profile_photo_url }}" alt="{{ auth()->user()->display_name }}'s profile photo">
                     @else
-                        <span>{{ strtoupper(substr(auth()->user()->display_first_name, 0, 1)) }}</span>
+                        <span>{{ strtoupper(substr(auth()->user()->display_name, 0, 1)) }}</span>
                     @endif
                 </div>
                 <div class="profile-photo-controls">
@@ -54,19 +54,10 @@
                 </div>
             </div>
 
-            <div class="profile-name-grid">
-                <div class="form-group">
-                    <label for="first_name" class="form-label">First Name</label>
-                    <input id="first_name" name="first_name" type="text" value="{{ old('first_name', auth()->user()->first_name ?: auth()->user()->display_first_name) }}" class="form-control" required data-name-field>
-                </div>
-                <div class="form-group">
-                    <label for="middle_name" class="form-label">Middle Name <span class="optional">(Optional)</span></label>
-                    <input id="middle_name" name="middle_name" type="text" value="{{ old('middle_name', auth()->user()->middle_name) }}" class="form-control" data-name-field>
-                </div>
-                <div class="form-group profile-last-name">
-                    <label for="last_name" class="form-label">Last Name</label>
-                    <input id="last_name" name="last_name" type="text" value="{{ old('last_name', auth()->user()->last_name) }}" class="form-control" required data-name-field>
-                </div>
+            <div class="form-group">
+                <label for="nickname" class="form-label">Nickname</label>
+                <input id="nickname" name="nickname" type="text" value="{{ old('nickname', auth()->user()->display_name) }}" class="form-control" minlength="3" maxlength="30" required data-nickname-field>
+                <div class="form-hint">3–30 letters, numbers, or underscores. Administrators see this instead of your real name or email.</div>
             </div>
 
             <div class="profile-actions">
@@ -79,12 +70,9 @@
 
 @push('scripts')
 <script>
-    document.querySelectorAll('[data-name-field]').forEach((field) => {
+    document.querySelectorAll('[data-nickname-field]').forEach((field) => {
         field.addEventListener('input', () => {
-            field.value = field.value
-                .replace(/[^\p{L}\p{M} ]/gu, '')
-                .replace(/ {2,}/g, ' ')
-                .replace(/^ /, '');
+            field.value = field.value.replace(/[^\p{L}\p{M}\p{N}_]/gu, '');
         });
     });
 

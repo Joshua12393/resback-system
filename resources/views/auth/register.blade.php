@@ -6,7 +6,7 @@
     <div class="auth-card">
         <span class="auth-card-eyebrow">Student registration</span>
         <h2 class="auth-title">Create an account</h2>
-        <p class="auth-subtitle">Create a student account to submit and track your feedback session.</p>
+        <p class="auth-subtitle">Choose a nickname to submit and track feedback without displaying your real name.</p>
 
         {{-- Errors --}}
         @if($errors->any())
@@ -23,54 +23,24 @@
         <form action="{{ route('register') }}" method="POST">
             @csrf
 
-            <div class="registration-name-grid">
-                <div class="form-group">
-                    <label for="first_name" class="form-label">First Name</label>
-                    <input
-                        id="first_name"
-                        type="text"
-                        name="first_name"
-                        value="{{ old('first_name') }}"
-                        class="form-control {{ $errors->has('first_name') ? 'is-invalid' : '' }}"
-                        placeholder="Juan"
-                        required
-                        autofocus
-                        autocomplete="given-name"
-                        data-name-field
-                    >
-                    @error('first_name') <div class="form-error">{{ $message }}</div> @enderror
-                </div>
-
-                <div class="form-group">
-                    <label for="middle_name" class="form-label">Middle Name <span class="optional">(Optional)</span></label>
-                    <input
-                        id="middle_name"
-                        type="text"
-                        name="middle_name"
-                        value="{{ old('middle_name') }}"
-                        class="form-control {{ $errors->has('middle_name') ? 'is-invalid' : '' }}"
-                        placeholder="Santos"
-                        autocomplete="additional-name"
-                        data-name-field
-                    >
-                    @error('middle_name') <div class="form-error">{{ $message }}</div> @enderror
-                </div>
-
-                <div class="form-group registration-last-name">
-                    <label for="last_name" class="form-label">Last Name</label>
-                    <input
-                        id="last_name"
-                        type="text"
-                        name="last_name"
-                        value="{{ old('last_name') }}"
-                        class="form-control {{ $errors->has('last_name') ? 'is-invalid' : '' }}"
-                        placeholder="Dela Cruz"
-                        required
-                        autocomplete="family-name"
-                        data-name-field
-                    >
-                    @error('last_name') <div class="form-error">{{ $message }}</div> @enderror
-                </div>
+            <div class="form-group">
+                <label for="nickname" class="form-label">Nickname</label>
+                <input
+                    id="nickname"
+                    type="text"
+                    name="nickname"
+                    value="{{ old('nickname') }}"
+                    class="form-control {{ $errors->has('nickname') ? 'is-invalid' : '' }}"
+                    placeholder="Juan_01"
+                    minlength="3"
+                    maxlength="30"
+                    required
+                    autofocus
+                    autocomplete="nickname"
+                    data-nickname-field
+                >
+                <div class="form-hint">3–30 letters, numbers, or underscores. This is the only identity administrators will see.</div>
+                @error('nickname') <div class="form-error">{{ $message }}</div> @enderror
             </div>
 
             <div class="form-group">
@@ -85,6 +55,7 @@
                     required
                     autocomplete="email"
                 >
+                <div class="form-hint">Used privately for sign-in only. It is not shown in Manage Accounts.</div>
                 @error('email') <div class="form-error">{{ $message }}</div> @enderror
             </div>
 
@@ -153,14 +124,10 @@
 
 @push('scripts')
 <script>
-    document.querySelectorAll('[data-name-field]').forEach((field) => {
+    document.querySelectorAll('[data-nickname-field]').forEach((field) => {
         field.addEventListener('input', () => {
-            field.value = field.value
-                .replace(/[^\p{L}\p{M} ]/gu, '')
-                .replace(/ {2,}/g, ' ')
-                .replace(/^ /, '');
+            field.value = field.value.replace(/[^\p{L}\p{M}\p{N}_]/gu, '');
         });
     });
-
 </script>
 @endpush

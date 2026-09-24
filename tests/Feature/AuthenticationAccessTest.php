@@ -22,6 +22,8 @@ class AuthenticationAccessTest extends TestCase
         $this->get(route('register'))
             ->assertOk()
             ->assertSee('Create an account')
+            ->assertSee('Nickname')
+            ->assertDontSee('First Name')
             ->assertSee('data-password-toggle="password"', false)
             ->assertSee('data-password-toggle="password_confirmation"', false);
     }
@@ -29,9 +31,7 @@ class AuthenticationAccessTest extends TestCase
     public function test_public_registration_creates_only_a_student_account(): void
     {
         $response = $this->post(route('register'), [
-            'first_name' => 'Student',
-            'middle_name' => 'Sample',
-            'last_name' => 'User',
+            'nickname' => 'Student_01',
             'email' => 'student@example.test',
             'role' => 'admin',
             'password' => 'Password123!',
@@ -41,59 +41,52 @@ class AuthenticationAccessTest extends TestCase
         $response->assertRedirect(route('feedback.create'));
         $this->assertAuthenticated();
         $this->assertDatabaseHas('users', [
-            'name' => 'Student Sample User',
-            'first_name' => 'Student',
-            'middle_name' => 'Sample',
-            'last_name' => 'User',
+            'name' => 'Student_01',
+            'nickname' => 'Student_01',
             'email' => 'student@example.test',
             'role' => 'student',
         ]);
     }
 
-    public function test_registration_rejects_numbers_in_name_fields(): void
+    public function test_registration_accepts_letters_numbers_and_underscores_in_nickname(): void
     {
         $this->post(route('register'), [
-            'first_name' => 'Juan2',
-            'middle_name' => 'Santos3',
-            'last_name' => 'Cruz4',
-            'email' => 'numbered-name@example.test',
-            'password' => 'Password123!',
-            'password_confirmation' => 'Password123!',
-        ])->assertSessionHasErrors(['first_name', 'middle_name', 'last_name']);
-
-        $this->assertDatabaseMissing('users', ['email' => 'numbered-name@example.test']);
-    }
-
-    public function test_registration_rejects_symbols_in_name_fields(): void
-    {
-        $this->post(route('register'), [
-            'first_name' => 'Juan-Paul',
-            'middle_name' => 'Santos.',
-            'last_name' => "Dela'Cruz",
-            'email' => 'symbol-name@example.test',
-            'password' => 'Password123!',
-            'password_confirmation' => 'Password123!',
-        ])->assertSessionHasErrors(['first_name', 'middle_name', 'last_name']);
-
-        $this->assertDatabaseMissing('users', ['email' => 'symbol-name@example.test']);
-    }
-
-    public function test_compound_names_with_single_spaces_are_allowed(): void
-    {
-        $this->post(route('register'), [
-            'first_name' => 'Juan',
-            'middle_name' => 'Luan',
-            'last_name' => 'Dela Cruz',
-            'email' => 'compound-name@example.test',
+            'nickname' => 'Juan_2026',
+            'email' => 'nickname@example.test',
             'password' => 'Password123!',
             'password_confirmation' => 'Password123!',
         ])->assertRedirect(route('feedback.create'));
 
         $this->assertDatabaseHas('users', [
-            'name' => 'Juan Luan Dela Cruz',
-            'first_name' => 'Juan',
-            'last_name' => 'Dela Cruz',
+            'nickname' => 'Juan_2026',
+            'email' => 'nickname@example.test',
         ]);
+    }
+
+    public function test_registration_rejects_spaces_and_symbols_in_nickname(): void
+    {
+        $this->post(route('register'), [
+            'nickname' => 'Juan Cruz!',
+            'email' => 'symbol-nickname@example.test',
+            'password' => 'Password123!',
+            'password_confirmation' => 'Password123!',
+        ])->assertSessionHasErrors(['nickname']);
+
+        $this->assertDatabaseMissing('users', ['email' => 'symbol-nickname@example.test']);
+    }
+
+    public function test_registration_rejects_a_case_insensitive_duplicate_nickname(): void
+    {
+        User::factory()->create(['nickname' => 'ResBackUser']);
+
+        $this->post(route('register'), [
+            'nickname' => 'resbackuser',
+            'email' => 'duplicate-nickname@example.test',
+            'password' => 'Password123!',
+            'password_confirmation' => 'Password123!',
+        ])->assertSessionHasErrors(['nickname']);
+
+        $this->assertDatabaseMissing('users', ['email' => 'duplicate-nickname@example.test']);
     }
 
     public function test_student_login_redirects_to_feedback_and_logout_ends_the_session(): void
