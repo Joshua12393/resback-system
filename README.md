@@ -27,15 +27,18 @@ The project was created for a Software Engineering course and is currently limit
 
 The UML diagrams reflect the current ResBack features, workflows, classes, services, and role permissions.
 
-- **Use case diagram:** [PNG](diagrams/use-case/png/resback-use-case.png)
+- **Use case diagram:** [PDF](diagrams/use-case/pdf/Lab%204%20Team%20Mira.drawio.pdf) · [Editable draw.io](diagrams/use-case/Lab%204%20Team%20Mira.drawio)
 - **Activity diagrams:** [Combined PNG](diagrams/activity/resback-activity-diagrams.png) · [12 individual pages](diagrams/activity/png/)
 - **Class diagrams:** [Combined PNG](diagrams/class/resback-class-diagrams.png) · [6 individual pages](diagrams/class/png/)
+- **Deployment diagram:** [PNG](diagrams/deployment/png/resback-deployment.png) · [Editable draw.io](diagrams/deployment/resback-deployment.drawio)
 
 The use case diagram covers account access, profiles, feedback submission and analysis, personal feedback history, dashboard filtering, report exports, feedback deletion, and account administration for Student, Faculty, Admin, and Super Admin roles.
 
 The activity set contains separate workflows for registration, login, feedback submission, feedback history, dashboard analytics, account management, AI analysis, Excel export, PDF report generation, feedback deletion, profile editing, and logout.
 
 The class set covers the core domain model; authentication, accounts, and profiles; feedback submission and protection; sentiment analysis and concern ranking; dashboard and report generation; and account-access middleware.
+
+The deployment diagram shows the documented local setup: a browser and PHP development server on a Windows workstation, a local XAMPP MySQL/MariaDB database, application files, and the external Google Gemini API used for Gemma analysis. It includes execution environments, deployed artifacts, and communication protocols.
 
 ## Main features
 
