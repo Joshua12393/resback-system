@@ -27,7 +27,7 @@ The project was created for a Software Engineering course and is currently limit
 
 The UML diagrams reflect the current ResBack features, workflows, classes, services, and role permissions.
 
-- **Use case diagram:** [PNG](diagrams/use-case/png/resback-use-case.png)
+- **Use case diagram:** [PDF](diagrams/use-case/pdf/Lab%204%20Team%20Mira.drawio.pdf) · [Editable draw.io](diagrams/use-case/Lab%204%20Team%20Mira.drawio)
 - **Activity diagrams:** [Combined PNG](diagrams/activity/resback-activity-diagrams.png) · [12 individual pages](diagrams/activity/png/)
 - **Class diagrams:** [Combined PNG](diagrams/class/resback-class-diagrams.png) · [6 individual pages](diagrams/class/png/)
 - **Deployment diagram:** [PNG](diagrams/deployment/png/resback-deployment.png) · [Editable draw.io](diagrams/deployment/resback-deployment.drawio)
