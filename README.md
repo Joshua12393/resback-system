@@ -30,6 +30,7 @@ The UML diagrams reflect the current ResBack features, workflows, classes, servi
 - **Use case diagram:** [PDF](diagrams/use-case/pdf/Lab%204%20Team%20Mira.drawio.pdf) · [Editable draw.io](diagrams/use-case/Lab%204%20Team%20Mira.drawio)
 - **Activity diagrams:** [Combined PNG](diagrams/activity/resback-activity-diagrams.png) · [12 individual pages](diagrams/activity/png/)
 - **Class diagrams:** [Combined PNG](diagrams/class/resback-class-diagrams.png) · [6 individual pages](diagrams/class/png/)
+- **Component diagram:** [PNG](diagrams/component/png/resback-component.png) · [Editable draw.io](diagrams/component/resback-component.drawio)
 - **Deployment diagram:** [PNG](diagrams/deployment/png/resback-deployment.png) · [Editable draw.io](diagrams/deployment/resback-deployment.drawio)
 
 The use case diagram covers account access, profiles, feedback submission and analysis, personal feedback history, dashboard filtering, report exports, feedback deletion, and account administration for Student, Faculty, Admin, and Super Admin roles.
@@ -38,7 +39,15 @@ The activity set contains separate workflows for registration, login, feedback s
 
 The class set covers the core domain model; authentication, accounts, and profiles; feedback submission and protection; sentiment analysis and concern ranking; dashboard and report generation; and account-access middleware.
 
+The component diagram shows the Web Presentation, Identity & Accounts, Feedback Management, Sentiment Analysis, Concern Ranking, and Dashboard & Reporting modules inside the Laravel application. It includes the browser, Gemini API, profile-photo storage, report libraries, and relational database, with provided/required interfaces, ports, and delegation connectors. These are logical groupings of existing code, not separate deployed services or PHP interface declarations; shared database access is shown once at the application boundary. Notation follows the supplied course reference and the [draw.io component-diagram guide](https://www.drawio.com/docs/diagram-types/uml/component-diagrams/), using circles for provided interfaces and sockets for required interfaces.
+
 The deployment diagram shows the documented local setup: a browser and PHP development server on a Windows workstation, a local XAMPP MySQL/MariaDB database, application files, and the external Google Gemini API used for Gemma analysis. It includes execution environments, deployed artifacts, and communication protocols.
+
+## Problem analysis
+
+- **Fishbone diagram:** [PNG](diagrams/fishbone/png/resback-fishbone.png) · [Editable draw.io](diagrams/fishbone/resback-fishbone.drawio)
+
+The fishbone diagram examines **difficulty turning CCIS feedback into clear priorities for institutional review**, the problem addressed by ResBack. It groups candidate causes under People & Trust, Feedback Content, Language & Meaning, Review Methods, Prioritization, and Reporting & Follow-up. The causes are drawn from the project background, requirements, and stated limitations; they are hypotheses for stakeholder validation, not established root causes or measured reporting delays. It uses the cause-and-effect structure from the supplied course reference and the [draw.io fishbone guide](https://www.drawio.com/docs/diagram-types/ishikawa-diagrams/).
 
 ## Main features
 
