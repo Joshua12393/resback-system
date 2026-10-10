@@ -1,8 +1,54 @@
 import Chart from 'chart.js/auto';
+import { enhanceSelects } from './styled-select';
+import { enhanceDatePickers } from './date-picker';
 
 window.Chart = Chart;
 
+const motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)');
+const chartTheme = () => {
+    const styles = getComputedStyle(document.documentElement);
+    return {
+        text: styles.getPropertyValue('--gray-600').trim(),
+        grid: styles.getPropertyValue('--gray-200').trim(),
+        surface: styles.getPropertyValue('--surface').trim(),
+    };
+};
+const applyChartTheme = (chart) => {
+    const colors = chartTheme();
+    chart.options.animation = motionPreference.matches ? false : { duration: 400 };
+    if (chart.options.plugins?.legend?.labels) chart.options.plugins.legend.labels.color = colors.text;
+    if (chart.options.plugins?.tooltip) {
+        chart.options.plugins.tooltip.backgroundColor = colors.surface;
+        chart.options.plugins.tooltip.titleColor = colors.text;
+        chart.options.plugins.tooltip.bodyColor = colors.text;
+        chart.options.plugins.tooltip.borderColor = colors.grid;
+        chart.options.plugins.tooltip.borderWidth = 1;
+    }
+    Object.values(chart.options.scales || {}).forEach((scale) => {
+        if (scale.ticks) scale.ticks.color = colors.text;
+        if (scale.grid) scale.grid.color = colors.grid;
+    });
+};
+Chart.register({ id: 'resbackTheme', beforeInit: applyChartTheme });
+const refreshCharts = () => Object.values(Chart.instances).forEach((chart) => {
+    applyChartTheme(chart);
+    chart.update('none');
+});
+motionPreference.addEventListener('change', refreshCharts);
+
 document.addEventListener('DOMContentLoaded', () => {
+    enhanceSelects();
+    enhanceDatePickers();
+    document.querySelectorAll('[data-success-dialog]').forEach(dialog => {
+        if (dialog.hasAttribute('data-auto-open')) {
+            dialog.showModal();
+            dialog.focus({ preventScroll: true });
+        }
+        dialog.addEventListener('click', event => {
+            const rect = dialog.getBoundingClientRect();
+            if (event.target === dialog && (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom)) dialog.close();
+        });
+    });
     const applyThemeButtonState = () => {
         const isDark = document.documentElement.dataset.theme === 'dark';
         document.querySelectorAll('[data-theme-toggle]').forEach((button) => {
@@ -15,12 +61,39 @@ document.addEventListener('DOMContentLoaded', () => {
         button.addEventListener('click', () => {
             const nextTheme = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
             document.documentElement.dataset.theme = nextTheme;
-            localStorage.setItem('resback-theme', nextTheme);
+            try { localStorage.setItem('resback-theme', nextTheme); } catch { /* Theme still works without storage. */ }
             applyThemeButtonState();
+            refreshCharts();
         });
     });
 
     applyThemeButtonState();
+
+    // Standard POST forms keep native submission and server validation.
+    const pendingButtons = new Map();
+    document.addEventListener('submit', (event) => {
+        const form = event.target;
+        if (event.defaultPrevented || !(form instanceof HTMLFormElement) || form.method !== 'post' || form.id === 'feedbackForm') return;
+        if (form.dataset.pending === 'true') { event.preventDefault(); return; }
+        const button = event.submitter || form.querySelector('button[type="submit"]');
+        if (!button || button.name) return;
+        form.dataset.pending = 'true';
+        pendingButtons.set(button, button.innerHTML);
+        button.disabled = true;
+        button.classList.add('is-submitting');
+        button.setAttribute('aria-busy', 'true');
+        button.textContent = form.dataset.pendingLabel || 'Please wait…';
+    });
+    window.addEventListener('pageshow', () => {
+        pendingButtons.forEach((label, button) => {
+            button.innerHTML = label;
+            button.disabled = false;
+            button.classList.remove('is-submitting');
+            button.removeAttribute('aria-busy');
+            delete button.form.dataset.pending;
+        });
+        pendingButtons.clear();
+    });
 
     let feedbackRequestController = null;
 
@@ -32,6 +105,8 @@ document.addEventListener('DOMContentLoaded', () => {
         feedbackRequestController = new AbortController();
         currentPanel.classList.add('is-loading');
         currentPanel.setAttribute('aria-busy', 'true');
+        const loadingStatus = document.getElementById('feedbackLoadStatus');
+        if (loadingStatus) loadingStatus.textContent = 'Loading feedback…';
 
         try {
             const response = await fetch(url, {
@@ -50,7 +125,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
             currentPanel.replaceWith(nextPanel);
             if (updateHistory) window.history.pushState({ feedbackPage: true }, '', url);
-            nextPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            nextPanel.classList.add('animate-fade-up');
+            nextPanel.scrollIntoView({ behavior: motionPreference.matches ? 'auto' : 'smooth', block: 'start' });
+            const status = document.getElementById('feedbackLoadStatus');
+            if (status) status.textContent = 'Feedback page loaded.';
         } catch (error) {
             if (error.name === 'AbortError') return;
 
