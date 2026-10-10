@@ -1,4 +1,4 @@
-@extends('layouts.guest')
+@extends(auth()->check() ? 'layouts.app' : 'layouts.guest')
 @section('title', $feedback->status === 'rejected' ? 'Feedback Rejected' : 'Feedback Submitted')
 
 @section('content')
@@ -14,7 +14,7 @@
     @else
         <div class="thankyou-icon">✓</div>
         <h1>Thank You!</h1>
-        <p>Thank you. Your feedback has been received.</p>
+        <p>Thanks for sharing your feedback. Your voice helps CCIS improve.</p>
 
     @endif
 

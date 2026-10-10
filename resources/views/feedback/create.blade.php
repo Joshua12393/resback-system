@@ -1,4 +1,4 @@
-@extends('layouts.guest')
+@extends(auth()->check() ? 'layouts.app' : 'layouts.guest')
 @section('title', 'Share Your Feedback')
 
 @section('content')
@@ -33,7 +33,7 @@
             </div>
         @endif
 
-        <form action="{{ route('feedback.store') }}" method="POST" id="feedbackForm">
+        <form action="{{ route('feedback.store') }}" method="POST" id="feedbackForm" data-pending-label="Submitting feedback…">
             @csrf
 
             {{-- Fixed department scope --}}
@@ -55,12 +55,15 @@
                     class="form-control {{ $errors->has('content') ? 'is-invalid' : '' }}"
                     placeholder="Describe your experience, concern, or suggestion in detail..."
                     maxlength="2000"
+                    aria-describedby="feedbackHint charCounter{{ $errors->has('content') ? ' contentError' : '' }}"
+                    @if($errors->has('content')) aria-invalid="true" @endif
                     rows="6"
                     oninput="updateCounter(this)"
                 >{{ old('content') }}</textarea>
+                <div class="form-hint" id="feedbackHint">Tell us what went well, what could improve, or what you'd like us to know.</div>
                 <div class="char-counter" id="charCounter">0 / 2000</div>
                 @error('content')
-                    <div class="form-error">{{ $message }}</div>
+                    <div class="form-error" id="contentError">{{ $message }}</div>
                 @enderror
             </div>
 
@@ -136,14 +139,27 @@
         }
 
         const btn = document.getElementById('submitBtn');
+        if (btn.disabled) { event.preventDefault(); return; }
         btn.disabled = true;
         btn.textContent = 'Submitting...';
+        btn.classList.add('is-submitting');
+        btn.setAttribute('aria-busy', 'true');
     });
 
     confirmSubmitBtn.addEventListener('click', function () {
         submissionConfirmed = true;
         confirmationDialog.close();
         feedbackForm.requestSubmit();
+    });
+
+    window.addEventListener('pageshow', () => {
+        submissionConfirmed = false;
+        const btn = document.getElementById('submitBtn');
+        btn.disabled = false;
+        btn.textContent = 'Submit Feedback';
+        btn.classList.remove('is-submitting');
+        btn.removeAttribute('aria-busy');
+        if (confirmationDialog.open) confirmationDialog.close();
     });
 </script>
 @endpush

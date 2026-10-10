@@ -1,4 +1,4 @@
-@extends('layouts.guest')
+@extends(auth()->check() ? 'layouts.app' : 'layouts.guest')
 @section('title', 'Thank You!')
 
 @section('content')
