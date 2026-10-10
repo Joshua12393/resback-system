@@ -48,10 +48,10 @@
                         @foreach($feedbacks as $feedback)
                             @php($analysis = $feedback->sentimentResult)
                             <tr>
-                                <td class="history-date-cell">{{ $feedback->created_at->format('M d, Y h:i A') }}</td>
-                                <td class="history-feedback-table-cell">{{ $feedback->content }}</td>
-                                <td>{{ $feedback->category?->name ?? 'Uncategorized' }}</td>
-                                <td>
+                                <td class="history-date-cell" data-label="Date">{{ $feedback->created_at->format('M d, Y h:i A') }}</td>
+                                <td class="history-feedback-table-cell" data-label="Feedback"><span class="history-feedback-content">{{ $feedback->content }}</span></td>
+                                <td data-label="Category">{{ $feedback->category?->name ?? 'Uncategorized' }}</td>
+                                <td data-label="Sentiment">
                                     @if($feedback->status === 'rejected')
                                         <span class="badge badge-negative">Rejected</span>
                                     @elseif($analysis)
@@ -61,8 +61,8 @@
                                         <span class="badge badge-pending">Pending</span>
                                     @endif
                                 </td>
-                                <td>{{ $feedback->status === 'rejected' ? 'Not analyzed' : ($analysis?->language_category ?? 'Unclassified') }}</td>
-                                <td class="history-keywords-table-cell">
+                                <td data-label="Language">{{ $feedback->status === 'rejected' ? 'Not analyzed' : ($analysis?->language_category ?? 'Unclassified') }}</td>
+                                <td class="history-keywords-table-cell" data-label="Keywords">
                                     <div class="keyword-list">
                                         @forelse($analysis?->keywords ?? [] as $keyword)
                                             <span class="keyword-chip">#{{ $keyword }}</span>
@@ -71,7 +71,7 @@
                                         @endforelse
                                     </div>
                                 </td>
-                                <td>{{ ucfirst($feedback->status) }}</td>
+                                <td data-label="Status">{{ ucfirst($feedback->status) }}</td>
                             </tr>
                         @endforeach
                     </tbody>

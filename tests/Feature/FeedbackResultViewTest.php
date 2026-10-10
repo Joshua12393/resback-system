@@ -19,7 +19,7 @@ class FeedbackResultViewTest extends TestCase
     ): void
     {
         $feedback = Feedback::create([
-            'content' => 'This full feedback should not be repeated on the result page.',
+            'content' => 'The Wi-Fi connection is reliable today.',
             'status' => 'analyzed',
         ]);
         $feedback->sentimentResult()->create([
@@ -36,9 +36,38 @@ class FeedbackResultViewTest extends TestCase
             ->assertSee($expectedSummary)
             ->assertSee('#wifi')
             ->assertSee('#service')
-            ->assertDontSee('Language Classification')
+            ->assertSee('Language')
+            ->assertSee('English')
+            ->assertSee('100% language confidence')
             ->assertDontSee('Google Gemini API')
-            ->assertDontSee($feedback->content);
+            ->assertSee($feedback->content);
+    }
+
+    public function test_failed_analysis_still_displays_feedback_without_invented_results(): void
+    {
+        $feedback = Feedback::create([
+            'content' => 'The laboratory needs more working computers.',
+            'status' => 'failed',
+        ]);
+
+        $this->view('feedback.result', ['feedback' => $feedback])
+            ->assertSee($feedback->content)
+            ->assertSee('analysis could not be completed')
+            ->assertDontSee('Sentiment confidence');
+    }
+
+    public function test_rejected_feedback_is_displayed_safely_without_analysis(): void
+    {
+        $feedback = Feedback::create([
+            'content' => '<script>alert("unsafe")</script> This feedback was rejected.',
+            'status' => 'rejected',
+        ]);
+
+        $this->view('feedback.result', ['feedback' => $feedback])
+            ->assertSee('Feedback Rejected')
+            ->assertSee($feedback->content)
+            ->assertDontSee('<script>alert("unsafe")</script>', false)
+            ->assertDontSee('Sentiment confidence');
     }
 
     /** @return array<string, array{string, float, string}> */
