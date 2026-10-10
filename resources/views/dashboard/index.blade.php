@@ -5,7 +5,7 @@
 @section('page-subtitle', 'Sentiment and language analysis for submitted feedback')
 
 @section('topbar-actions')
-    <a href="{{ route('feedback.report', $reportQuery) }}" class="btn btn-ghost btn-sm">
+    <a href="{{ route('feedback.report', $reportQuery) }}" class="btn btn-primary btn-sm">
         Download PDF Report
     </a>
     <a href="{{ route('feedback.export', $reportQuery) }}" class="btn btn-primary btn-sm">
@@ -14,12 +14,12 @@
 @endsection
 
 @section('content')
-    <section class="card-dark" style="margin-bottom:1.5rem;">
+    <section class="card-dark dashboard-filter-card" style="margin-bottom:1.5rem;">
         <div class="card-body">
             <form action="{{ route('dashboard') }}" method="GET" class="dashboard-filter-form">
                 <div style="flex:1;min-width:240px;">
                     <label for="language_category" class="form-label">Filter dashboard by language</label>
-                    <select id="language_category" name="language_category" class="form-control" onchange="this.form.submit()">
+                    <select id="language_category" name="language_category" class="form-control" data-styled-select>
                         <option value="">All languages</option>
                         @foreach($filterLanguages as $language)
                             <option value="{{ $language }}" @selected($selectedLanguage === $language)>{{ $language }}</option>
@@ -32,6 +32,7 @@
                         id="start_date"
                         name="start_date"
                         type="date"
+                        data-styled-date
                         class="form-control"
                         value="{{ $dateRange->start?->format('Y-m-d') }}"
                         max="{{ now()->format('Y-m-d') }}"
@@ -43,6 +44,7 @@
                         id="end_date"
                         name="end_date"
                         type="date"
+                        data-styled-date
                         class="form-control"
                         value="{{ $dateRange->end?->format('Y-m-d') }}"
                         max="{{ now()->format('Y-m-d') }}"
@@ -186,6 +188,7 @@
     </div>
 
     @include('dashboard.partials.feedback-table')
+    <p class="sr-only" role="status" id="feedbackLoadStatus"></p>
 @endsection
 
 @push('scripts')
