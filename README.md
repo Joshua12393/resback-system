@@ -47,7 +47,15 @@ The deployment diagram shows the documented local setup: a browser and PHP devel
 
 - **Fishbone diagram:** [PNG](diagrams/fishbone/png/resback-fishbone.png) · [Editable draw.io](diagrams/fishbone/resback-fishbone.drawio)
 
-The fishbone diagram examines **difficulty turning CCIS feedback into clear priorities for institutional review**, the problem addressed by ResBack. It groups candidate causes under People & Trust, Feedback Content, Language & Meaning, Review Methods, Prioritization, and Reporting & Follow-up. The causes are drawn from the project background, requirements, and stated limitations; they are hypotheses for stakeholder validation, not established root causes or measured reporting delays. It uses the cause-and-effect structure from the supplied course reference and the [draw.io fishbone guide](https://www.drawio.com/docs/diagram-types/ishikawa-diagrams/).
+The fishbone diagram examines **difficulty turning CCIS feedback into clear priorities for institutional review**, the problem addressed by ResBack. It combines **12 main categories, 24 subcategories, and 48 specific candidate causes** from the supplied **8 Ms / 8 Ps / 4 Ss** reference:
+
+- **Ms:** Materials, Machines, Methods, Management, Measurement, and Maintenance.
+- **Ps:** People, Place, Promotion, and Physical Evidence.
+- **Ss:** Systems and Skills.
+
+Each main bone has two named subcategories, each with two connected cause branches. Related names are consolidated (People includes Manpower; Methods includes Process) to avoid duplicate bones. The scope covers feedback content and participation, access and awareness, technology and maintenance, review practices, supporting evidence, and interpretation of results. These are candidate causes for stakeholder validation, not established root causes or confirmed operational failures.
+
+The **draw.io file contains editable text, shapes, and connectors**, with each main bone grouped for repositioning. Open it in [diagrams.net](https://app.diagrams.net/); double-click a label to edit its text, or ungroup a bone to rearrange its parts. The matching PNG is a high-resolution overview exported from the same editable diagram; zoom in to read the detailed branches. References: [Ishikawa diagram](https://en.wikipedia.org/wiki/Ishikawa_diagram), the [draw.io fishbone guide](https://www.drawio.com/docs/diagram-types/ishikawa-diagrams/), and the supplied *Fishbone Diagram.pdf*.
 
 ## Main features
 
