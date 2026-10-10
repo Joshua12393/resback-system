@@ -45,7 +45,7 @@ The deployment diagram shows the documented local setup: a browser and PHP devel
 
 ## Problem analysis
 
-- **Fishbone diagram:** [PNG](diagrams/fishbone/png/resback-fishbone.png) · [Editable draw.io](diagrams/fishbone/resback-fishbone.drawio)
+- **Fishbone diagram:** [PNG](diagrams/fishbone/png/resback-fishbone.png) · [Editable draw.io](diagrams/fishbone/resback-fishbone-finalized-arranged.drawio)
 
 The fishbone diagram examines **difficulty turning CCIS feedback into clear priorities for institutional review**, the problem addressed by ResBack. It combines **12 main categories, 24 subcategories, and 48 specific candidate causes** from the supplied **8 Ms / 8 Ps / 4 Ss** reference:
 

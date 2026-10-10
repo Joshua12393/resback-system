@@ -1,0 +1,506 @@
+<?xml version='1.0' encoding='utf-8'?>
+<mxfile host="app.diagrams.net" type="device" version="29.0.0">
+  <diagram id="UJ4-bayfXdDggx12DKB5" name="ResBack - Finalized Fishbone">
+    <mxGraphModel dx="1400" dy="900" grid="1" gridSize="10" guides="1" connect="1" arrows="1" page="1" pageScale="1" pageWidth="4760" pageHeight="2480" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="QIveis97ZD262eNUPoh_-2" value="ResBack | Detailed Fishbone Diagram" style="fontFamily=Arial;fontColor=#182b3c;whiteSpace=wrap;html=1;text;strokeColor=none;fillColor=none;fontSize=62;fontStyle=1;align=left;verticalAlign=middle;spacing=4;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="70" y="55" width="4590" height="85" />
+        </mxCell>
+        <mxCell id="QIveis97ZD262eNUPoh_-3" value="CCIS feedback collection, analysis and institutional review | 8 categories / 15 subcategories / 24 candidate causes" style="fontFamily=Arial;fontColor=#182b3c;whiteSpace=wrap;html=1;text;strokeColor=none;fillColor=none;fontSize=32;fontStyle=0;align=left;verticalAlign=middle;spacing=4;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="70" y="150" width="4590" height="50" />
+        </mxCell>
+        <mxCell id="QIveis97ZD262eNUPoh_-4" value="M" style="fontFamily=Arial;fontColor=#182b3c;whiteSpace=wrap;html=1;rounded=1;fillColor=#edf4fb;strokeColor=#305e88;fontColor=#305e88;fontSize=29;fontStyle=1;align=center;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="70" y="230" width="62" height="46" />
+        </mxCell>
+        <mxCell id="QIveis97ZD262eNUPoh_-5" value="Selected from the 8 Ms" style="fontFamily=Arial;fontColor=#182b3c;whiteSpace=wrap;html=1;text;strokeColor=none;fillColor=none;fontSize=29;fontStyle=0;align=left;verticalAlign=middle;spacing=4;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="150" y="230" width="620" height="46" />
+        </mxCell>
+        <mxCell id="QIveis97ZD262eNUPoh_-6" value="P" style="fontFamily=Arial;fontColor=#182b3c;whiteSpace=wrap;html=1;rounded=1;fillColor=#fcf5e8;strokeColor=#8b6228;fontColor=#8b6228;fontSize=29;fontStyle=1;align=center;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="820" y="230" width="62" height="46" />
+        </mxCell>
+        <mxCell id="QIveis97ZD262eNUPoh_-7" value="Selected from the 8 Ps" style="fontFamily=Arial;fontColor=#182b3c;whiteSpace=wrap;html=1;text;strokeColor=none;fillColor=none;fontSize=29;fontStyle=0;align=left;verticalAlign=middle;spacing=4;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="900" y="230" width="620" height="46" />
+        </mxCell>
+        <mxCell id="QIveis97ZD262eNUPoh_-8" value="S" style="fontFamily=Arial;fontColor=#182b3c;whiteSpace=wrap;html=1;rounded=1;fillColor=#ebf7f3;strokeColor=#287269;fontColor=#287269;fontSize=29;fontStyle=1;align=center;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1570" y="230" width="62" height="46" />
+        </mxCell>
+        <mxCell id="QIveis97ZD262eNUPoh_-9" value="Selected from the 4 Ss" style="fontFamily=Arial;fontColor=#182b3c;whiteSpace=wrap;html=1;text;strokeColor=none;fillColor=none;fontSize=29;fontStyle=0;align=left;verticalAlign=middle;spacing=4;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1650" y="230" width="620" height="46" />
+        </mxCell>
+        <mxCell id="QIveis97ZD262eNUPoh_-10" value="Read: specific cause -&amp;gt; subcategory -&amp;gt; main category -&amp;gt; shared effect" style="fontFamily=Arial;fontColor=#182b3c;whiteSpace=wrap;html=1;text;strokeColor=none;fillColor=none;fontSize=28;fontStyle=0;align=left;verticalAlign=middle;spacing=4;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="2440" y="230" width="2240" height="46" />
+        </mxCell>
+        <mxCell id="QIveis97ZD262eNUPoh_-11" value="Difficulty turning&lt;br&gt;CCIS feedback into&lt;br&gt;clear priorities for&lt;br&gt;institutional review" style="fontFamily=Arial;fontColor=#182b3c;whiteSpace=wrap;html=1;rounded=1;arcSize=8;fillColor=#edf2f7;strokeColor=#274d69;strokeWidth=5;fontSize=45;fontStyle=1;align=center;verticalAlign=middle;spacing=25;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="4040" y="1060" width="650" height="360" />
+        </mxCell>
+        <mxCell id="QIveis97ZD262eNUPoh_-12" value="EFFECT / MAIN PROBLEM" style="fontFamily=Arial;fontColor=#182b3c;whiteSpace=wrap;html=1;text;strokeColor=none;fillColor=none;fontSize=32;fontStyle=1;align=center;verticalAlign=middle;spacing=4;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="4040" y="984" width="650" height="50" />
+        </mxCell>
+        <mxCell id="spine" edge="1" parent="1" style="edgeStyle=none;rounded=0;html=1;strokeColor=#274d69;strokeWidth=6;startArrow=none;endArrow=block;endFill=1;">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="70" y="1240" />
+            <mxPoint as="targetPoint" x="4040" y="1240" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="QIveis97ZD262eNUPoh_-15" value="" style="group;fillColor=none;strokeColor=none;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="70" y="300" width="930" height="940" />
+        </mxCell>
+        <mxCell id="QIveis97ZD262eNUPoh_-16" value="Materials  [M]" style="fontFamily=Arial;fontColor=#182b3c;whiteSpace=wrap;html=1;rounded=1;arcSize=8;fillColor=#edf4fb;strokeColor=#305e88;strokeWidth=3;fontSize=36;fontStyle=1;align=center;verticalAlign=middle;" vertex="1" parent="QIveis97ZD262eNUPoh_-15">
+          <mxGeometry as="geometry" x="420" y="0" width="480" height="90" />
+        </mxCell>
+        <mxCell id="bone-15" edge="1" parent="QIveis97ZD262eNUPoh_-15" style="edgeStyle=none;rounded=0;html=1;strokeColor=#305e88;strokeWidth=4;startArrow=none;endArrow=none;endFill=1;">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="660" y="90" />
+            <mxPoint as="targetPoint" x="900" y="940" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="sub-23" edge="1" parent="QIveis97ZD262eNUPoh_-15" style="edgeStyle=none;rounded=0;html=1;strokeColor=#305e88;strokeWidth=2;startArrow=none;endArrow=none;endFill=1;">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="45" y="450" />
+            <mxPoint as="targetPoint" x="761.6470588235294" y="450" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="QIveis97ZD262eNUPoh_-23" value="Incomplete context" style="fontFamily=Arial;fontColor=#182b3c;whiteSpace=wrap;html=1;text;strokeColor=none;fillColor=none;fontSize=32;fontStyle=1;align=left;verticalAlign=middle;spacing=4;" vertex="1" parent="QIveis97ZD262eNUPoh_-15">
+          <mxGeometry as="geometry" x="50" y="180" width="750" height="48" />
+        </mxCell>
+        <mxCell id="QIveis97ZD262eNUPoh_-24" value="Lacks of status tracking" style="fontFamily=Arial;fontColor=#182b3c;whiteSpace=wrap;html=1;text;strokeColor=none;fillColor=none;fontSize=30;fontStyle=0;align=left;verticalAlign=middle;spacing=4;" vertex="1" parent="QIveis97ZD262eNUPoh_-15">
+          <mxGeometry as="geometry" x="65" y="240" width="280" height="145" />
+        </mxCell>
+        <mxCell id="cause-24" edge="1" parent="QIveis97ZD262eNUPoh_-15" style="edgeStyle=none;rounded=0;html=1;strokeColor=#305e88;strokeWidth=2;startArrow=none;endArrow=none;endFill=1;">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="190.0" y="375" />
+            <mxPoint as="targetPoint" x="255.0" y="450" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="QIveis97ZD262eNUPoh_-28" value="Missing course, time&lt;br&gt;or situation details" style="fontFamily=Arial;fontColor=#182b3c;whiteSpace=wrap;html=1;text;strokeColor=none;fillColor=none;fontSize=30;fontStyle=0;align=left;verticalAlign=middle;spacing=4;" vertex="1" parent="QIveis97ZD262eNUPoh_-15">
+          <mxGeometry as="geometry" x="385" y="240" width="280" height="145" />
+        </mxCell>
+        <mxCell id="cause-28" edge="1" parent="QIveis97ZD262eNUPoh_-15" style="edgeStyle=none;rounded=0;html=1;strokeColor=#305e88;strokeWidth=2;startArrow=none;endArrow=none;endFill=1;">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="510.0" y="375" />
+            <mxPoint as="targetPoint" x="575.0" y="450" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="sub-35" edge="1" parent="QIveis97ZD262eNUPoh_-15" style="edgeStyle=none;rounded=0;html=1;strokeColor=#305e88;strokeWidth=2;startArrow=none;endArrow=none;endFill=1;">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="45" y="800" />
+            <mxPoint as="targetPoint" x="860.4705882352941" y="800" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="QIveis97ZD262eNUPoh_-35" value="Language complexity" style="fontFamily=Arial;fontColor=#182b3c;whiteSpace=wrap;html=1;text;strokeColor=none;fillColor=none;fontSize=32;fontStyle=1;align=left;verticalAlign=middle;spacing=4;" vertex="1" parent="QIveis97ZD262eNUPoh_-15">
+          <mxGeometry as="geometry" x="50" y="530" width="750" height="48" />
+        </mxCell>
+        <mxCell id="QIveis97ZD262eNUPoh_-40" value="Sarcasm or&lt;br&gt;ambiguous phrasing&lt;br&gt;in comments" style="fontFamily=Arial;fontColor=#182b3c;whiteSpace=wrap;html=1;text;strokeColor=none;fillColor=none;fontSize=30;fontStyle=0;align=left;verticalAlign=middle;spacing=4;" vertex="1" parent="QIveis97ZD262eNUPoh_-15">
+          <mxGeometry as="geometry" x="225" y="590" width="380" height="145" />
+        </mxCell>
+        <mxCell id="cause-40" edge="1" parent="QIveis97ZD262eNUPoh_-15" style="edgeStyle=none;rounded=0;html=1;strokeColor=#305e88;strokeWidth=2;startArrow=none;endArrow=none;endFill=1;">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="400.0" y="725" />
+            <mxPoint as="targetPoint" x="465.0" y="800" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="QIveis97ZD262eNUPoh_-44" value="" style="group;fillColor=none;strokeColor=none;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1030" y="300" width="930" height="940" />
+        </mxCell>
+        <mxCell id="QIveis97ZD262eNUPoh_-45" value="Machines  [M]" style="fontFamily=Arial;fontColor=#182b3c;whiteSpace=wrap;html=1;rounded=1;arcSize=8;fillColor=#edf4fb;strokeColor=#305e88;strokeWidth=3;fontSize=36;fontStyle=1;align=center;verticalAlign=middle;" vertex="1" parent="QIveis97ZD262eNUPoh_-44">
+          <mxGeometry as="geometry" x="420" y="0" width="480" height="90" />
+        </mxCell>
+        <mxCell id="bone-44" edge="1" parent="QIveis97ZD262eNUPoh_-44" style="edgeStyle=none;rounded=0;html=1;strokeColor=#305e88;strokeWidth=4;startArrow=none;endArrow=none;endFill=1;">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="660" y="90" />
+            <mxPoint as="targetPoint" x="900" y="940" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="sub-52" edge="1" parent="QIveis97ZD262eNUPoh_-44" style="edgeStyle=none;rounded=0;html=1;strokeColor=#305e88;strokeWidth=2;startArrow=none;endArrow=none;endFill=1;">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="45" y="450" />
+            <mxPoint as="targetPoint" x="761.6470588235294" y="450" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="QIveis97ZD262eNUPoh_-52" value="Service availability" style="fontFamily=Arial;fontColor=#182b3c;whiteSpace=wrap;html=1;text;strokeColor=none;fillColor=none;fontSize=32;fontStyle=1;align=left;verticalAlign=middle;spacing=4;" vertex="1" parent="QIveis97ZD262eNUPoh_-44">
+          <mxGeometry as="geometry" x="50" y="180" width="750" height="48" />
+        </mxCell>
+        <mxCell id="QIveis97ZD262eNUPoh_-53" value="Internet interruptions&lt;br&gt;during submission" style="fontFamily=Arial;fontColor=#182b3c;whiteSpace=wrap;html=1;text;strokeColor=none;fillColor=none;fontSize=30;fontStyle=0;align=left;verticalAlign=middle;spacing=4;" vertex="1" parent="QIveis97ZD262eNUPoh_-44">
+          <mxGeometry as="geometry" x="65" y="240" width="280" height="145" />
+        </mxCell>
+        <mxCell id="cause-53" edge="1" parent="QIveis97ZD262eNUPoh_-44" style="edgeStyle=none;rounded=0;html=1;strokeColor=#305e88;strokeWidth=2;startArrow=none;endArrow=none;endFill=1;">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="190.0" y="375" />
+            <mxPoint as="targetPoint" x="255.0" y="450" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="QIveis97ZD262eNUPoh_-57" value="External AI service&lt;br&gt;unavailable" style="fontFamily=Arial;fontColor=#182b3c;whiteSpace=wrap;html=1;text;strokeColor=none;fillColor=none;fontSize=30;fontStyle=0;align=left;verticalAlign=middle;spacing=4;" vertex="1" parent="QIveis97ZD262eNUPoh_-44">
+          <mxGeometry as="geometry" x="385" y="240" width="280" height="145" />
+        </mxCell>
+        <mxCell id="cause-57" edge="1" parent="QIveis97ZD262eNUPoh_-44" style="edgeStyle=none;rounded=0;html=1;strokeColor=#305e88;strokeWidth=2;startArrow=none;endArrow=none;endFill=1;">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="510.0" y="375" />
+            <mxPoint as="targetPoint" x="575.0" y="450" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="QIveis97ZD262eNUPoh_-73" value="" style="group;fillColor=none;strokeColor=none;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1990" y="300" width="930" height="940" />
+        </mxCell>
+        <mxCell id="QIveis97ZD262eNUPoh_-74" value="Methods  [M]" style="fontFamily=Arial;fontColor=#182b3c;whiteSpace=wrap;html=1;rounded=1;arcSize=8;fillColor=#edf4fb;strokeColor=#305e88;strokeWidth=3;fontSize=36;fontStyle=1;align=center;verticalAlign=middle;" vertex="1" parent="QIveis97ZD262eNUPoh_-73">
+          <mxGeometry as="geometry" x="420" y="0" width="480" height="90" />
+        </mxCell>
+        <mxCell id="bone-73" edge="1" parent="QIveis97ZD262eNUPoh_-73" style="edgeStyle=none;rounded=0;html=1;strokeColor=#305e88;strokeWidth=4;startArrow=none;endArrow=none;endFill=1;">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="660" y="90" />
+            <mxPoint as="targetPoint" x="900" y="940" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="sub-81" edge="1" parent="QIveis97ZD262eNUPoh_-73" style="edgeStyle=none;rounded=0;html=1;strokeColor=#305e88;strokeWidth=2;startArrow=none;endArrow=none;endFill=1;">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="45" y="450" />
+            <mxPoint as="targetPoint" x="761.6470588235294" y="450" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="QIveis97ZD262eNUPoh_-81" value="Review consistency" style="fontFamily=Arial;fontColor=#182b3c;whiteSpace=wrap;html=1;text;strokeColor=none;fillColor=none;fontSize=32;fontStyle=1;align=left;verticalAlign=middle;spacing=4;" vertex="1" parent="QIveis97ZD262eNUPoh_-73">
+          <mxGeometry as="geometry" x="50" y="180" width="750" height="48" />
+        </mxCell>
+        <mxCell id="QIveis97ZD262eNUPoh_-82" value="Different rules for&lt;br&gt;grouping similar&lt;br&gt;issues" style="fontFamily=Arial;fontColor=#182b3c;whiteSpace=wrap;html=1;text;strokeColor=none;fillColor=none;fontSize=30;fontStyle=0;align=left;verticalAlign=middle;spacing=4;" vertex="1" parent="QIveis97ZD262eNUPoh_-73">
+          <mxGeometry as="geometry" x="65" y="240" width="280" height="145" />
+        </mxCell>
+        <mxCell id="cause-82" edge="1" parent="QIveis97ZD262eNUPoh_-73" style="edgeStyle=none;rounded=0;html=1;strokeColor=#305e88;strokeWidth=2;startArrow=none;endArrow=none;endFill=1;">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="190.0" y="375" />
+            <mxPoint as="targetPoint" x="255.0" y="450" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="QIveis97ZD262eNUPoh_-86" value="Summaries read&lt;br&gt;without the original&lt;br&gt;comments" style="fontFamily=Arial;fontColor=#182b3c;whiteSpace=wrap;html=1;text;strokeColor=none;fillColor=none;fontSize=30;fontStyle=0;align=left;verticalAlign=middle;spacing=4;" vertex="1" parent="QIveis97ZD262eNUPoh_-73">
+          <mxGeometry as="geometry" x="385" y="240" width="280" height="145" />
+        </mxCell>
+        <mxCell id="cause-86" edge="1" parent="QIveis97ZD262eNUPoh_-73" style="edgeStyle=none;rounded=0;html=1;strokeColor=#305e88;strokeWidth=2;startArrow=none;endArrow=none;endFill=1;">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="510.0" y="375" />
+            <mxPoint as="targetPoint" x="575.0" y="450" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="sub-93" edge="1" parent="QIveis97ZD262eNUPoh_-73" style="edgeStyle=none;rounded=0;html=1;strokeColor=#305e88;strokeWidth=2;startArrow=none;endArrow=none;endFill=1;">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="45" y="800" />
+            <mxPoint as="targetPoint" x="860.4705882352941" y="800" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="QIveis97ZD262eNUPoh_-93" value="Review coverage" style="fontFamily=Arial;fontColor=#182b3c;whiteSpace=wrap;html=1;text;strokeColor=none;fillColor=none;fontSize=32;fontStyle=1;align=left;verticalAlign=middle;spacing=4;" vertex="1" parent="QIveis97ZD262eNUPoh_-73">
+          <mxGeometry as="geometry" x="50" y="530" width="750" height="48" />
+        </mxCell>
+        <mxCell id="QIveis97ZD262eNUPoh_-94" value="Assessment depends on concern severity and urgency" style="fontFamily=Arial;fontColor=#182b3c;whiteSpace=wrap;html=1;text;strokeColor=none;fillColor=none;fontSize=30;fontStyle=0;align=left;verticalAlign=middle;spacing=4;" vertex="1" parent="QIveis97ZD262eNUPoh_-73">
+          <mxGeometry as="geometry" x="65" y="590" width="280" height="145" />
+        </mxCell>
+        <mxCell id="cause-94" edge="1" parent="QIveis97ZD262eNUPoh_-73" style="edgeStyle=none;rounded=0;html=1;strokeColor=#305e88;strokeWidth=2;startArrow=none;endArrow=none;endFill=1;">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="190.0" y="725" />
+            <mxPoint as="targetPoint" x="255.0" y="800" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="QIveis97ZD262eNUPoh_-98" value="Failed or&lt;br&gt;unprocessed&lt;br&gt;feedback overlooked" style="fontFamily=Arial;fontColor=#182b3c;whiteSpace=wrap;html=1;text;strokeColor=none;fillColor=none;fontSize=30;fontStyle=0;align=left;verticalAlign=middle;spacing=4;" vertex="1" parent="QIveis97ZD262eNUPoh_-73">
+          <mxGeometry as="geometry" x="385" y="590" width="280" height="145" />
+        </mxCell>
+        <mxCell id="cause-98" edge="1" parent="QIveis97ZD262eNUPoh_-73" style="edgeStyle=none;rounded=0;html=1;strokeColor=#305e88;strokeWidth=2;startArrow=none;endArrow=none;endFill=1;">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="510.0" y="725" />
+            <mxPoint as="targetPoint" x="575.0" y="800" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="QIveis97ZD262eNUPoh_-102" value="" style="group;fillColor=none;strokeColor=none;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="2950" y="300" width="930" height="940" />
+        </mxCell>
+        <mxCell id="QIveis97ZD262eNUPoh_-103" value="Management  [M]" style="fontFamily=Arial;fontColor=#182b3c;whiteSpace=wrap;html=1;rounded=1;arcSize=8;fillColor=#edf4fb;strokeColor=#305e88;strokeWidth=3;fontSize=36;fontStyle=1;align=center;verticalAlign=middle;" vertex="1" parent="QIveis97ZD262eNUPoh_-102">
+          <mxGeometry as="geometry" x="420" y="0" width="480" height="90" />
+        </mxCell>
+        <mxCell id="bone-102" edge="1" parent="QIveis97ZD262eNUPoh_-102" style="edgeStyle=none;rounded=0;html=1;strokeColor=#305e88;strokeWidth=4;startArrow=none;endArrow=none;endFill=1;">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="660" y="90" />
+            <mxPoint as="targetPoint" x="900" y="940" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="sub-110" edge="1" parent="QIveis97ZD262eNUPoh_-102" style="edgeStyle=none;rounded=0;html=1;strokeColor=#305e88;strokeWidth=2;startArrow=none;endArrow=none;endFill=1;">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="45" y="450" />
+            <mxPoint as="targetPoint" x="761.6470588235294" y="450" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="QIveis97ZD262eNUPoh_-110" value="Review ownership" style="fontFamily=Arial;fontColor=#182b3c;whiteSpace=wrap;html=1;text;strokeColor=none;fillColor=none;fontSize=32;fontStyle=1;align=left;verticalAlign=middle;spacing=4;" vertex="1" parent="QIveis97ZD262eNUPoh_-102">
+          <mxGeometry as="geometry" x="50" y="180" width="750" height="48" />
+        </mxCell>
+        <mxCell id="QIveis97ZD262eNUPoh_-111" value="Multiple offices may be responsible in handling concerns" style="fontFamily=Arial;fontColor=#182b3c;whiteSpace=wrap;html=1;text;strokeColor=none;fillColor=none;fontSize=30;fontStyle=0;align=left;verticalAlign=middle;spacing=4;" vertex="1" parent="QIveis97ZD262eNUPoh_-102">
+          <mxGeometry as="geometry" x="65" y="240" width="280" height="145" />
+        </mxCell>
+        <mxCell id="cause-111" edge="1" parent="QIveis97ZD262eNUPoh_-102" style="edgeStyle=none;rounded=0;html=1;strokeColor=#305e88;strokeWidth=2;startArrow=none;endArrow=none;endFill=1;">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="190.0" y="375" />
+            <mxPoint as="targetPoint" x="255.0" y="450" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="QIveis97ZD262eNUPoh_-115" value="Follow-up depends on the responisble office or person " style="fontFamily=Arial;fontColor=#182b3c;whiteSpace=wrap;html=1;text;strokeColor=none;fillColor=none;fontSize=30;fontStyle=0;align=left;verticalAlign=middle;spacing=4;" vertex="1" parent="QIveis97ZD262eNUPoh_-102">
+          <mxGeometry as="geometry" x="385" y="240" width="280" height="145" />
+        </mxCell>
+        <mxCell id="cause-115" edge="1" parent="QIveis97ZD262eNUPoh_-102" style="edgeStyle=none;rounded=0;html=1;strokeColor=#305e88;strokeWidth=2;startArrow=none;endArrow=none;endFill=1;">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="510.0" y="375" />
+            <mxPoint as="targetPoint" x="575.0" y="450" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="sub-122" edge="1" parent="QIveis97ZD262eNUPoh_-102" style="edgeStyle=none;rounded=0;html=1;strokeColor=#305e88;strokeWidth=2;startArrow=none;endArrow=none;endFill=1;">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="45" y="800" />
+            <mxPoint as="targetPoint" x="860.4705882352941" y="800" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="QIveis97ZD262eNUPoh_-122" value="Action coordination" style="fontFamily=Arial;fontColor=#182b3c;whiteSpace=wrap;html=1;text;strokeColor=none;fillColor=none;fontSize=32;fontStyle=1;align=left;verticalAlign=middle;spacing=4;" vertex="1" parent="QIveis97ZD262eNUPoh_-102">
+          <mxGeometry as="geometry" x="50" y="530" width="750" height="48" />
+        </mxCell>
+        <mxCell id="QIveis97ZD262eNUPoh_-123" value="Decision makers need organized feedback summaries" style="fontFamily=Arial;fontColor=#182b3c;whiteSpace=wrap;html=1;text;strokeColor=none;fillColor=none;fontSize=30;fontStyle=0;align=left;verticalAlign=middle;spacing=4;" vertex="1" parent="QIveis97ZD262eNUPoh_-102">
+          <mxGeometry as="geometry" x="225" y="590" width="380" height="145" />
+        </mxCell>
+        <mxCell id="cause-123" edge="1" parent="QIveis97ZD262eNUPoh_-102" style="edgeStyle=none;rounded=0;html=1;strokeColor=#305e88;strokeWidth=2;startArrow=none;endArrow=none;endFill=1;">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="400.0" y="725" />
+            <mxPoint as="targetPoint" x="465.0" y="800" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="QIveis97ZD262eNUPoh_-131" value="" style="group;fillColor=none;strokeColor=none;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1990" y="1240" width="930" height="940" />
+        </mxCell>
+        <mxCell id="QIveis97ZD262eNUPoh_-132" value="Measurement  [M]" style="fontFamily=Arial;fontColor=#182b3c;whiteSpace=wrap;html=1;rounded=1;arcSize=8;fillColor=#edf4fb;strokeColor=#305e88;strokeWidth=3;fontSize=36;fontStyle=1;align=center;verticalAlign=middle;" vertex="1" parent="QIveis97ZD262eNUPoh_-131">
+          <mxGeometry as="geometry" x="420" y="850" width="480" height="90" />
+        </mxCell>
+        <mxCell id="bone-131" edge="1" parent="QIveis97ZD262eNUPoh_-131" style="edgeStyle=none;rounded=0;html=1;strokeColor=#305e88;strokeWidth=4;startArrow=none;endArrow=none;endFill=1;">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="660" y="850" />
+            <mxPoint as="targetPoint" x="900" y="0" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="sub-139" edge="1" parent="QIveis97ZD262eNUPoh_-131" style="edgeStyle=none;rounded=0;html=1;strokeColor=#305e88;strokeWidth=2;startArrow=none;endArrow=none;endFill=1;">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="45" y="140" />
+            <mxPoint as="targetPoint" x="860.4705882352941" y="140" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="QIveis97ZD262eNUPoh_-139" value="Metric interpretation" style="fontFamily=Arial;fontColor=#182b3c;whiteSpace=wrap;html=1;text;strokeColor=none;fillColor=none;fontSize=32;fontStyle=1;align=left;verticalAlign=middle;spacing=4;" vertex="1" parent="QIveis97ZD262eNUPoh_-131">
+          <mxGeometry as="geometry" x="50" y="365" width="750" height="48" />
+        </mxCell>
+        <mxCell id="QIveis97ZD262eNUPoh_-140" value="Sensitive conerns are the one that is prioritize" style="fontFamily=Arial;fontColor=#182b3c;whiteSpace=wrap;html=1;text;strokeColor=none;fillColor=none;fontSize=30;fontStyle=0;align=left;verticalAlign=middle;spacing=4;" vertex="1" parent="QIveis97ZD262eNUPoh_-131">
+          <mxGeometry as="geometry" x="65" y="225" width="280" height="145" />
+        </mxCell>
+        <mxCell id="cause-140" edge="1" parent="QIveis97ZD262eNUPoh_-131" style="edgeStyle=none;rounded=0;html=1;strokeColor=#305e88;strokeWidth=2;startArrow=none;endArrow=none;endFill=1;">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="190.0" y="215" />
+            <mxPoint as="targetPoint" x="255.0" y="140" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="QIveis97ZD262eNUPoh_-144" value="Concern are assessed by type, seriousness and urgency. " style="fontFamily=Arial;fontColor=#182b3c;whiteSpace=wrap;html=1;text;strokeColor=none;fillColor=none;fontSize=30;fontStyle=0;align=left;verticalAlign=middle;spacing=4;" vertex="1" parent="QIveis97ZD262eNUPoh_-131">
+          <mxGeometry as="geometry" x="385" y="225" width="280" height="145" />
+        </mxCell>
+        <mxCell id="cause-144" edge="1" parent="QIveis97ZD262eNUPoh_-131" style="edgeStyle=none;rounded=0;html=1;strokeColor=#305e88;strokeWidth=2;startArrow=none;endArrow=none;endFill=1;">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="510.0" y="215" />
+            <mxPoint as="targetPoint" x="575.0" y="140" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="sub-151" edge="1" parent="QIveis97ZD262eNUPoh_-131" style="edgeStyle=none;rounded=0;html=1;strokeColor=#305e88;strokeWidth=2;startArrow=none;endArrow=none;endFill=1;">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="45" y="520" />
+            <mxPoint as="targetPoint" x="753.1764705882354" y="520" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="QIveis97ZD262eNUPoh_-151" value="Priority evidence" style="fontFamily=Arial;fontColor=#182b3c;whiteSpace=wrap;html=1;text;strokeColor=none;fillColor=none;fontSize=32;fontStyle=1;align=left;verticalAlign=middle;spacing=4;" vertex="1" parent="QIveis97ZD262eNUPoh_-131">
+          <mxGeometry as="geometry" x="50" y="745" width="750" height="48" />
+        </mxCell>
+        <mxCell id="QIveis97ZD262eNUPoh_-152" value="No priority criteria" style="fontFamily=Arial;fontColor=#182b3c;whiteSpace=wrap;html=1;text;strokeColor=none;fillColor=none;fontSize=30;fontStyle=0;align=left;verticalAlign=middle;spacing=4;" vertex="1" parent="QIveis97ZD262eNUPoh_-131">
+          <mxGeometry as="geometry" x="65" y="605" width="280" height="145" />
+        </mxCell>
+        <mxCell id="cause-152" edge="1" parent="QIveis97ZD262eNUPoh_-131" style="edgeStyle=none;rounded=0;html=1;strokeColor=#305e88;strokeWidth=2;startArrow=none;endArrow=none;endFill=1;">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="190.0" y="595" />
+            <mxPoint as="targetPoint" x="255.0" y="520" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="tT1V_cYeFHQFOwOYgNKM-65" value="Urgency set manually" style="fontFamily=Arial;fontColor=#182b3c;whiteSpace=wrap;html=1;text;strokeColor=none;fillColor=none;fontSize=30;fontStyle=0;align=left;verticalAlign=middle;spacing=4;" vertex="1" parent="QIveis97ZD262eNUPoh_-131">
+          <mxGeometry as="geometry" x="385" y="605" width="280" height="145" />
+        </mxCell>
+        <mxCell id="cause-tT1V_cYeFHQFOwOYgNKM-65" edge="1" parent="QIveis97ZD262eNUPoh_-131" style="edgeStyle=none;rounded=0;html=1;strokeColor=#305e88;strokeWidth=2;startArrow=none;endArrow=none;endFill=1;">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="510.0" y="595" />
+            <mxPoint as="targetPoint" x="575.0" y="520" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="QIveis97ZD262eNUPoh_-189" value="" style="group;fillColor=none;strokeColor=none;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="70" y="1240" width="930" height="940" />
+        </mxCell>
+        <mxCell id="QIveis97ZD262eNUPoh_-190" value="People  [P]" style="fontFamily=Arial;fontColor=#182b3c;whiteSpace=wrap;html=1;rounded=1;arcSize=8;fillColor=#fcf5e8;strokeColor=#8b6228;strokeWidth=3;fontSize=36;fontStyle=1;align=center;verticalAlign=middle;" vertex="1" parent="QIveis97ZD262eNUPoh_-189">
+          <mxGeometry as="geometry" x="420" y="850" width="480" height="90" />
+        </mxCell>
+        <mxCell id="bone-189" edge="1" parent="QIveis97ZD262eNUPoh_-189" style="edgeStyle=none;rounded=0;html=1;strokeColor=#8b6228;strokeWidth=4;startArrow=none;endArrow=none;endFill=1;">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="660" y="850" />
+            <mxPoint as="targetPoint" x="900" y="0" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="sub-197" edge="1" parent="QIveis97ZD262eNUPoh_-189" style="edgeStyle=none;rounded=0;html=1;strokeColor=#8b6228;strokeWidth=2;startArrow=none;endArrow=none;endFill=1;">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="45" y="140" />
+            <mxPoint as="targetPoint" x="860.4705882352941" y="140" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="QIveis97ZD262eNUPoh_-197" value="Willingness to participate" style="fontFamily=Arial;fontColor=#182b3c;whiteSpace=wrap;html=1;text;strokeColor=none;fillColor=none;fontSize=32;fontStyle=1;align=left;verticalAlign=middle;spacing=4;" vertex="1" parent="QIveis97ZD262eNUPoh_-189">
+          <mxGeometry as="geometry" x="50" y="365" width="750" height="48" />
+        </mxCell>
+        <mxCell id="QIveis97ZD262eNUPoh_-198" value="Fear of identification&lt;br&gt;from comment&lt;br&gt;details" style="fontFamily=Arial;fontColor=#182b3c;whiteSpace=wrap;html=1;text;strokeColor=none;fillColor=none;fontSize=30;fontStyle=0;align=left;verticalAlign=middle;spacing=4;" vertex="1" parent="QIveis97ZD262eNUPoh_-189">
+          <mxGeometry as="geometry" x="65" y="225" width="280" height="145" />
+        </mxCell>
+        <mxCell id="cause-198" edge="1" parent="QIveis97ZD262eNUPoh_-189" style="edgeStyle=none;rounded=0;html=1;strokeColor=#8b6228;strokeWidth=2;startArrow=none;endArrow=none;endFill=1;">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="190.0" y="215" />
+            <mxPoint as="targetPoint" x="255.0" y="140" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="QIveis97ZD262eNUPoh_-202" value="Doubt that feedback&lt;br&gt;will lead to action" style="fontFamily=Arial;fontColor=#182b3c;whiteSpace=wrap;html=1;text;strokeColor=none;fillColor=none;fontSize=30;fontStyle=0;align=left;verticalAlign=middle;spacing=4;" vertex="1" parent="QIveis97ZD262eNUPoh_-189">
+          <mxGeometry as="geometry" x="385" y="225" width="280" height="145" />
+        </mxCell>
+        <mxCell id="cause-202" edge="1" parent="QIveis97ZD262eNUPoh_-189" style="edgeStyle=none;rounded=0;html=1;strokeColor=#8b6228;strokeWidth=2;startArrow=none;endArrow=none;endFill=1;">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="510.0" y="215" />
+            <mxPoint as="targetPoint" x="575.0" y="140" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="sub-209" edge="1" parent="QIveis97ZD262eNUPoh_-189" style="edgeStyle=none;rounded=0;html=1;strokeColor=#8b6228;strokeWidth=2;startArrow=none;endArrow=none;endFill=1;">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="45" y="520" />
+            <mxPoint as="targetPoint" x="753.1764705882354" y="520" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="QIveis97ZD262eNUPoh_-209" value="Submission behavior" style="fontFamily=Arial;fontColor=#182b3c;whiteSpace=wrap;html=1;text;strokeColor=none;fillColor=none;fontSize=32;fontStyle=1;align=left;verticalAlign=middle;spacing=4;" vertex="1" parent="QIveis97ZD262eNUPoh_-189">
+          <mxGeometry as="geometry" x="50" y="745" width="750" height="48" />
+        </mxCell>
+        <mxCell id="QIveis97ZD262eNUPoh_-210" value="Jokes or remarks&lt;br&gt;unrelated to CCIS" style="fontFamily=Arial;fontColor=#182b3c;whiteSpace=wrap;html=1;text;strokeColor=none;fillColor=none;fontSize=30;fontStyle=0;align=left;verticalAlign=middle;spacing=4;" vertex="1" parent="QIveis97ZD262eNUPoh_-189">
+          <mxGeometry as="geometry" x="225" y="605" width="380" height="145" />
+        </mxCell>
+        <mxCell id="cause-210" edge="1" parent="QIveis97ZD262eNUPoh_-189" style="edgeStyle=none;rounded=0;html=1;strokeColor=#8b6228;strokeWidth=2;startArrow=none;endArrow=none;endFill=1;">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="400.0" y="595" />
+            <mxPoint as="targetPoint" x="465.0" y="520" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="QIveis97ZD262eNUPoh_-218" value="" style="group;fillColor=none;strokeColor=none;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1030" y="1240" width="930" height="940" />
+        </mxCell>
+        <mxCell id="QIveis97ZD262eNUPoh_-219" value="Place  [P]" style="fontFamily=Arial;fontColor=#182b3c;whiteSpace=wrap;html=1;rounded=1;arcSize=8;fillColor=#fcf5e8;strokeColor=#8b6228;strokeWidth=3;fontSize=36;fontStyle=1;align=center;verticalAlign=middle;" vertex="1" parent="QIveis97ZD262eNUPoh_-218">
+          <mxGeometry as="geometry" x="420" y="850" width="480" height="90" />
+        </mxCell>
+        <mxCell id="bone-218" edge="1" parent="QIveis97ZD262eNUPoh_-218" style="edgeStyle=none;rounded=0;html=1;strokeColor=#8b6228;strokeWidth=4;startArrow=none;endArrow=none;endFill=1;">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="660" y="850" />
+            <mxPoint as="targetPoint" x="900" y="0" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="sub-226" edge="1" parent="QIveis97ZD262eNUPoh_-218" style="edgeStyle=none;rounded=0;html=1;strokeColor=#8b6228;strokeWidth=2;startArrow=none;endArrow=none;endFill=1;">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="45" y="140" />
+            <mxPoint as="targetPoint" x="860.4705882352941" y="140" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="QIveis97ZD262eNUPoh_-226" value="Device access" style="fontFamily=Arial;fontColor=#182b3c;whiteSpace=wrap;html=1;text;strokeColor=none;fillColor=none;fontSize=32;fontStyle=1;align=left;verticalAlign=middle;spacing=4;" vertex="1" parent="QIveis97ZD262eNUPoh_-218">
+          <mxGeometry as="geometry" x="50" y="365" width="750" height="48" />
+        </mxCell>
+        <mxCell id="QIveis97ZD262eNUPoh_-227" value="Limited access to a&lt;br&gt;personal device" style="fontFamily=Arial;fontColor=#182b3c;whiteSpace=wrap;html=1;text;strokeColor=none;fillColor=none;fontSize=30;fontStyle=0;align=left;verticalAlign=middle;spacing=4;" vertex="1" parent="QIveis97ZD262eNUPoh_-218">
+          <mxGeometry as="geometry" x="225" y="225" width="380" height="145" />
+        </mxCell>
+        <mxCell id="cause-227" edge="1" parent="QIveis97ZD262eNUPoh_-218" style="edgeStyle=none;rounded=0;html=1;strokeColor=#8b6228;strokeWidth=2;startArrow=none;endArrow=none;endFill=1;">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="400.0" y="215" />
+            <mxPoint as="targetPoint" x="465.0" y="140" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="sub-238" edge="1" parent="QIveis97ZD262eNUPoh_-218" style="edgeStyle=none;rounded=0;html=1;strokeColor=#8b6228;strokeWidth=2;startArrow=none;endArrow=none;endFill=1;">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="45" y="520" />
+            <mxPoint as="targetPoint" x="753.1764705882354" y="520" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="QIveis97ZD262eNUPoh_-238" value="Submission environment" style="fontFamily=Arial;fontColor=#182b3c;whiteSpace=wrap;html=1;text;strokeColor=none;fillColor=none;fontSize=32;fontStyle=1;align=left;verticalAlign=middle;spacing=4;" vertex="1" parent="QIveis97ZD262eNUPoh_-218">
+          <mxGeometry as="geometry" x="50" y="745" width="750" height="48" />
+        </mxCell>
+        <mxCell id="tT1V_cYeFHQFOwOYgNKM-93" value="Private concerns are handled by the faculties" style="fontFamily=Arial;fontColor=#182b3c;whiteSpace=wrap;html=1;text;strokeColor=none;fillColor=none;fontSize=30;fontStyle=0;align=left;verticalAlign=middle;spacing=4;" vertex="1" parent="QIveis97ZD262eNUPoh_-218">
+          <mxGeometry as="geometry" x="225" y="605" width="380" height="145" />
+        </mxCell>
+        <mxCell id="cause-tT1V_cYeFHQFOwOYgNKM-93" edge="1" parent="QIveis97ZD262eNUPoh_-218" style="edgeStyle=none;rounded=0;html=1;strokeColor=#8b6228;strokeWidth=2;startArrow=none;endArrow=none;endFill=1;">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="400.0" y="595" />
+            <mxPoint as="targetPoint" x="465.0" y="520" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="QIveis97ZD262eNUPoh_-305" value="" style="group;fillColor=none;strokeColor=none;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="2950" y="1240" width="930" height="940" />
+        </mxCell>
+        <mxCell id="QIveis97ZD262eNUPoh_-306" value="Systems  [S]" style="fontFamily=Arial;fontColor=#182b3c;whiteSpace=wrap;html=1;rounded=1;arcSize=8;fillColor=#ebf7f3;strokeColor=#287269;strokeWidth=3;fontSize=36;fontStyle=1;align=center;verticalAlign=middle;" vertex="1" parent="QIveis97ZD262eNUPoh_-305">
+          <mxGeometry as="geometry" x="420" y="850" width="480" height="90" />
+        </mxCell>
+        <mxCell id="bone-305" edge="1" parent="QIveis97ZD262eNUPoh_-305" style="edgeStyle=none;rounded=0;html=1;strokeColor=#287269;strokeWidth=4;startArrow=none;endArrow=none;endFill=1;">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="660" y="850" />
+            <mxPoint as="targetPoint" x="900" y="0" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="sub-313" edge="1" parent="QIveis97ZD262eNUPoh_-305" style="edgeStyle=none;rounded=0;html=1;strokeColor=#287269;strokeWidth=2;startArrow=none;endArrow=none;endFill=1;">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="45" y="140" />
+            <mxPoint as="targetPoint" x="860.4705882352941" y="140" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="QIveis97ZD262eNUPoh_-313" value="Processing states" style="fontFamily=Arial;fontColor=#182b3c;whiteSpace=wrap;html=1;text;strokeColor=none;fillColor=none;fontSize=32;fontStyle=1;align=left;verticalAlign=middle;spacing=4;" vertex="1" parent="QIveis97ZD262eNUPoh_-305">
+          <mxGeometry as="geometry" x="50" y="365" width="750" height="48" />
+        </mxCell>
+        <mxCell id="QIveis97ZD262eNUPoh_-314" value="Limited dasboard-based monitor" style="fontFamily=Arial;fontColor=#182b3c;whiteSpace=wrap;html=1;text;strokeColor=none;fillColor=none;fontSize=30;fontStyle=0;align=left;verticalAlign=middle;spacing=4;" vertex="1" parent="QIveis97ZD262eNUPoh_-305">
+          <mxGeometry as="geometry" x="65" y="225" width="280" height="145" />
+        </mxCell>
+        <mxCell id="cause-314" edge="1" parent="QIveis97ZD262eNUPoh_-305" style="edgeStyle=none;rounded=0;html=1;strokeColor=#287269;strokeWidth=2;startArrow=none;endArrow=none;endFill=1;">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="190.0" y="215" />
+            <mxPoint as="targetPoint" x="255.0" y="140" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="QIveis97ZD262eNUPoh_-318" value="Lack of centralized digital platform " style="fontFamily=Arial;fontColor=#182b3c;whiteSpace=wrap;html=1;text;strokeColor=none;fillColor=none;fontSize=30;fontStyle=0;align=left;verticalAlign=middle;spacing=4;" vertex="1" parent="QIveis97ZD262eNUPoh_-305">
+          <mxGeometry as="geometry" x="385" y="225" width="280" height="145" />
+        </mxCell>
+        <mxCell id="cause-318" edge="1" parent="QIveis97ZD262eNUPoh_-305" style="edgeStyle=none;rounded=0;html=1;strokeColor=#287269;strokeWidth=2;startArrow=none;endArrow=none;endFill=1;">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="510.0" y="215" />
+            <mxPoint as="targetPoint" x="575.0" y="140" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="sub-325" edge="1" parent="QIveis97ZD262eNUPoh_-305" style="edgeStyle=none;rounded=0;html=1;strokeColor=#287269;strokeWidth=2;startArrow=none;endArrow=none;endFill=1;">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="45" y="520" />
+            <mxPoint as="targetPoint" x="753.1764705882354" y="520" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="QIveis97ZD262eNUPoh_-325" value="Report coverage" style="fontFamily=Arial;fontColor=#182b3c;whiteSpace=wrap;html=1;text;strokeColor=none;fillColor=none;fontSize=32;fontStyle=1;align=left;verticalAlign=middle;spacing=4;" vertex="1" parent="QIveis97ZD262eNUPoh_-305">
+          <mxGeometry as="geometry" x="50" y="745" width="750" height="48" />
+        </mxCell>
+        <mxCell id="QIveis97ZD262eNUPoh_-330" value="Comparisons mix&lt;br&gt;different reporting&lt;br&gt;periods" style="fontFamily=Arial;fontColor=#182b3c;whiteSpace=wrap;html=1;text;strokeColor=none;fillColor=none;fontSize=30;fontStyle=0;align=left;verticalAlign=middle;spacing=4;" vertex="1" parent="QIveis97ZD262eNUPoh_-305">
+          <mxGeometry as="geometry" x="225" y="605" width="380" height="145" />
+        </mxCell>
+        <mxCell id="cause-330" edge="1" parent="QIveis97ZD262eNUPoh_-305" style="edgeStyle=none;rounded=0;html=1;strokeColor=#287269;strokeWidth=2;startArrow=none;endArrow=none;endFill=1;">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="400.0" y="595" />
+            <mxPoint as="targetPoint" x="465.0" y="520" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="QIveis97ZD262eNUPoh_-363" value="" style="rounded=0;fillColor=#f7f9fb;strokeColor=#d6e0e8;strokeWidth=1;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="70" y="2270" width="4620" height="145" />
+        </mxCell>
+        <mxCell id="QIveis97ZD262eNUPoh_-364" value="Analysis status and category scope" style="fontFamily=Arial;fontColor=#182b3c;whiteSpace=wrap;html=1;text;strokeColor=none;fillColor=none;fontSize=29;fontStyle=1;align=left;verticalAlign=middle;spacing=4;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="95" y="2280" width="4540" height="40" />
+        </mxCell>
+        <mxCell id="QIveis97ZD262eNUPoh_-365" value="Candidate causes for stakeholder validation; these are not established root causes or confirmed operational failures. Families use the supplied 8 Ms / 8 Ps / 4 Ss reference.&lt;br&gt;Related names (such as People / Manpower and Methods / Process) are consolidated. References: Wikipedia, Ishikawa diagram; draw.io fishbone guide; supplied Fishbone Diagram PDF." style="fontFamily=Arial;fontColor=#182b3c;whiteSpace=wrap;html=1;text;strokeColor=none;fillColor=none;fontSize=26;fontStyle=0;align=left;verticalAlign=middle;spacing=4;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="95" y="2325" width="4540" height="80" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
