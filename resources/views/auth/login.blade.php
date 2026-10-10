@@ -19,7 +19,7 @@
             </div>
         @endif
 
-        <form action="{{ route('login') }}" method="POST">
+        <form action="{{ route('login') }}" method="POST" data-pending-label="Signing you in…">
             @csrf
 
             <div class="form-group">

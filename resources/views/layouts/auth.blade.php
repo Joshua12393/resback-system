@@ -25,8 +25,8 @@
 
             <div class="auth-intro-copy">
                 <span class="academic-eyebrow">College of Computing and Information Sciences</span>
-                <h1>A clearer way to hear every student voice.</h1>
-                <p>Share experiences, identify campus concerns, and support evidence-based improvements in our college community.</p>
+                <h1>Your voice can make a difference.</h1>
+                <p>A better CCIS starts with listening. Share your experience and help our college understand what matters to you.</p>
             </div>
 
             <div class="auth-assurance">

@@ -20,7 +20,7 @@
             </div>
         @endif
 
-        <form action="{{ route('register') }}" method="POST">
+        <form action="{{ route('register') }}" method="POST" data-pending-label="Creating your account…">
             @csrf
 
             <div class="form-group">
