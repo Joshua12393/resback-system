@@ -38,7 +38,7 @@
         </div>
 
         <div class="table-wrapper">
-            <table class="data-table">
+            <table class="data-table account-table">
                 <thead>
                     <tr><th>Nickname</th><th>Role</th><th>Status</th><th>Registered</th><th>Actions</th></tr>
                 </thead>
@@ -61,10 +61,10 @@
                             @if(! $canManageAccount)
                                 <span class="badge badge-pending">{{ \Illuminate\Support\Str::headline($user->role) }}</span>
                             @else
-                                <form action="{{ route('accounts.role', $user) }}" method="POST" style="display:flex;gap:.5rem;align-items:center;">
+                                <form action="{{ route('accounts.role', $user) }}" method="POST" class="account-role-form">
                                     @csrf
                                     @method('PATCH')
-                                    <select name="role" class="form-control" style="min-width:110px;padding:.45rem .65rem;" aria-label="Role for {{ $user->nickname }}">
+                                    <select id="account-role-{{ $user->id }}" name="role" class="form-control" data-styled-select data-select-floating aria-label="Role for {{ $user->nickname }}">
                                         @foreach(auth()->user()->isSuperAdmin() ? ['student', 'faculty', 'admin', 'super_admin'] : ['student', 'faculty'] as $role)
                                             <option value="{{ $role }}" @selected($user->role === $role)>{{ \Illuminate\Support\Str::headline($role) }}</option>
                                         @endforeach
