@@ -25,13 +25,15 @@ The project was created for a Software Engineering course and is currently limit
 
 ## UML diagrams
 
-The UML diagrams reflect the current ResBack features, workflows, classes, services, and role permissions.
+The UML diagrams document ResBack's features, workflows, classes, logical architecture, and role permissions. The deployment diagram describes a proposed hosting setup; the other diagrams describe the application design.
 
 - **Use case diagram:** [PDF](diagrams/use-case/pdf/Lab%204%20Team%20Mira.drawio.pdf) · [Editable draw.io](diagrams/use-case/Lab%204%20Team%20Mira.drawio)
-- **Activity diagrams:** [Combined PNG](diagrams/activity/resback-activity-diagrams.png) · [12 individual pages](diagrams/activity/png/)
+- **Use case descriptions:** [PDF](diagrams/use-case-description/pdf/ResBack%20Use%20Case%20Descriptions.pdf) · [Word document](diagrams/use-case-description/ResBack%20Use%20Case%20Descriptions.docx)
+- **Activity diagrams:** [Combined PNG](diagrams/activity/resback-activity-diagrams.png) · [12 individual PNG pages](diagrams/activity/png/) · [Editable draw.io (12 pages)](diagrams/activity/resback-activity-diagrams-cleaned.drawio) · [PNG archive](diagrams/activity/resback-activity-png-pages-cleaned.zip)
 - **Class diagrams:** [Combined PNG](diagrams/class/resback-class-diagrams.png) · [6 individual pages](diagrams/class/png/)
 - **Component diagram:** [PNG](diagrams/component/png/resback-component.png) · [Editable draw.io](diagrams/component/resback-component.drawio)
-- **Deployment diagram:** [PNG](diagrams/deployment/png/resback-deployment.png) · [Editable draw.io](diagrams/deployment/resback-deployment.drawio)
+- **Package diagram:** [PNG](diagrams/package/Lab%209%20Team%20Mira%20corrected.png) · [PDF](diagrams/package/Lab%209%20Team%20Mira%20corrected.pdf) · [Editable draw.io](diagrams/package/Lab%209%20Team%20Mira%20corrected.drawio)
+- **Proposed deployment diagram:** [PNG](diagrams/deployment/png/resback-deployment.png) · [Editable draw.io](diagrams/deployment/resback-deployment.drawio)
 
 The use case diagram covers account access, profiles, feedback submission and analysis, personal feedback history, dashboard filtering, report exports, feedback deletion, and account administration for Student, Faculty, Admin, and Super Admin roles.
 
@@ -41,21 +43,25 @@ The class set covers the core domain model; authentication, accounts, and profil
 
 The component diagram shows the Web Presentation, Identity & Accounts, Feedback Management, Sentiment Analysis, Concern Ranking, and Dashboard & Reporting modules inside the Laravel application. It includes the browser, Gemini API, profile-photo storage, report libraries, and relational database, with provided/required interfaces, ports, and delegation connectors. These are logical groupings of existing code, not separate deployed services or PHP interface declarations; shared database access is shown once at the application boundary. Notation follows the supplied course reference and the [draw.io component-diagram guide](https://www.drawio.com/docs/diagram-types/uml/component-diagrams/), using circles for provided interfaces and sockets for required interfaces.
 
-The deployment diagram shows the documented local setup: a browser and PHP development server on a Windows workstation, a local XAMPP MySQL/MariaDB database, application files, and the external Google Gemini API used for Gemma analysis. It includes execution environments, deployed artifacts, and communication protocols.
+The package diagram groups the application into Web Presentation, Feedback & Analysis, User Management, Analytics & Reporting, and Data Models / Access. Dashed dependency arrows show how these packages use each other and the external Gemini API, export libraries, and relational database.
+
+The deployment diagram shows the **proposed Render Free and Supabase Free architecture**: a browser connects to a Docker/PHP Laravel web service on Render, which communicates with Supabase PostgreSQL, Supabase Storage for profile photos, and the Google Gemini API for Gemma analysis. It identifies deployed artifacts, execution environments, and communication protocols. This is a target architecture; deployment, PostgreSQL compatibility work, and Supabase profile-photo storage integration are not yet implemented.
+
+Open the editable `.drawio` files in [diagrams.net](https://app.diagrams.net/). The activity source contains 12 pages; use the page tabs to select a workflow. The class diagrams are available as PNG exports.
 
 ## Problem analysis
 
 - **Fishbone diagram:** [PNG](diagrams/fishbone/png/resback-fishbone.png) · [Editable draw.io](diagrams/fishbone/resback-fishbone-finalized-arranged.drawio)
 
-The fishbone diagram examines **difficulty turning CCIS feedback into clear priorities for institutional review**, the problem addressed by ResBack. It combines **12 main categories, 24 subcategories, and 48 specific candidate causes** from the supplied **8 Ms / 8 Ps / 4 Ss** reference:
+The finalized fishbone diagram examines **difficulty turning CCIS feedback into clear priorities for institutional review**, the problem addressed by ResBack. It contains **8 main categories, 15 subcategories, and 24 specific candidate causes**, selected from the supplied **8 Ms / 8 Ps / 4 Ss** reference:
 
-- **Ms:** Materials, Machines, Methods, Management, Measurement, and Maintenance.
-- **Ps:** People, Place, Promotion, and Physical Evidence.
-- **Ss:** Systems and Skills.
+- **Ms:** Materials, Machines, Methods, Management, and Measurement.
+- **Ps:** People and Place.
+- **Ss:** Systems.
 
-Each main bone has two named subcategories, each with two connected cause branches. Related names are consolidated (People includes Manpower; Methods includes Process) to avoid duplicate bones. The scope covers feedback content and participation, access and awareness, technology and maintenance, review practices, supporting evidence, and interpretation of results. These are candidate causes for stakeholder validation, not established root causes or confirmed operational failures.
+Read each branch from a specific cause through its subcategory and main category toward the shared effect. The scope covers feedback context and language, service availability, review practices and ownership, priority criteria, participation, device access, processing states, and report coverage. These are candidate causes for stakeholder validation, not established root causes or confirmed operational failures.
 
-The **draw.io file contains editable text, shapes, and connectors**, with each main bone grouped for repositioning. Open it in [diagrams.net](https://app.diagrams.net/); double-click a label to edit its text, or ungroup a bone to rearrange its parts. The matching PNG is a high-resolution overview exported from the same editable diagram; zoom in to read the detailed branches. References: [Ishikawa diagram](https://en.wikipedia.org/wiki/Ishikawa_diagram), the [draw.io fishbone guide](https://www.drawio.com/docs/diagram-types/ishikawa-diagrams/), and the supplied *Fishbone Diagram.pdf*.
+The **finalized, arranged draw.io file contains editable text, shapes, and connectors**. Open it in [diagrams.net](https://app.diagrams.net/); double-click a label to edit its text. Use the PNG for viewing and zoom in to read the detailed branches. References: [Ishikawa diagram](https://en.wikipedia.org/wiki/Ishikawa_diagram), the [draw.io fishbone guide](https://www.drawio.com/docs/diagram-types/ishikawa-diagrams/), and the supplied *Fishbone Diagram.pdf*.
 
 ## Main features
 
@@ -116,7 +122,7 @@ Dictionary matching is intentionally deterministic rather than broadly fuzzy. Th
 
 - PHP 8.3+
 - Laravel 13
-- MySQL or MariaDB for deployment; SQLite is supported by the default development configuration
+- MySQL or MariaDB for the local XAMPP setup; SQLite is supported by the default development configuration. PostgreSQL is part of the proposed online deployment.
 - Blade, custom CSS, and Vite
 - Chart.js for dashboard visualizations
 - Google Gemini API with Gemma for feedback analysis
