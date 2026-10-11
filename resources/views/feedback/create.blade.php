@@ -1,14 +1,16 @@
 @extends(auth()->check() ? 'layouts.app' : 'layouts.guest')
 @section('title', 'Share Your Feedback')
+@section('page-title', 'Share Feedback')
+@section('page-subtitle', 'Your voice matters')
 
 @section('content')
 <div class="feedback-card animate-fade-up">
 
     {{-- Header --}}
     <div class="feedback-card-header">
-        <div class="feedback-step">Student feedback · CCIS</div>
-        <h1>Share Your Feedback</h1>
-        <p>Help us improve CCIS by sharing your campus experience. Every voice matters.</p>
+        <div class="student-mascot"><x-brand-logo /></div>
+        <h1>What's on your mind?</h1>
+        <p>A concern, a suggestion, or something good?</p>
     </div>
 
     {{-- Body --}}
@@ -17,7 +19,7 @@
         {{-- Anonymous Badge --}}
         <div class="privacy-row">
             <span class="anonymous-badge">
-                <span aria-hidden="true">✓</span> Your identity stays private from reviewers
+                <span aria-hidden="true">✓</span> Reviewers won't see your identity
             </span>
         </div>
 
@@ -37,7 +39,7 @@
             @csrf
 
             {{-- Fixed department scope --}}
-            <div class="form-group">
+            <div class="form-group student-department">
                 <label for="category_display" class="form-label">Department</label>
                 <input id="category_display" type="text" class="form-control" value="CCIS" readonly>
                 <input type="hidden" name="category_id" value="{{ $defaultCategory->id }}">
@@ -48,19 +50,19 @@
 
             {{-- Feedback Text --}}
             <div class="form-group">
-                <label for="content" class="form-label">Your Feedback</label>
+                <label for="content" class="form-label">Your feedback</label>
                 <textarea
                     id="content"
                     name="content"
                     class="form-control {{ $errors->has('content') ? 'is-invalid' : '' }}"
-                    placeholder="Describe your experience, concern, or suggestion in detail..."
+                    placeholder="Tell us what happened…"
                     maxlength="2000"
                     aria-describedby="feedbackHint charCounter{{ $errors->has('content') ? ' contentError' : '' }}"
                     @if($errors->has('content')) aria-invalid="true" @endif
                     rows="6"
                     oninput="updateCounter(this)"
                 >{{ old('content') }}</textarea>
-                <div class="form-hint" id="feedbackHint">Tell us what went well, what could improve, or what you'd like us to know.</div>
+                <div class="form-hint" id="feedbackHint">Be specific. Keep it respectful.</div>
                 <div class="char-counter" id="charCounter">0 / 2000</div>
                 @error('content')
                     <div class="form-error" id="contentError">{{ $message }}</div>
@@ -68,32 +70,27 @@
             </div>
 
             {{-- Privacy Notice --}}
-            <div class="privacy-notice">
-                <strong>Privacy Note:</strong>
-                Your account is linked privately so you can access your feedback history. Your identity is not
-                shown in the faculty dashboard or export. The content is analyzed using AI sentiment analysis
-                to help identify campus concerns.
-            </div>
+            <details class="privacy-notice student-privacy-details">
+                <summary>How is my feedback used?</summary>
+                <p>Saved to your account for your history. Reviewers and exports won't show your identity. AI analyzes the text to identify campus concerns.</p>
+            </details>
 
             <div class="submission-warning" role="note">
-                <strong>Submission reminder:</strong>
-                If malicious words are detected, the system will automatically reject the feedback. Please submit
-                genuine, respectful, and constructive feedback only.
+                Feedback containing malicious words is automatically rejected.
             </div>
 
             <button type="submit" class="btn btn-primary btn-block btn-lg" id="submitBtn">
-                Submit Feedback
+                Send Feedback
             </button>
         </form>
 
         <dialog class="feedback-confirmation" id="feedbackConfirmation" aria-labelledby="confirmationTitle">
             <form method="dialog">
-                <h2 id="confirmationTitle">Confirm feedback submission</h2>
-                <p>Please confirm that your feedback is genuine, respectful, and ready to submit.</p>
-                <p class="feedback-confirmation-warning">If malicious words are detected, the system will reject it.</p>
+                <h2 id="confirmationTitle">Ready to send?</h2>
+                <p>Take a quick look before sending.</p>
                 <div class="feedback-confirmation-actions">
-                    <button type="submit" value="cancel" class="btn btn-secondary">Review Feedback</button>
-                    <button type="button" class="btn btn-primary" id="confirmSubmitBtn">Confirm &amp; Submit</button>
+                    <button type="submit" value="cancel" class="btn btn-secondary">Keep Editing</button>
+                    <button type="button" class="btn btn-primary" id="confirmSubmitBtn">Send Feedback</button>
                 </div>
             </form>
         </dialog>
@@ -141,7 +138,7 @@
         const btn = document.getElementById('submitBtn');
         if (btn.disabled) { event.preventDefault(); return; }
         btn.disabled = true;
-        btn.textContent = 'Submitting...';
+        btn.textContent = 'Sending…';
         btn.classList.add('is-submitting');
         btn.setAttribute('aria-busy', 'true');
     });
@@ -156,7 +153,7 @@
         submissionConfirmed = false;
         const btn = document.getElementById('submitBtn');
         btn.disabled = false;
-        btn.textContent = 'Submit Feedback';
+        btn.textContent = 'Send Feedback';
         btn.classList.remove('is-submitting');
         btn.removeAttribute('aria-busy');
         if (confirmationDialog.open) confirmationDialog.close();
