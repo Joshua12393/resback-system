@@ -9,6 +9,7 @@
     <meta name="description" content="ResBack academic feedback portal and sentiment analytics.">
 
     @include('partials.theme-init')
+    @include('partials.brand-icons')
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @stack('head')
 </head>
@@ -17,7 +18,7 @@
     <div class="sidebar-overlay" id="sidebarOverlay" aria-hidden="true"></div>
     <aside class="sidebar" id="dashboardSidebar">
         <div class="sidebar-brand">
-            <div class="brand-seal brand-seal-small">CCIS</div>
+            <x-brand-logo class="brand-seal-small" />
             <div>
                 <div class="brand-text">ResBack</div>
                 <div class="brand-sub">{{ auth()->user()->isStudent() ? 'Student Feedback Portal' : 'Academic Feedback System' }}</div>
@@ -38,11 +39,11 @@
 
             @unless(auth()->user()->isAdmin())
                 @if(auth()->user()->isFaculty())
-                    <div class="nav-section-label" style="margin-top:.75rem;">Quick Actions</div>
+                    <div class="nav-section-label" style="margin-top:.75rem;">Your Feedback</div>
                 @endif
                 <a href="{{ route('feedback.create') }}" class="nav-link {{ request()->routeIs('feedback.create', 'feedback.thankyou') ? 'active' : '' }}">
                     <span class="nav-icon"><x-icon name="feedback" /></span>
-                    {{ auth()->user()->isFaculty() ? 'View Feedback Form' : 'Share Feedback' }}
+                    Share Feedback
                 </a>
                 <a href="{{ route('feedback.history') }}" class="nav-link {{ request()->routeIs('feedback.history') ? 'active' : '' }}">
                     <span class="nav-icon"><x-icon name="history" /></span>
@@ -106,9 +107,9 @@
             </div>
         </header>
 
-        <main class="app-body {{ request()->routeIs('feedback.create', 'feedback.history', 'feedback.thankyou') ? 'portal-body' : '' }}">
+        <main class="app-body {{ request()->routeIs('feedback.create', 'feedback.store', 'feedback.history', 'feedback.thankyou') ? 'portal-body' : '' }}">
             @if(session('success') || request()->routeIs('profile.edit'))
-                @if(request()->routeIs('accounts.index', 'profile.edit'))
+                @if(request()->routeIs('accounts.index', 'profile.edit', 'dashboard'))
                     <dialog class="feedback-confirmation account-success-dialog" data-success-dialog @if(session('success')) data-auto-open @endif tabindex="-1" aria-labelledby="account-success-title" aria-describedby="account-success-message">
                         <div class="account-success-check" aria-hidden="true">✓</div>
                         <h2 id="account-success-title">All done!</h2>

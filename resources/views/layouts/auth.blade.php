@@ -9,6 +9,7 @@
     <meta name="description" content="Sign in or create a ResBack student account.">
 
     @include('partials.theme-init')
+    @include('partials.brand-icons')
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="auth-page">
@@ -16,7 +17,7 @@
     <div class="auth-shell">
         <section class="auth-intro" aria-label="About ResBack">
             <a href="{{ route('feedback.create') }}" class="institution-brand institution-brand-light">
-                <span class="brand-seal" aria-hidden="true">CCIS</span>
+                <x-brand-logo />
                 <span>
                     <strong>ResBack</strong>
                     <small>CCIS Feedback System</small>

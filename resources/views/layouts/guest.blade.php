@@ -9,6 +9,7 @@
     <meta name="description" content="Submit confidential campus feedback securely. Your voice matters.">
 
     @include('partials.theme-init')
+    @include('partials.brand-icons')
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @stack('head')
 </head>
@@ -16,7 +17,7 @@
 <div class="guest-layout">
     <header class="guest-header">
         <a href="{{ route('feedback.create') }}" class="institution-brand">
-            <span class="brand-seal" aria-hidden="true">CCIS</span>
+            <x-brand-logo />
             <span>
                 <strong>ResBack</strong>
                 <small>Student Feedback Portal</small>
