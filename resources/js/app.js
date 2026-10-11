@@ -69,7 +69,48 @@ document.addEventListener('DOMContentLoaded', () => {
 
     applyThemeButtonState();
 
+    const feedbackReader = document.getElementById('feedbackReadDialog');
+    if (feedbackReader) {
+        document.addEventListener('click', event => {
+            const summary = event.target.closest('[data-feedback-reader] > summary');
+            if (!summary) return;
+            event.preventDefault();
+            const details = summary.parentElement;
+            feedbackReader.querySelector('.feedback-reading-content').textContent = details.querySelector('.feedback-full-text').textContent;
+            feedbackReader.querySelector('[data-feedback-reading-meta]').textContent = details.dataset.feedbackMeta;
+            feedbackReader.showModal();
+        });
+        feedbackReader.querySelector('[data-close-feedback-reader]').addEventListener('click', () => feedbackReader.close());
+    }
+
     // Standard POST forms keep native submission and server validation.
+    ['feedback', 'account'].forEach(kind => {
+        const deleteDialog = document.getElementById(`${kind}DeleteConfirmation`);
+        if (!deleteDialog) return;
+        let deleteForm = null;
+        let deleteSubmitter = null;
+        document.addEventListener('submit', event => {
+            const form = event.target;
+            if (!(form instanceof HTMLFormElement) || !form.hasAttribute(`data-${kind}-delete`)) return;
+            if (form.dataset.deleteConfirmed === 'true') return;
+            event.preventDefault();
+            deleteForm = form;
+            deleteSubmitter = event.submitter;
+            const accountName = deleteDialog.querySelector('[data-delete-account-name]');
+            if (accountName) accountName.textContent = form.dataset.accountNickname;
+            if (!deleteDialog.open) deleteDialog.showModal();
+        });
+        deleteDialog.querySelector(`[data-cancel-${kind}-delete]`).addEventListener('click', () => deleteDialog.close());
+        deleteDialog.querySelector(`[data-confirm-${kind}-delete]`).addEventListener('click', () => {
+            const form = deleteForm;
+            const submitter = deleteSubmitter;
+            deleteDialog.close();
+            if (!form?.isConnected) return;
+            form.dataset.deleteConfirmed = 'true';
+            form.requestSubmit(submitter || undefined);
+        });
+        deleteDialog.addEventListener('close', () => { deleteForm = null; deleteSubmitter = null; });
+    });
     const pendingButtons = new Map();
     document.addEventListener('submit', (event) => {
         const form = event.target;
