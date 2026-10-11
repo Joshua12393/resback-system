@@ -91,7 +91,7 @@
                                     </form>
                                     @if($canDeleteAccount)
                                         <form action="{{ route('accounts.destroy', $user) }}" method="POST"
-                                              onsubmit="return confirm(@js('Permanently delete '.$user->nickname.'? This cannot be undone.'));">
+                                              data-account-delete data-account-nickname="{{ $user->nickname }}" data-pending-label="Deleting…">
                                             @csrf
                                             @method('DELETE')
                                             <button class="btn btn-danger btn-sm" type="submit">Delete</button>
@@ -123,4 +123,14 @@
             <div style="padding:1rem;">{{ $users->links() }}</div>
         @endif
     </section>
+    @if(auth()->user()->isSuperAdmin())
+        <dialog id="accountDeleteConfirmation" class="feedback-confirmation" aria-labelledby="account-delete-title" aria-describedby="account-delete-description">
+            <h2 id="account-delete-title">Delete this account?</h2>
+            <p id="account-delete-description">Permanently delete <strong data-delete-account-name></strong>'s account? This cannot be undone.</p>
+            <div class="feedback-confirmation-actions">
+                <button type="button" class="btn btn-secondary" data-cancel-account-delete autofocus>Cancel</button>
+                <button type="button" class="btn btn-danger" data-confirm-account-delete>Delete Account</button>
+            </div>
+        </dialog>
+    @endif
 @endsection
