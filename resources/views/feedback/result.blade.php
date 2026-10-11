@@ -1,24 +1,28 @@
 @extends(auth()->check() ? 'layouts.app' : 'layouts.guest')
 @section('title', $feedback->status === 'rejected' ? 'Feedback Rejected' : 'Feedback Submitted')
+@section('page-title', 'Your Feedback')
+@section('page-subtitle', '')
 
 @section('content')
 <div class="thankyou-card submission-result-card">
     @if($feedback->status === 'rejected')
         <div class="thankyou-icon thankyou-icon-rejected">!</div>
         <h1>Feedback Rejected</h1>
-        <p>The submission matched the automatic rejection list and was not included in faculty analytics.</p>
+        <p>Blocked words were detected. This feedback is not included in faculty analytics.</p>
 
         <div class="alert alert-error" style="margin-top:1.5rem;">
-            Please submit genuine, respectful, and constructive feedback.
+            Try rephrasing your concern respectfully.
         </div>
     @else
         <div class="thankyou-icon">✓</div>
-        <h1>Thank You!</h1>
-        <p>Thanks for sharing your feedback. Your voice helps CCIS improve.</p>
+        <h1>Thanks for sharing!</h1>
+        <p>{{ $feedback->sentimentResult ? 'Your feedback is saved.' : 'Your feedback is saved. Its analysis could not be completed.' }}</p>
 
     @endif
 
-    <section class="result-summary submission-result-details" aria-label="Your submitted feedback and analysis">
+    <details class="result-summary submission-result-details student-result-details">
+        <summary>{{ $feedback->sentimentResult ? 'View feedback & results' : 'View feedback' }}</summary>
+        <div class="student-result-content">
         <h2 class="submission-result-label">Your feedback</h2>
         <p class="submission-result-feedback">{{ $feedback->content }}</p>
 
@@ -54,18 +58,15 @@
                 </div>
             </div>
         </div>
-    @elseif($feedback->status !== 'rejected')
-        <div class="alert alert-error" style="margin-top:1.5rem;">
-            Sentiment and language analysis could not be completed, but your feedback was still saved.
-        </div>
     @endif
-    </section>
+        </div>
+    </details>
 
     <div class="submission-result-actions">
     <a href="{{ route('feedback.create') }}" class="btn btn-primary">
-        Submit Another Feedback
+        Share More
     </a>
-        <a href="{{ route('feedback.history') }}" class="btn btn-ghost">View My Feedback</a>
+        <a href="{{ route('feedback.history') }}" class="btn btn-ghost">My Feedback</a>
     </div>
 </div>
 @endsection
