@@ -1,34 +1,35 @@
 @extends(auth()->check() ? 'layouts.app' : 'layouts.guest')
 @section('title', 'My Feedback History')
+@section('page-title', 'Your Space')
+@section('page-subtitle', 'Feedback you have shared')
 
 @section('content')
 <div class="history-shell animate-fade-up">
     <div class="history-heading">
         <div>
-            <span class="history-eyebrow">Private student record</span>
-            <h1>My Feedback History</h1>
-            <p>Review your submissions and their sentiment analysis results.</p>
+            <h1>My Feedback</h1>
+            <p>Everything you've shared, in one place.</p>
         </div>
-        <a href="{{ route('feedback.create') }}" class="btn btn-primary">Submit New Feedback</a>
+        <a href="{{ route('feedback.create') }}" class="btn btn-primary">Share Feedback</a>
     </div>
 
     <div class="history-privacy">
         <span aria-hidden="true">✓</span>
-        <p><strong>Only you can access this page.</strong> Your identity is not displayed to faculty reviewers or included in feedback exports.</p>
+        <p>Your history is private. Reviewers won't see your identity.</p>
     </div>
 
     @if($feedbacks->isEmpty())
         <div class="history-empty">
-            <span class="history-empty-icon" aria-hidden="true">□</span>
-            <h2>No feedback submitted yet</h2>
-            <p>Your feedback and analysis results will appear here after your first submission.</p>
-            <a href="{{ route('feedback.create') }}" class="btn btn-primary">Share Your Feedback</a>
+            <div class="student-mascot"><x-brand-logo /></div>
+            <h2>Your voice belongs here</h2>
+            <p>Share your first feedback.</p>
+            <a href="{{ route('feedback.create') }}" class="btn btn-primary">Share Feedback</a>
         </div>
     @else
         <section class="card-dark history-dashboard-card">
             <div class="card-header">
-                <h2>My feedbacks</h2>
-                <span class="history-table-caption">Only CCIS · 10 per page</span>
+                <h2>Your submissions</h2>
+                <span class="history-table-caption">CCIS · 10 per page</span>
             </div>
 
             <div class="table-wrapper history-dashboard-table-wrapper">
@@ -49,7 +50,16 @@
                             @php($analysis = $feedback->sentimentResult)
                             <tr>
                                 <td class="history-date-cell" data-label="Date">{{ $feedback->created_at->format('M d, Y h:i A') }}</td>
-                                <td class="history-feedback-table-cell" data-label="Feedback"><span class="history-feedback-content">{{ $feedback->content }}</span></td>
+                                <td class="history-feedback-table-cell" data-label="Feedback">
+                                    @if(\Illuminate\Support\Str::length($feedback->content) > 140)
+                                        <details class="feedback-details">
+                                            <summary><span class="feedback-preview">{{ \Illuminate\Support\Str::limit($feedback->content, 140) }}</span><span class="feedback-expand-label">Read more</span></summary>
+                                            <div class="feedback-full-text">{{ $feedback->content }}</div>
+                                        </details>
+                                    @else
+                                        <span class="history-feedback-content">{{ $feedback->content }}</span>
+                                    @endif
+                                </td>
                                 <td data-label="Category">{{ $feedback->category?->name ?? 'Uncategorized' }}</td>
                                 <td data-label="Sentiment">
                                     @if($feedback->status === 'rejected')
