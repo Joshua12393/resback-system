@@ -32,6 +32,7 @@ class DashboardController extends Controller
         }
 
         $hasFilters = $selectedCategory !== null || $selectedLanguage !== null || $dateRange->isActive();
+        $hasOptionalFilters = $selectedLanguage !== null || $dateRange->isActive();
 
         $feedbackScope = $dateRange->apply(Feedback::query()
             ->reportable()
@@ -124,6 +125,7 @@ class DashboardController extends Controller
             return view('dashboard.partials.feedback-table', compact(
                 'recentFeedbacks',
                 'hasFilters',
+                'hasOptionalFilters',
                 'filterLabel'
             ));
         }
@@ -144,6 +146,7 @@ class DashboardController extends Controller
             'filterLanguages',
             'selectedLanguage',
             'hasFilters',
+            'hasOptionalFilters',
             'filterLabel',
             'concernRankings',
             'sentimentChartData',

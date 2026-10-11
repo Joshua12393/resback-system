@@ -1,24 +1,47 @@
 @extends('layouts.app')
+@php($isFacultyDashboard = auth()->user()->isFaculty())
 
 @section('title', 'Feedback Dashboard')
-@section('page-title', 'Feedback Dashboard')
-@section('page-subtitle', 'Sentiment and language analysis for submitted feedback')
+@section('page-title', $isFacultyDashboard ? 'Feedback Overview' : 'Feedback Dashboard')
+@section('page-subtitle', $isFacultyDashboard ? 'Listen. Understand. Improve.' : 'Sentiment and language analysis for submitted feedback')
 
 @section('topbar-actions')
     <a href="{{ route('feedback.report', $reportQuery) }}" class="btn btn-primary btn-sm">
-        Download PDF Report
+        {{ $isFacultyDashboard ? 'PDF Report' : 'Download PDF Report' }}
     </a>
     <a href="{{ route('feedback.export', $reportQuery) }}" class="btn btn-primary btn-sm">
-        Export Feedbacks (.xlsx)
+        {{ $isFacultyDashboard ? 'Export Excel (.xlsx)' : 'Export Feedbacks (.xlsx)' }}
     </a>
 @endsection
 
 @section('content')
-    <section class="card-dark dashboard-filter-card" style="margin-bottom:1.5rem;">
+    <div class="stats-grid">
+        <div class="stat-card stat-card-total">
+            <div class="stat-icon indigo">#</div>
+            <div><div class="stat-value">{{ number_format($totalFeedbacks) }}</div><div class="stat-label">{{ $isFacultyDashboard ? 'Feedback received' : 'Total feedbacks' }}</div></div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon green">+</div>
+            <div><div class="stat-value">{{ number_format($sentimentData['positive']) }}</div><div class="stat-label">Positive</div></div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon amber">=</div>
+            <div><div class="stat-value">{{ number_format($sentimentData['neutral']) }}</div><div class="stat-label">Neutral</div></div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon red">−</div>
+            <div><div class="stat-value">{{ number_format($sentimentData['negative']) }}</div><div class="stat-label">Negative</div></div>
+        </div>
+    </div>
+    <section class="card-dark dashboard-filter-card" aria-labelledby="dashboard-filters-title">
+        <div class="card-header dashboard-filter-heading">
+            <div><h2 id="dashboard-filters-title">Explore feedback</h2><p class="chart-caption">{{ $isFacultyDashboard ? 'Choose filters, then apply.' : 'Choose a language and date range, then apply your filters.' }}</p></div>
+            <a href="#ccisFeedbackPanel" class="dashboard-section-link">Jump to feedback ↓</a>
+        </div>
         <div class="card-body">
             <form action="{{ route('dashboard') }}" method="GET" class="dashboard-filter-form">
-                <div style="flex:1;min-width:240px;">
-                    <label for="language_category" class="form-label">Filter dashboard by language</label>
+                <div class="dashboard-language-field">
+                    <label for="language_category" class="form-label">Language</label>
                     <select id="language_category" name="language_category" class="form-control" data-styled-select>
                         <option value="">All languages</option>
                         @foreach($filterLanguages as $language)
@@ -50,7 +73,7 @@
                         max="{{ now()->format('Y-m-d') }}"
                     >
                 </div>
-                <button type="submit" class="btn btn-primary btn-sm">Apply Filter</button>
+                <button type="submit" class="btn btn-primary btn-sm">{{ $isFacultyDashboard ? 'Apply' : 'Apply Filter' }}</button>
                 @if($selectedLanguage || $dateRange->isActive())
                     <a href="{{ route('dashboard') }}" class="btn btn-ghost btn-sm">Clear Filters</a>
                 @endif
@@ -60,36 +83,17 @@
                     {{ $errors->first('start_date') ?: $errors->first('end_date') }}
                 </div>
             @endif
-            <div style="font-size:.8rem;color:var(--gray-400);margin-top:.75rem;">
-                Currently showing: <strong style="color:var(--gray-900);">{{ $hasFilters ? $filterLabel : 'All categories and languages (mixed)' }}</strong>
+            <div class="dashboard-filter-summary">
+                Currently showing: <strong>{{ $hasFilters ? $filterLabel : 'All categories and languages (mixed)' }}</strong>
             </div>
         </div>
     </section>
 
-    <div class="stats-grid">
-        <div class="stat-card">
-            <div class="stat-icon indigo">#</div>
-            <div><div class="stat-value">{{ number_format($totalFeedbacks) }}</div><div class="stat-label">Total feedbacks</div></div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-icon green">+</div>
-            <div><div class="stat-value">{{ number_format($sentimentData['positive']) }}</div><div class="stat-label">Positive</div></div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-icon amber">=</div>
-            <div><div class="stat-value">{{ number_format($sentimentData['neutral']) }}</div><div class="stat-label">Neutral</div></div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-icon red">−</div>
-            <div><div class="stat-value">{{ number_format($sentimentData['negative']) }}</div><div class="stat-label">Negative</div></div>
-        </div>
-    </div>
-
     <div class="dashboard-grid analytics-grid">
         <section class="card-dark">
             <div class="card-header">
-                <h2>Sentiment distribution</h2>
-                <span class="chart-caption">Current dashboard filters</span>
+                <h2>{{ $isFacultyDashboard ? 'Feedback sentiment' : 'Sentiment distribution' }}</h2>
+                <span class="chart-caption">{{ $isFacultyDashboard ? 'Positive · Neutral · Negative' : 'Current dashboard filters' }}</span>
             </div>
             <div class="card-body chart-panel chart-panel-doughnut">
                 <canvas id="sentimentDistributionChart" aria-label="Positive, neutral, and negative feedback chart"></canvas>
@@ -98,7 +102,7 @@
 
         <section class="card-dark">
             <div class="card-header">
-                <h2>Positive vs. negative trend</h2>
+                <h2>{{ $isFacultyDashboard ? 'Feedback over time' : 'Positive vs. negative trend' }}</h2>
                 <span class="chart-caption">{{ $trendLabel }}</span>
             </div>
             <div class="card-body chart-panel">
@@ -110,14 +114,21 @@
     <section class="card-dark" style="margin-bottom:1.5rem;">
         <div class="card-header">
             <div>
-                <h2>Most critical concerns</h2>
-                <p class="chart-caption" style="margin-top:.25rem;">Ranked by negative volume, negative ratio, confidence, and recency</p>
+                <h2>{{ $isFacultyDashboard ? 'Concerns to review' : 'Most critical concerns' }}</h2>
+                @if($isFacultyDashboard)
+                    <details class="dashboard-ranking-help">
+                        <summary>How are these ranked?</summary>
+                        <p>Based on negative feedback, analysis confidence, and recent reports. A higher score means higher priority. Review the reports before deciding.</p>
+                    </details>
+                @else
+                    <p class="chart-caption" style="margin-top:.25rem;">Ranked by negative volume, negative ratio, confidence, and recency</p>
+                @endif
             </div>
             <span class="chart-caption">Top {{ $concernRankings->count() }}</span>
         </div>
 
         @if($concernRankings->isEmpty())
-            <div class="empty-state"><h3>No ranked concerns yet</h3><p>Concern rankings appear after feedback has been analyzed.</p></div>
+            <div class="empty-state"><h3>No ranked concerns yet</h3><p>{{ $isFacultyDashboard ? 'Check back after feedback is analyzed.' : 'Concern rankings appear after feedback has been analyzed.' }}</p></div>
         @else
             <div class="card-body">
                 <div class="concern-chart-panel" style="height:{{ max(260, $concernRankings->count() * 46) }}px;">
@@ -172,10 +183,10 @@
 
     <div class="dashboard-grid" style="grid-template-columns:1fr;">
         <section class="card-dark">
-            <div class="card-header"><h2>Language classification</h2></div>
-            <div class="card-body">
+            <div class="card-header"><h2>{{ $isFacultyDashboard ? 'Feedback languages' : 'Language classification' }}</h2></div>
+            <div class="card-body dashboard-language-list">
                 @forelse($languageData as $language => $count)
-                    <div style="display:flex;justify-content:space-between;gap:1rem;padding:.65rem 0;border-bottom:1px solid var(--gray-200);">
+                    <div class="dashboard-language-item">
                         <span style="color:var(--gray-700);">{{ $language }}</span>
                         <strong style="color:var(--gray-900);">{{ number_format($count) }}</strong>
                     </div>
@@ -189,6 +200,24 @@
 
     @include('dashboard.partials.feedback-table')
     <p class="sr-only" role="status" id="feedbackLoadStatus"></p>
+    <dialog id="feedbackReadDialog" class="feedback-confirmation feedback-reading-dialog" aria-labelledby="feedback-reading-title" aria-describedby="feedback-reading-content">
+        <div class="feedback-reading-header">
+            <h2 id="feedback-reading-title">Full feedback</h2>
+            <button type="button" class="btn btn-secondary btn-sm" data-close-feedback-reader autofocus>Close</button>
+        </div>
+        <p class="feedback-reading-meta" data-feedback-reading-meta></p>
+        <div id="feedback-reading-content" class="feedback-reading-content"></div>
+    </dialog>
+    @if(auth()->user()->isAdmin())
+        <dialog id="feedbackDeleteConfirmation" class="feedback-confirmation" aria-labelledby="feedback-delete-title" aria-describedby="feedback-delete-description">
+            <h2 id="feedback-delete-title">Delete this feedback?</h2>
+            <p id="feedback-delete-description">This will permanently remove the feedback and its sentiment analysis. This cannot be undone.</p>
+            <div class="feedback-confirmation-actions">
+                <button type="button" class="btn btn-secondary" data-cancel-feedback-delete autofocus>Cancel</button>
+                <button type="button" class="btn btn-danger" data-confirm-feedback-delete>Delete Feedback</button>
+            </div>
+        </dialog>
+    @endif
 @endsection
 
 @push('scripts')

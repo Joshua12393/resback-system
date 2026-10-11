@@ -20,9 +20,10 @@ class DashboardTest extends TestCase
         $this->actingAs($faculty)
             ->get(route('dashboard'))
             ->assertOk()
-            ->assertSee('Export Feedbacks (.xlsx)')
-            ->assertSee('Quick Actions')
-            ->assertSee('View Feedback Form');
+            ->assertSee('Export Excel (.xlsx)')
+            ->assertSee('Feedback Overview')
+            ->assertSee('Your Feedback')
+            ->assertSee('Share Feedback');
     }
 
     public function test_admin_dashboard_does_not_show_feedback_quick_actions(): void
@@ -33,8 +34,8 @@ class DashboardTest extends TestCase
         $this->actingAs($admin)
             ->get(route('dashboard'))
             ->assertOk()
-            ->assertDontSee('Quick Actions')
-            ->assertDontSee('View Feedback Form')
+            ->assertDontSee('Share Feedback')
+            ->assertDontSee('Feedback Overview')
             ->assertSee('Manage Accounts');
 
         $this->actingAs($admin)
@@ -190,7 +191,29 @@ class DashboardTest extends TestCase
             ->get(route('dashboard'))
             ->assertOk()
             ->assertSee('Read full feedback')
+            ->assertSee('id="feedbackReadDialog"', false)
+            ->assertSee('data-feedback-reader', false)
             ->assertSee($longFeedback);
+    }
+
+    public function test_empty_feedback_explains_active_filters_in_full_and_paginated_responses(): void
+    {
+        $faculty = User::factory()->create(['role' => 'faculty']);
+        Category::ccis();
+
+        $this->actingAs($faculty)->get(route('dashboard'))
+            ->assertOk()->assertSee('No feedback yet')
+            ->assertDontSee('No feedback matches these filters');
+
+        $this->get(route('dashboard', ['language_category' => 'English']))
+            ->assertOk()->assertSee('No feedback matches these filters')
+            ->assertSee('Try another language or a wider date range.')
+            ->assertSee('Clear Filters');
+
+        $this->withHeaders(['X-Requested-With' => 'XMLHttpRequest', 'X-Feedback-Partial' => '1'])
+            ->get(route('dashboard', ['language_category' => 'English', 'page' => 2]))
+            ->assertOk()->assertSee('No feedback matches these filters')
+            ->assertSee('Clear Filters');
     }
 
     public function test_dashboard_date_range_filters_statistics_charts_rankings_and_feedbacks(): void
@@ -232,7 +255,7 @@ class DashboardTest extends TestCase
             ->assertOk()
             ->assertSee('Wi-Fi concern inside selected period')
             ->assertDontSee('Room concern outside selected period')
-            ->assertSee('Download PDF Report')
+            ->assertSee('PDF Report')
             ->assertViewHas('totalFeedbacks', 1)
             ->assertViewHas('sentimentData', [
                 'positive' => 0,
