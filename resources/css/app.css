@@ -17,6 +17,8 @@
     --shadow-sm: 0 2px 0 var(--gray-200); --shadow-md: 0 4px 0 var(--gray-200);
     --shadow-lg: 0 4px 0 var(--gray-200); --shadow-glow: none;
     --motion-fast: 160ms; --motion-enter: 320ms;
+    --canvas-glow: rgba(21,151,136,.12); --canvas-glow-soft: rgba(21,151,136,.06);
+    --canvas-dot: rgba(8,124,112,.08);
 }
 [data-theme="dark"] {
     color-scheme: dark;
@@ -28,6 +30,8 @@
     --brand-soft: #173b39; --positive-soft: #173a30; --negative-soft: #422330; --neutral-soft: #3b321f;
     --positive: #7cdbb2; --negative: #ffa3b3; --neutral: #edcb7a;
     --success: #7cdbb2; --warning: #edcb7a; --danger: #ffa3b3; --danger-dark: #ffa3b3;
+    --canvas-glow: rgba(54,185,168,.13); --canvas-glow-soft: rgba(54,185,168,.06);
+    --canvas-dot: rgba(105,216,202,.07);
 }
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
@@ -173,6 +177,14 @@ select.form-control { cursor: pointer; }
 .keyword-list { display: flex; flex-wrap: wrap; gap: .4rem; }
 .keyword-chip { max-width: 100%; padding: .25rem .55rem; border-radius: 9px; background: var(--brand-soft); color: var(--primary); font-size: .72rem; overflow-wrap: anywhere; }
 .app-layout { display: flex; min-height: 100vh; background: var(--canvas); }
+.app-layout, .guest-layout, body.auth-page {
+    background-image:
+        radial-gradient(circle, var(--canvas-dot) 1px, transparent 1px),
+        radial-gradient(ellipse 700px 480px at 100% 0%, var(--canvas-glow), transparent 75%),
+        radial-gradient(ellipse 620px 460px at 0% 100%, var(--canvas-glow-soft), transparent 75%);
+    background-size: 24px 24px, 100% 100%, 100% 100%;
+    background-repeat: repeat, no-repeat, no-repeat;
+}
 .sidebar { position: fixed; inset: 0 auto 0 0; width: 238px; height: 100dvh; display: flex; flex-direction: column; background: var(--surface); border-right: 1px solid var(--gray-200); z-index: 40; transition: transform 220ms ease; }
 .sidebar-brand { display: flex; align-items: center; gap: .7rem; padding: 1.6rem 1rem; }
 .brand-text { font-size: 1.2rem; font-weight: 800; color: var(--gray-900); }
