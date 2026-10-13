@@ -27,7 +27,7 @@ The project was created for a Software Engineering course and is currently limit
 
 The UML diagrams document ResBack's features, workflows, classes, logical architecture, and role permissions. The deployment diagram describes a proposed hosting setup; the other diagrams describe the application design.
 
-- **Use case diagram:** [PDF](diagrams/use-case/pdf/Lab%204%20Team%20Mira.drawio.pdf) · [Editable draw.io](diagrams/use-case/Lab%204%20Team%20Mira.drawio)
+- **Use case diagram:** [PNG](diagrams/use-case/resback-use-case.png) · [PDF](diagrams/use-case/pdf/Lab%204%20Team%20Mira.drawio.pdf) · [Editable draw.io](diagrams/use-case/Lab%204%20Team%20Mira.drawio)
 - **Use case descriptions:** [PDF](diagrams/use-case-description/pdf/ResBack%20Use%20Case%20Descriptions.pdf) · [Word document](diagrams/use-case-description/ResBack%20Use%20Case%20Descriptions.docx)
 - **Activity diagrams:** [Combined PNG](diagrams/activity/resback-activity-diagrams.png) · [12 individual PNG pages](diagrams/activity/png/) · [Editable draw.io (12 pages)](diagrams/activity/resback-activity-diagrams-cleaned.drawio) · [PNG archive](diagrams/activity/resback-activity-png-pages-cleaned.zip)
 - **Class diagrams:** [Combined PNG](diagrams/class/resback-class-diagrams.png) · [6 individual pages](diagrams/class/png/)
@@ -35,9 +35,11 @@ The UML diagrams document ResBack's features, workflows, classes, logical archit
 - **Package diagram:** [PNG](diagrams/package/Lab%209%20Team%20Mira%20corrected.png) · [PDF](diagrams/package/Lab%209%20Team%20Mira%20corrected.pdf) · [Editable draw.io](diagrams/package/Lab%209%20Team%20Mira%20corrected.drawio)
 - **Proposed deployment diagram:** [PNG](diagrams/deployment/png/resback-deployment.png) · [Editable draw.io](diagrams/deployment/resback-deployment.drawio)
 
-The use case diagram covers account access, profiles, feedback submission and analysis, personal feedback history, dashboard filtering, report exports, feedback deletion, and account administration for Student, Faculty, Admin, and Super Admin roles.
+The use case diagram covers account access, profiles, feedback submission and analysis, personal feedback history, dashboard filtering, report exports, feedback deletion, and account administration for Student, Faculty, Admin, and Super Admin roles. Google Gemini API is the external supporting actor for Analyze Accepted Feedback; the corresponding UC-06 description identifies it as the secondary actor.
 
 The activity set contains separate workflows for registration, login, feedback submission, feedback history, dashboard analytics, account management, AI analysis, Excel export, PDF report generation, feedback deletion, profile editing, and logout.
+
+**ACT 03 — Submit Feedback** includes the complete submission and analysis flow: validation, duplicate and rate-limit checks, automatic rejection, AI configuration and request, response validation, saving analysis results, updating concern rankings, and showing the submission outcome. It can be read on its own without referring to ACT 07.
 
 The class set covers the core domain model; authentication, accounts, and profiles; feedback submission and protection; sentiment analysis and concern ranking; dashboard and report generation; and account-access middleware.
 
