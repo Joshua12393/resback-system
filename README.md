@@ -30,7 +30,8 @@ The UML diagrams document ResBack's features, workflows, classes, logical archit
 - **Use case diagram:** [PNG](diagrams/use-case/resback-use-case.png) · [PDF](diagrams/use-case/pdf/Lab%204%20Team%20Mira.drawio.pdf) · [Editable draw.io](diagrams/use-case/Lab%204%20Team%20Mira.drawio)
 - **Use case descriptions:** [PDF](diagrams/use-case-description/pdf/ResBack%20Use%20Case%20Descriptions.pdf) · [Word document](diagrams/use-case-description/ResBack%20Use%20Case%20Descriptions.docx)
 - **Activity diagrams:** [Combined PNG](diagrams/activity/resback-activity-diagrams.png) · [12 individual PNG pages](diagrams/activity/png/) · [Editable draw.io (12 pages)](diagrams/activity/resback-activity-diagrams-cleaned.drawio) · [PNG archive](diagrams/activity/resback-activity-png-pages-cleaned.zip)
-- **Class diagrams:** [Combined PNG](diagrams/class/resback-class-diagrams.png) · [6 individual pages](diagrams/class/png/)
+- **Class diagrams:** [Combined PNG](diagrams/class/resback-class-diagrams.png) · [6 individual pages](diagrams/class/png/) · [Editable draw.io (6 pages)](diagrams/class/resback-class-diagrams.drawio)
+- **Full connected class diagram:** [PNG](diagrams/full-class/resback-full-class.png) · [Editable draw.io (1 page)](diagrams/full-class/resback-full-class.drawio)
 - **Component diagram:** [PNG](diagrams/component/png/resback-component.png) · [Editable draw.io](diagrams/component/resback-component.drawio)
 - **Package diagram:** [PNG](diagrams/package/Lab%209%20Team%20Mira%20corrected.png) · [PDF](diagrams/package/Lab%209%20Team%20Mira%20corrected.pdf) · [Editable draw.io](diagrams/package/Lab%209%20Team%20Mira%20corrected.drawio)
 - **Proposed deployment diagram:** [PNG](diagrams/deployment/png/resback-deployment.png) · [Editable draw.io](diagrams/deployment/resback-deployment.drawio)
@@ -43,13 +44,15 @@ The activity set contains separate workflows for registration, login, feedback s
 
 The class set covers the core domain model; authentication, accounts, and profiles; feedback submission and protection; sentiment analysis and concern ranking; dashboard and report generation; and account-access middleware.
 
+The full connected class diagram combines these six views into one wide page with 33 unique classes and 65 relationships. Repeated classes appear once, and the shared model and service dependencies use separate horizontal/vertical routes with gap jumps at crossings. The PNG and editable draw.io source are in `diagrams/full-class/`.
+
 The component diagram shows the Web Presentation, Identity & Accounts, Feedback Management, Sentiment Analysis, Concern Ranking, and Dashboard & Reporting modules inside the Laravel application. It includes the browser, Gemini API, profile-photo storage, report libraries, and relational database, with provided/required interfaces, ports, and delegation connectors. These are logical groupings of existing code, not separate deployed services or PHP interface declarations; shared database access is shown once at the application boundary. Notation follows the supplied course reference and the [draw.io component-diagram guide](https://www.drawio.com/docs/diagram-types/uml/component-diagrams/), using circles for provided interfaces and sockets for required interfaces.
 
 The package diagram groups the application into Web Presentation, Feedback & Analysis, User Management, Analytics & Reporting, and Data Models / Access. Dashed dependency arrows show how these packages use each other and the external Gemini API, export libraries, and relational database.
 
 The deployment diagram shows the **proposed Render Free and Supabase Free architecture**: a browser connects to a Docker/PHP Laravel web service on Render, which communicates with Supabase PostgreSQL, Supabase Storage for profile photos, and the Google Gemini API for Gemma analysis. It identifies deployed artifacts, execution environments, and communication protocols. This is a target architecture; deployment, PostgreSQL compatibility work, and Supabase profile-photo storage integration are not yet implemented.
 
-Open the editable `.drawio` files in [diagrams.net](https://app.diagrams.net/). The activity source contains 12 pages; use the page tabs to select a workflow. The class diagrams are available as PNG exports.
+Open the editable `.drawio` files in [diagrams.net](https://app.diagrams.net/). The activity source contains 12 pages and the original class source contains 6 pages; use the page tabs to select a workflow or class view. The full connected class source contains one page. PNG exports are also available.
 
 ## Problem analysis
 
