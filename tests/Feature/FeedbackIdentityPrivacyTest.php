@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\Feedback;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\View;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use Tests\TestCase;
 
@@ -55,6 +56,25 @@ class FeedbackIdentityPrivacyTest extends TestCase
             ->assertSee('The laboratory wifi keeps disconnecting.')
             ->assertDontSee('HiddenStudent_77')
             ->assertDontSee('hidden.student@example.test');
+    }
+
+    public function test_pdf_report_does_not_contain_student_identity(): void
+    {
+        $faculty = User::factory()->create(['role' => 'faculty']);
+        $reportData = null;
+
+        // The PDF body is compressed, so check the HTML the report is built from.
+        View::composer('reports.feedback-pdf', function ($view) use (&$reportData): void {
+            $reportData ??= $view->getData();
+        });
+
+        $this->actingAs($faculty)->get(route('feedback.report'))->assertOk();
+
+        $this->assertNotNull($reportData);
+        $reportHtml = view('reports.feedback-pdf', $reportData)->render();
+        $this->assertStringContainsString('The laboratory wifi keeps disconnecting.', $reportHtml);
+        $this->assertStringNotContainsString('HiddenStudent_77', $reportHtml);
+        $this->assertStringNotContainsString('hidden.student@example.test', $reportHtml);
     }
 
     public function test_excel_export_does_not_contain_student_identity(): void
