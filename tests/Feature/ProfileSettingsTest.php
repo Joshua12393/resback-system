@@ -20,6 +20,35 @@ class ProfileSettingsTest extends TestCase
         $this->post(route('profile.photo.store'))->assertRedirect(route('login'));
     }
 
+    public function test_photo_uploads_can_be_disabled(): void
+    {
+        Storage::fake('public');
+        config(['filesystems.profile_photo_uploads' => false]);
+        $user = User::factory()->create(['nickname' => 'KeepNickname', 'name' => 'KeepNickname']);
+
+        $this->actingAs($user)->get(route('profile.edit'))
+            ->assertOk()
+            ->assertSee('Profile photo uploads are temporarily disabled.')
+            ->assertDontSee('id="profile_photo"', false);
+
+        $this->actingAs($user)
+            ->postJson(route('profile.photo.store'), [
+                'profile_photo' => UploadedFile::fake()->image('avatar.jpg', 120, 120),
+            ])
+            ->assertUnprocessable()
+            ->assertJsonValidationErrors(['profile_photo' => 'temporarily disabled']);
+
+        $this->actingAs($user)
+            ->patch(route('profile.update'), [
+                'nickname' => 'KeepNickname',
+                'profile_photo' => UploadedFile::fake()->image('avatar.jpg', 120, 120),
+            ])
+            ->assertSessionHasErrors('profile_photo');
+
+        $this->assertNull($user->refresh()->profile_photo_path);
+        $this->assertEmpty(Storage::disk('public')->allFiles());
+    }
+
     public function test_user_can_update_their_nickname_and_profile_photo(): void
     {
         Storage::fake('public');

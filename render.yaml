@@ -55,6 +55,9 @@ services:
       # Supabase Storage (S3-compatible) for profile photos
       - key: PROFILE_PHOTO_DISK
         value: s3
+      # New photo uploads are off to save Supabase Storage; set "true" to re-enable.
+      - key: PROFILE_PHOTO_UPLOADS
+        value: "false"
       - key: AWS_ACCESS_KEY_ID
         sync: false
       - key: AWS_SECRET_ACCESS_KEY

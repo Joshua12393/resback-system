@@ -22,6 +22,9 @@ return [
 
     'profile_photo_disk' => env('PROFILE_PHOTO_DISK', 'public'),
 
+    // Set PROFILE_PHOTO_UPLOADS=false to stop new uploads (e.g. to save storage).
+    'profile_photo_uploads' => (bool) env('PROFILE_PHOTO_UPLOADS', true),
+
     /*
     |--------------------------------------------------------------------------
     | Filesystem Disks

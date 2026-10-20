@@ -8,13 +8,16 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rules\File;
+use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 
 class ProfileController extends Controller
 {
     public function edit(): View
     {
-        return view('profile.edit');
+        return view('profile.edit', [
+            'photoUploadsEnabled' => config('filesystems.profile_photo_uploads'),
+        ]);
     }
 
     public function removePhoto(Request $request): RedirectResponse
@@ -30,6 +33,8 @@ class ProfileController extends Controller
 
     public function uploadPhoto(Request $request): JsonResponse|RedirectResponse
     {
+        $this->ensurePhotoUploadsEnabled();
+
         $request->validate([
             'profile_photo' => ['required', File::image()->types(['jpg', 'jpeg', 'png', 'webp'])->max(2 * 1024)],
         ], ['profile_photo.max' => 'The profile photo must not be larger than 2 MB.']);
@@ -83,6 +88,8 @@ class ProfileController extends Controller
         ];
 
         if ($request->hasFile('profile_photo')) {
+            $this->ensurePhotoUploadsEnabled();
+
             $newPath = $request->file('profile_photo')->store('profile-photos', $this->photoDisk());
 
             if ($user->profile_photo_path) {
@@ -98,6 +105,15 @@ class ProfileController extends Controller
         $user->update($attributes);
 
         return back()->with('success', 'Your profile was updated successfully.');
+    }
+
+    private function ensurePhotoUploadsEnabled(): void
+    {
+        if (! config('filesystems.profile_photo_uploads')) {
+            throw ValidationException::withMessages([
+                'profile_photo' => 'Profile photo uploads are temporarily disabled.',
+            ]);
+        }
     }
 
     private function photoDisk(): string

@@ -39,13 +39,23 @@
                 </div>
                 <div class="profile-photo-controls">
                     <div class="profile-photo-buttons">
-                        <label for="profile_photo" class="btn btn-secondary btn-sm">Choose Photo</label>
-                        <input id="profile_photo" name="profile_photo" type="file" accept="image/jpeg,image/png,image/webp" class="sr-only">
+                        @if($photoUploadsEnabled)
+                            <label for="profile_photo" class="btn btn-secondary btn-sm">Choose Photo</label>
+                            <input id="profile_photo" name="profile_photo" type="file" accept="image/jpeg,image/png,image/webp" class="sr-only">
+                        @else
+                            <button type="button" class="btn btn-secondary btn-sm" disabled style="cursor: not-allowed;">Choose Photo</button>
+                        @endif
                         <button type="button" class="btn btn-secondary btn-sm profile-remove-photo" data-remove-photo @if(! auth()->user()->profile_photo_path) hidden @endif>Remove Photo</button>
                     </div>
-                    <p>JPG, PNG, or WebP. Maximum size: 2 MB.</p>
+                    @if($photoUploadsEnabled)
+                        <p>JPG, PNG, or WebP. Maximum size: 2 MB.</p>
+                    @else
+                        <p>Profile photo uploads are temporarily disabled.</p>
+                    @endif
                     <p id="photoUploadStatus" role="status" aria-live="polite"></p>
-                    <noscript><button type="submit" class="btn btn-primary btn-sm">Save Photo</button></noscript>
+                    @if($photoUploadsEnabled)
+                        <noscript><button type="submit" class="btn btn-primary btn-sm">Save Photo</button></noscript>
+                    @endif
                 </div>
             </div>
         </form>
