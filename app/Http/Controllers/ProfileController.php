@@ -21,7 +21,7 @@ class ProfileController extends Controller
     {
         $user = $request->user();
         if ($user->profile_photo_path) {
-            Storage::disk('public')->delete($user->profile_photo_path);
+            Storage::disk($this->photoDisk())->delete($user->profile_photo_path);
             $user->update(['profile_photo_path' => null]);
         }
 
@@ -36,9 +36,9 @@ class ProfileController extends Controller
 
         $user = $request->user();
         $oldPath = $user->profile_photo_path;
-        $newPath = $request->file('profile_photo')->store('profile-photos', 'public');
+        $newPath = $request->file('profile_photo')->store('profile-photos', $this->photoDisk());
         $user->update(['profile_photo_path' => $newPath]);
-        if ($oldPath) Storage::disk('public')->delete($oldPath);
+        if ($oldPath) Storage::disk($this->photoDisk())->delete($oldPath);
 
         $message = 'Your profile photo was updated successfully.';
         return $request->expectsJson()
@@ -83,20 +83,25 @@ class ProfileController extends Controller
         ];
 
         if ($request->hasFile('profile_photo')) {
-            $newPath = $request->file('profile_photo')->store('profile-photos', 'public');
+            $newPath = $request->file('profile_photo')->store('profile-photos', $this->photoDisk());
 
             if ($user->profile_photo_path) {
-                Storage::disk('public')->delete($user->profile_photo_path);
+                Storage::disk($this->photoDisk())->delete($user->profile_photo_path);
             }
 
             $attributes['profile_photo_path'] = $newPath;
         } elseif ($request->boolean('remove_profile_photo') && $user->profile_photo_path) {
-            Storage::disk('public')->delete($user->profile_photo_path);
+            Storage::disk($this->photoDisk())->delete($user->profile_photo_path);
             $attributes['profile_photo_path'] = null;
         }
 
         $user->update($attributes);
 
         return back()->with('success', 'Your profile was updated successfully.');
+    }
+
+    private function photoDisk(): string
+    {
+        return config('filesystems.profile_photo_disk');
     }
 }

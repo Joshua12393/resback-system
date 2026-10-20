@@ -16,6 +16,13 @@ return [
     'default' => env('FILESYSTEM_DISK', 'local'),
 
     /*
+    | Disk for profile photos: "public" locally, "s3" (Supabase Storage) on
+    | hosts whose local disk is wiped on redeploy.
+    */
+
+    'profile_photo_disk' => env('PROFILE_PHOTO_DISK', 'public'),
+
+    /*
     |--------------------------------------------------------------------------
     | Filesystem Disks
     |--------------------------------------------------------------------------
