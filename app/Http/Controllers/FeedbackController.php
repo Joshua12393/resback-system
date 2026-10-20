@@ -53,16 +53,12 @@ class FeedbackController extends Controller
             ]);
         }
 
-        // Hash IP for rate limiting — never stored as plain text
-        $ipHash = hash('sha256', $request->ip().config('app.key'));
-
         $shouldReject = $this->autoRejectService->shouldReject($request->string('content')->toString());
 
         $feedback = Feedback::create([
             'submitter_hash' => FeedbackSubmitter::hashFor($user),
             'category_id' => $request->category_id,
             'content' => $request->content,
-            'ip_hash' => $ipHash,
             'status' => $shouldReject ? 'rejected' : 'pending',
         ]);
 

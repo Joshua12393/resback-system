@@ -39,8 +39,12 @@ services:
       - key: DB_SSLMODE
         value: require
 
+      # Database sessions without user_id/IP columns, payload encrypted, so session
+      # rows cannot be matched against feedback timestamps.
       - key: SESSION_DRIVER
-        value: database
+        value: database_private
+      - key: SESSION_ENCRYPT
+        value: "true"
       - key: SESSION_SECURE_COOKIE
         value: "true"
       - key: CACHE_STORE

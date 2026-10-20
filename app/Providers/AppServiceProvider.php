@@ -6,7 +6,9 @@ use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Session\DatabaseSessionHandler;
 use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rules\Password;
@@ -28,6 +30,14 @@ class AppServiceProvider extends ServiceProvider
     {
         Paginator::defaultView('pagination.default');
         Paginator::defaultSimpleView('pagination.simple');
+
+        // Database sessions without the user_id / ip_address columns, so session rows
+        // cannot be matched to feedback timestamps. Pair with SESSION_ENCRYPT=true.
+        Session::extend('database_private', fn ($app) => new DatabaseSessionHandler(
+            $app['db']->connection(config('session.connection')),
+            config('session.table'),
+            config('session.lifetime'),
+        ));
 
         // Applies wherever Password::defaults() is used (registration, password changes).
         Password::defaults(fn () => Password::min(8)->letters()->mixedCase()->numbers());

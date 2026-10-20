@@ -1,5 +1,9 @@
 <?php
 
+use App\Http\Middleware\ActiveAccountMiddleware;
+use App\Http\Middleware\AdminMiddleware;
+use App\Http\Middleware\AdminOnlyMiddleware;
+use App\Http\Middleware\FeedbackSubmitterMiddleware;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -8,7 +12,6 @@ use Illuminate\Http\Request;
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
         web: __DIR__.'/../routes/web.php',
-        api: __DIR__.'/../routes/api.php',
         commands: __DIR__.'/../routes/console.php',
         health: '/up',
     )
@@ -17,10 +20,10 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->trustProxies(at: '*');
 
         $middleware->alias([
-            'admin' => \App\Http\Middleware\AdminMiddleware::class,
-            'admin.only' => \App\Http\Middleware\AdminOnlyMiddleware::class,
-            'active' => \App\Http\Middleware\ActiveAccountMiddleware::class,
-            'feedback.submitter' => \App\Http\Middleware\FeedbackSubmitterMiddleware::class,
+            'admin' => AdminMiddleware::class,
+            'admin.only' => AdminOnlyMiddleware::class,
+            'active' => ActiveAccountMiddleware::class,
+            'feedback.submitter' => FeedbackSubmitterMiddleware::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

@@ -24,18 +24,16 @@ class Feedback extends Model
         'submitter_hash',
         'category_id',
         'content',
-        'ip_hash',
         'status',
     ];
 
     /**
-     * Pseudonymous identifiers never leave the server.
+     * The pseudonymous submitter identifier never leaves the server.
      *
      * @var list<string>
      */
     protected $hidden = [
         'submitter_hash',
-        'ip_hash',
     ];
 
     /**

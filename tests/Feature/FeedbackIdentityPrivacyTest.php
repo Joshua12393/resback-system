@@ -9,6 +9,7 @@ use App\Services\SentimentService;
 use App\Support\FeedbackSubmitter;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\View;
 use PhpOffice\PhpSpreadsheet\IOFactory;
@@ -76,6 +77,28 @@ class FeedbackIdentityPrivacyTest extends TestCase
             'submitter_hash' => FeedbackSubmitter::hashFor($this->student),
         ]);
         $this->assertSame(2, $this->student->feedbacks()->count());
+    }
+
+    public function test_private_session_driver_stores_no_identity_columns(): void
+    {
+        config(['session.driver' => 'database_private', 'session.encrypt' => true]);
+        $this->student->forceFill(['password' => Hash::make('Correct123!')])->save();
+
+        $this->post(route('login'), [
+            'email' => 'hidden.student@example.test',
+            'password' => 'Correct123!',
+        ])->assertRedirect(route('feedback.create'));
+
+        $session = DB::table('sessions')->sole();
+
+        $this->assertNull($session->user_id);
+        $this->assertNull($session->ip_address);
+        $this->assertStringNotContainsString('login_web', base64_decode($session->payload));
+    }
+
+    public function test_feedback_table_stores_no_ip_data(): void
+    {
+        $this->assertFalse(Schema::hasColumn('feedbacks', 'ip_hash'));
     }
 
     public function test_dashboard_shows_feedback_without_student_identity(): void
