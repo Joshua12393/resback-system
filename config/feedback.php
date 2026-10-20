@@ -132,7 +132,7 @@ return [
         // English
         'fuck you' => [
             'fuck u', 'fck you', 'fck u', 'fuk you', 'fuk u', 'phuck you',
-            'phuck u', 'eff you',
+            'phuck u', 'eff you', 'pakyu',
         ],
         'the fuck' => ['dafuq', 'dafuk', 'da fuck'],
         'idiot' => ['idi0t', 'idyot'],
