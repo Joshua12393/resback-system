@@ -11,6 +11,10 @@ return new class extends Migration
     {
         if (DB::getDriverName() === 'mysql') {
             DB::statement("ALTER TABLE users MODIFY role ENUM('super_admin', 'admin', 'faculty', 'student') NOT NULL DEFAULT 'student'");
+        } elseif (DB::getDriverName() === 'pgsql') {
+            // Laravel stores Postgres enums as varchar + CHECK, which ->change() cannot alter.
+            DB::statement('ALTER TABLE users DROP CONSTRAINT IF EXISTS users_role_check');
+            DB::statement("ALTER TABLE users ADD CONSTRAINT users_role_check CHECK (role IN ('super_admin', 'admin', 'faculty', 'student'))");
         } else {
             Schema::table('users', function (Blueprint $table) {
                 $table->enum('role', ['super_admin', 'admin', 'faculty', 'student'])
@@ -30,6 +34,9 @@ return new class extends Migration
 
         if (DB::getDriverName() === 'mysql') {
             DB::statement("ALTER TABLE users MODIFY role ENUM('admin', 'faculty', 'student') NOT NULL DEFAULT 'student'");
+        } elseif (DB::getDriverName() === 'pgsql') {
+            DB::statement('ALTER TABLE users DROP CONSTRAINT IF EXISTS users_role_check');
+            DB::statement("ALTER TABLE users ADD CONSTRAINT users_role_check CHECK (role IN ('admin', 'faculty', 'student'))");
         } else {
             Schema::table('users', function (Blueprint $table) {
                 $table->enum('role', ['admin', 'faculty', 'student'])

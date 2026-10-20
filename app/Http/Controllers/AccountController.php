@@ -19,7 +19,7 @@ class AccountController extends Controller
 
         $users = User::query()
             ->select(['id', 'nickname', 'role', 'is_active', 'created_at'])
-            ->when($search !== '', fn ($query) => $query->where('nickname', 'like', "%{$search}%"))
+            ->when($search !== '', fn ($query) => $query->whereLike('nickname', "%{$search}%", caseSensitive: false))
             ->orderByDesc('created_at')
             ->paginate(15)
             ->withQueryString();
