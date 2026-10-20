@@ -2,7 +2,7 @@
 # Secrets marked `sync: false` are entered in the Render dashboard, never committed.
 services:
   - type: web
-    name: resback
+    name: resback-kyeruu
     runtime: docker
     plan: free
     region: singapore

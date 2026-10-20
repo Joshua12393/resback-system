@@ -14,7 +14,7 @@ What the repo already provides: `Dockerfile`, `docker/start.sh` (migrates, seeds
    - database `postgres`
 3. **Storage bucket:** Storage → New bucket → name `resback`, set it to **Public**.
 4. **S3 keys:** Storage → Settings → S3 Connection → enable it, then **New access key**. Note:
-   - endpoint, e.g. `https://<project-ref>.supabase.co/storage/v1/s3`
+   - endpoint, e.g. `https://<project-ref>.storage.supabase.co/storage/v1/s3`
    - region, e.g. `ap-southeast-1`
    - access key ID and secret
 5. Public photo URL base: `https://<project-ref>.supabase.co/storage/v1/object/public/resback`
@@ -28,7 +28,7 @@ What the repo already provides: `Dockerfile`, `docker/start.sh` (migrates, seeds
 | Variable | Value |
 |---|---|
 | `APP_KEY` | Run `php artisan key:generate --show` locally and paste the output. Never change it after launch. |
-| `APP_URL` | `https://<your-service>.onrender.com` (update after the first deploy if the name differs) |
+| `APP_URL` | `https://resback-kyeruu.onrender.com` (update after the first deploy if the name differs) |
 | `DB_HOST`, `DB_USERNAME`, `DB_PASSWORD` | From Supabase step 2 |
 | `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY` | From Supabase step 4 |
 | `AWS_DEFAULT_REGION`, `AWS_ENDPOINT` | From Supabase step 4 |
@@ -38,7 +38,7 @@ What the repo already provides: `Dockerfile`, `docker/start.sh` (migrates, seeds
 | `RESBACK_ADMIN_EMAIL`, `RESBACK_ADMIN_PASSWORD` | Login for the first Super Admin. Use a strong password. It is created once and never overwritten. |
 
 4. Deploy. The first build takes several minutes. Check the logs for `Super Admin account created.`
-5. Open `https://<your-service>.onrender.com/up`. It should return a healthy status.
+5. Open `https://resback-kyeruu.onrender.com/up`. It should return a healthy status.
 
 ## 3. Smoke test on the live site
 
