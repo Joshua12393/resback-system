@@ -8,6 +8,7 @@ use App\Models\Feedback;
 use App\Services\FeedbackAutoRejectService;
 use App\Services\FeedbackSubmissionGuard;
 use App\Services\SentimentService;
+use App\Support\FeedbackSubmitter;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
@@ -58,7 +59,7 @@ class FeedbackController extends Controller
         $shouldReject = $this->autoRejectService->shouldReject($request->string('content')->toString());
 
         $feedback = Feedback::create([
-            'user_id' => $user->id,
+            'submitter_hash' => FeedbackSubmitter::hashFor($user),
             'category_id' => $request->category_id,
             'content' => $request->content,
             'ip_hash' => $ipHash,

@@ -5,7 +5,11 @@ namespace Tests\Feature;
 use App\Models\Category;
 use App\Models\Feedback;
 use App\Models\User;
+use App\Services\SentimentService;
+use App\Support\FeedbackSubmitter;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\View;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use Tests\TestCase;
@@ -33,7 +37,7 @@ class FeedbackIdentityPrivacyTest extends TestCase
         $category = Category::create(['name' => 'CCIS', 'slug' => 'ccis', 'is_active' => true]);
 
         $feedback = Feedback::create([
-            'user_id' => $this->student->id,
+            'submitter_hash' => FeedbackSubmitter::hashFor($this->student),
             'category_id' => $category->id,
             'content' => 'The laboratory wifi keeps disconnecting.',
             'status' => 'analyzed',
@@ -45,6 +49,33 @@ class FeedbackIdentityPrivacyTest extends TestCase
             'keywords' => ['wifi'],
             'language_category' => 'English',
         ]);
+    }
+
+    public function test_feedback_table_has_no_direct_account_link(): void
+    {
+        $this->assertFalse(Schema::hasColumn('feedbacks', 'user_id'));
+
+        $stored = DB::table('feedbacks')->first();
+
+        $this->assertSame(64, strlen($stored->submitter_hash));
+        $this->assertNotSame((string) $this->student->id, $stored->submitter_hash);
+        $this->assertArrayNotHasKey('submitter_hash', Feedback::first()->toArray());
+    }
+
+    public function test_submitted_feedback_stores_only_the_pseudonymous_hash(): void
+    {
+        $this->mock(SentimentService::class)->shouldReceive('analyze')->once();
+
+        $this->actingAs($this->student)->post(route('feedback.store'), [
+            'category_id' => Category::first()->id,
+            'content' => 'Please add more charging outlets in the library.',
+        ])->assertOk();
+
+        $this->assertDatabaseHas('feedbacks', [
+            'content' => 'Please add more charging outlets in the library.',
+            'submitter_hash' => FeedbackSubmitter::hashFor($this->student),
+        ]);
+        $this->assertSame(2, $this->student->feedbacks()->count());
     }
 
     public function test_dashboard_shows_feedback_without_student_identity(): void

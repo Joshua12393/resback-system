@@ -2,6 +2,12 @@
 
 return [
     /*
+    | Secret used to pseudonymize feedback submitters (see App\Support\FeedbackSubmitter).
+    | Set it once and never change it, or students lose their feedback history.
+    */
+    'submitter_key' => env('FEEDBACK_SUBMITTER_KEY', env('APP_KEY')),
+
+    /*
     |--------------------------------------------------------------------------
     | Automatically Rejected Feedback
     |--------------------------------------------------------------------------

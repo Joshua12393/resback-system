@@ -7,6 +7,7 @@ use App\Models\Feedback;
 use App\Models\SentimentResult;
 use App\Models\User;
 use App\Services\SentimentService;
+use App\Support\FeedbackSubmitter;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Mockery\MockInterface;
 use Tests\TestCase;
@@ -36,7 +37,7 @@ class FeedbackHistoryTest extends TestCase
             ->assertOk();
 
         $this->assertDatabaseHas('feedbacks', [
-            'user_id' => $student->id,
+            'submitter_hash' => FeedbackSubmitter::hashFor($student),
             'category_id' => $category->id,
         ]);
     }
@@ -52,7 +53,7 @@ class FeedbackHistoryTest extends TestCase
         ]);
 
         $ownFeedback = Feedback::create([
-            'user_id' => $student->id,
+            'submitter_hash' => FeedbackSubmitter::hashFor($student),
             'category_id' => $category->id,
             'content' => 'The Wi-Fi connection is reliable today.',
             'status' => 'analyzed',
@@ -66,7 +67,7 @@ class FeedbackHistoryTest extends TestCase
         ]);
 
         Feedback::create([
-            'user_id' => $otherStudent->id,
+            'submitter_hash' => FeedbackSubmitter::hashFor($otherStudent),
             'category_id' => $category->id,
             'content' => 'This belongs to another student.',
             'status' => 'pending',

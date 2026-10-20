@@ -34,6 +34,7 @@ What the repo already provides: `Dockerfile`, `docker/start.sh` (migrates, seeds
 | `AWS_DEFAULT_REGION`, `AWS_ENDPOINT` | From Supabase step 4 |
 | `AWS_URL` | Public URL base from Supabase step 5 |
 | `GEMINI_API_KEY` | Same key that works locally |
+| `FEEDBACK_SUBMITTER_KEY` | Generated automatically by Render. Do not edit or delete it: feedback is linked to students only through this key. |
 | `RESBACK_ADMIN_EMAIL`, `RESBACK_ADMIN_PASSWORD` | Login for the first Super Admin. Use a strong password. It is created once and never overwritten. |
 
 4. Deploy. The first build takes several minutes. Check the logs for `Super Admin account created.`

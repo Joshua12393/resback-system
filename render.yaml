@@ -71,6 +71,10 @@ services:
       - key: GEMINI_MODEL
         value: gemma-4-26b-a4b-it
 
+      # Pseudonymizes feedback submitters. Generated once; never change it.
+      - key: FEEDBACK_SUBMITTER_KEY
+        generateValue: true
+
       # First Super Admin (created once, never overwritten)
       - key: RESBACK_ADMIN_EMAIL
         sync: false

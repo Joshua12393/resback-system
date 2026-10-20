@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Services\FeedbackAutoRejectService;
 use App\Services\FeedbackSubmissionGuard;
 use App\Services\SentimentService;
+use App\Support\FeedbackSubmitter;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\RateLimiter;
 use Tests\TestCase;
@@ -21,7 +22,7 @@ class FeedbackProtectionTest extends TestCase
         $student = User::factory()->create(['role' => 'student']);
         $category = Category::create(['name' => 'CCIS', 'slug' => 'ccis', 'is_active' => true]);
         Feedback::create([
-            'user_id' => $student->id,
+            'submitter_hash' => FeedbackSubmitter::hashFor($student),
             'category_id' => $category->id,
             'content' => 'The Wi-Fi is very slow today.',
             'status' => 'analyzed',

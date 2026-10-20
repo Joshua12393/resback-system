@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Support\FeedbackSubmitter;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -19,11 +21,21 @@ class Feedback extends Model
      * @var list<string>
      */
     protected $fillable = [
-        'user_id',
+        'submitter_hash',
         'category_id',
         'content',
         'ip_hash',
         'status',
+    ];
+
+    /**
+     * Pseudonymous identifiers never leave the server.
+     *
+     * @var list<string>
+     */
+    protected $hidden = [
+        'submitter_hash',
+        'ip_hash',
     ];
 
     /**
@@ -45,11 +57,11 @@ class Feedback extends Model
     }
 
     /**
-     * Get the account that submitted this feedback.
+     * Limit to feedback submitted by the given account.
      */
-    public function user(): BelongsTo
+    public function scopeSubmittedBy(Builder $query, User $user): void
     {
-        return $this->belongsTo(User::class);
+        $query->where('submitter_hash', FeedbackSubmitter::hashFor($user));
     }
 
     /**
