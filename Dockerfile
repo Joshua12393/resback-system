@@ -18,8 +18,8 @@ RUN composer install --no-dev --no-scripts --no-autoloader --prefer-dist --no-in
 COPY . .
 RUN composer dump-autoload --optimize --no-dev --classmap-authoritative
 
-# 3) Runtime: PHP 8.3 + Apache
-FROM php:8.3-apache
+# 3) Runtime: PHP 8.4 + Apache (locked Symfony 8 packages need PHP >= 8.4.1)
+FROM php:8.4-apache
 
 ADD --chmod=0755 https://github.com/mlocati/docker-php-extension-installer/releases/download/2.9.17/install-php-extensions /usr/local/bin/
 RUN install-php-extensions pdo_pgsql pdo_mysql gd zip intl bcmath opcache
