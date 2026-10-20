@@ -28,6 +28,28 @@ class AuthenticationAccessTest extends TestCase
             ->assertSee('data-password-toggle="password_confirmation"', false);
     }
 
+    public function test_repeated_failed_logins_are_throttled(): void
+    {
+        User::factory()->create(['email' => 'target@example.test', 'password' => Hash::make('Correct123!')]);
+
+        for ($attempt = 0; $attempt < 5; $attempt++) {
+            $this->from(route('login'))->post(route('login'), [
+                'email' => 'target@example.test',
+                'password' => 'wrong-password',
+            ])->assertSessionHasErrors('email');
+        }
+
+        $this->from(route('login'))->post(route('login'), [
+            'email' => 'target@example.test',
+            'password' => 'Correct123!',
+        ])
+            ->assertRedirect(route('login'))
+            ->assertSessionHasErrors('email');
+
+        $this->assertStringStartsWith('Too many attempts.', session('errors')->first('email'));
+        $this->assertGuest();
+    }
+
     public function test_public_registration_creates_only_a_student_account(): void
     {
         $response = $this->post(route('register'), [

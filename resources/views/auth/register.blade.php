@@ -67,7 +67,7 @@
                         type="password"
                         name="password"
                         class="form-control {{ $errors->has('password') ? 'is-invalid' : '' }}"
-                        placeholder="Minimum 8 characters"
+                        placeholder="8+ characters, upper & lower case, a number"
                         required
                         autocomplete="new-password"
                     >
